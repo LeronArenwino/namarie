@@ -126,9 +126,9 @@ public class MainWindow extends javax.swing.JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
-        this.setResizable(false);
+//        this.setResizable(false);
 //        this.setUndecorated(true);
-        //this.setMaximumSize(resolution);
+        this.setMaximumSize(resolution);
 
         getContentPane().add(containerPanel);
         this.setVisible(true);
@@ -350,7 +350,7 @@ public class MainWindow extends javax.swing.JFrame {
 
             // Play video
             mediaPlayerComponent.setFocusable(false);
-            mediaPlayerComponent.mediaPlayer().media().play("/home/leron/Music/Electronica/League of Legends");
+            mediaPlayerComponent.mediaPlayer().media().play("C:" + File.separator + "Users" + File.separator + "leron" + File.separator + "Music" + File.separator + "Electronica" + File.separator + "League of Legends" + File.separator + "Phoenix ft Cailin Russo and Chrissy Costanza  Worlds 2019  League of Legends.mp4");
 
 
         } catch (UnsatisfiedLinkError e) {
