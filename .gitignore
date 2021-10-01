@@ -129,6 +129,7 @@ fabric.properties
 *.zip
 *.tar.gz
 *.rar
+*.json
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
@@ -154,5 +155,3 @@ buildNumber.properties
 .classpath
 
 # End of https://www.toptal.com/developers/gitignore/api/java,maven,intellij
-
-config.json
