@@ -216,7 +216,7 @@ public class MainWindow extends javax.swing.JFrame {
                 if (e.getKeyCode() == downSongs) {
                     if (selectedSong > 0) {
                         selectedSong -= 20;
-                        if(selectedSong < 0){
+                        if (selectedSong < 0) {
                             selectedSong = 0;
                         }
                     } else {
@@ -230,7 +230,7 @@ public class MainWindow extends javax.swing.JFrame {
                 if (e.getKeyCode() == upSongs) {
                     if (selectedSong < songsListJList.getModel().getSize() - 1) {
                         selectedSong += 20;
-                        if(selectedSong > songsListJList.getModel().getSize() - 1){
+                        if (selectedSong > songsListJList.getModel().getSize() - 1) {
                             selectedSong = songsListJList.getModel().getSize() - 1;
                         }
                     } else {
@@ -250,7 +250,7 @@ public class MainWindow extends javax.swing.JFrame {
                     Song selectedSong = (Song) songsListJList.getSelectedValue();
 
                     if (selectedSong != null) {
-//                        embeddedMediaPlayer.playMedia(String.format("%s\\%s\\%s\\%s", songsPath, selectedSong.getGender(), selectedSong.getSinger(), selectedSong.getName()));
+                        mediaPlayerComponent.mediaPlayer().media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, selectedSong.getGender(), selectedSong.getSinger(), selectedSong.getName()));
                     }
                 }
                 if (e.getKeyCode() == 82) {
@@ -334,25 +334,12 @@ public class MainWindow extends javax.swing.JFrame {
         musicListPanel.setPreferredSize(new Dimension((int) resolution.getWidth() / 4, (int) resolution.getHeight() / 2));
         songsListPanel.setPreferredSize(new Dimension((int) resolution.getWidth() / 2, (int) resolution.getHeight()));
 
-        // Create a VLC instance and add to the video panel
         try {
+            // Create a VLC instance and add to the video panel
             mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
-
-            // A Canvas is created
-            Canvas canvas = new Canvas();
-//            canvas.setBackground(Color.WHITE);
-//            canvas.setPreferredSize(new Dimension((int) resolution.getWidth() / 2, (int) resolution.getHeight() / 2));
 
             // Add to the player container our canvas
             videoPanel.add(mediaPlayerComponent);
-
-            // Instantiating a MediaPlayerFactory. Create an embedded player and add our canvas
-
-            // Play video
-            mediaPlayerComponent.setFocusable(false);
-            mediaPlayerComponent.mediaPlayer().media().play("C:" + File.separator + "Users" + File.separator + "leron" + File.separator + "Music" + File.separator + "Electronica" + File.separator + "League of Legends" + File.separator + "Phoenix ft Cailin Russo and Chrissy Costanza  Worlds 2019  League of Legends.mp4");
-
-
         } catch (UnsatisfiedLinkError e) {
             e.printStackTrace();
         }
@@ -360,7 +347,6 @@ public class MainWindow extends javax.swing.JFrame {
         genders = gendersList();
 
         musicListByGenders = musicListByGenders(musicList(), genders);
-
 
         if (musicListByGenders != null) {
 
@@ -374,7 +360,6 @@ public class MainWindow extends javax.swing.JFrame {
         }
 
         getContentPane().requestFocus();
-        System.out.println("aca");
 
     }
 
@@ -392,10 +377,10 @@ public class MainWindow extends javax.swing.JFrame {
 
         for (String gender : genders) {
 
-            File genderDirectory = new File(String.format("%s/%s", songsPath, gender));
+            File genderDirectory = new File(String.format("%s" + File.separator + "%s", songsPath, gender));
 
             if (!genderDirectory.isDirectory()) {
-                List<String> gendersList = new ArrayList<String>(Arrays.asList(genders));
+                List<String> gendersList = new ArrayList<>(Arrays.asList(genders));
                 gendersList.remove(gender);
                 genders = gendersList.toArray(new String[0]);
             }
@@ -423,7 +408,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         for (String gender : genders) {
 
-            File genderDirectory = new File(String.format("%s/%s", songsPath, gender));
+            File genderDirectory = new File(String.format("%s"  + File.separator + "%s", songsPath, gender));
 
             if (genderDirectory.isDirectory()) {
 
@@ -431,7 +416,7 @@ public class MainWindow extends javax.swing.JFrame {
 
                 for (String singer : singers) {
 
-                    File singerDirectory = new File(String.format("%s/%s/%s", songsPath, gender, singer));
+                    File singerDirectory = new File(String.format("%s" + File.separator + "%s" + File.separator + "%s", songsPath, gender, singer));
 
                     if (singerDirectory.isDirectory()) {
 
@@ -439,7 +424,7 @@ public class MainWindow extends javax.swing.JFrame {
 
                         for (String song : songs) {
 
-                            File songFile = new File(String.format("%s/%s/%s/%s", songsPath, gender, singer, song));
+                            File songFile = new File(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, gender, singer, song));
 
                             if (songFile.isFile()) {
                                 String extension = "";
