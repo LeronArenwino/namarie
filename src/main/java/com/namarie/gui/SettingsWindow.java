@@ -592,6 +592,8 @@ public class SettingsWindow extends JFrame {
         //Keys
         values.put(KEY_UP_SONG, Integer.parseInt(upSongButton.getText()));
         values.put(KEY_DOWN_SONG, Integer.parseInt(downSongButton.getText()));
+        values.put(KEY_UP_SONGS, Integer.parseInt(upSongsButton.getText()));
+        values.put(KEY_DOWN_SONGS, Integer.parseInt(downSongsButton.getText()));
         values.put(KEY_UP_GENDER, Integer.parseInt(upGenderButton.getText()));
         values.put(KEY_DOWN_GENDER, Integer.parseInt(downGenderButton.getText()));
         values.put(KEY_ADD_COIN, Integer.parseInt(addCoinButton.getText()));
