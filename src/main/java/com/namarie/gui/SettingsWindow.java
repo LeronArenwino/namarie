@@ -36,8 +36,6 @@ public class SettingsWindow extends JFrame {
     private JPanel containerFoldersPanel;
     private JTextPane textFoldersPanel;
     private JPanel southPanel;
-    private JFormattedTextField vlcTextField;
-    private JButton vlcSearchButton;
     private JFormattedTextField videoTextField;
     private JButton videoSearchButton;
     private JFormattedTextField musicTextField;
@@ -76,7 +74,6 @@ public class SettingsWindow extends JFrame {
     private JComboBox fontSizeComboBox;
     private JCheckBox boldCheckBox;
     private JTextPane textWelcomePanel;
-    private JLabel vlcLabel;
     private JLabel videoLabel;
     private JLabel musicLabel;
     private JPanel containerWelcomePanel;
@@ -208,29 +205,6 @@ public class SettingsWindow extends JFrame {
                     loadSettings(loadedSettings);
                     robotMove();
                     dispose();
-                }
-            }
-        });
-        vlcSearchButton.addActionListener(new ActionListener() {
-            /**
-             * Invoked when an action occurs.
-             *
-             * @param e the event to be processed
-             */
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String path;
-
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setDialogTitle("VLC directory");
-                fileChooser.setCurrentDirectory(new File("."));
-                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                fileChooser.setAcceptAllFileFilterUsed(false);
-                if (fileChooser.showOpenDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
-                    // This returns the path from the selected file
-                    path = fileChooser.getSelectedFile().getAbsolutePath();
-                    vlcTextField.setText(path);
-
                 }
             }
         });
@@ -521,7 +495,6 @@ public class SettingsWindow extends JFrame {
 
         try {
             //Folders
-            vlcTextField.setText((String) values.get(KEY_PATH_VLC));
             videoTextField.setText((String) values.get(KEY_PATH_VIDEOS));
             musicTextField.setText((String) values.get(KEY_PATH_SONGS));
             promotionalVideoCheckBox.setSelected((boolean) values.get(KEY_PROMOTIONAL_VIDEO));
@@ -574,7 +547,6 @@ public class SettingsWindow extends JFrame {
         Map<String, Object> values = new HashMap<>();
 
         //Folders
-        values.put(KEY_PATH_VLC, vlcTextField.getText());
         values.put(KEY_PATH_VIDEOS, videoTextField.getText());
         values.put(KEY_PATH_SONGS, musicTextField.getText());
         values.put(KEY_PROMOTIONAL_VIDEO, promotionalVideoCheckBox.isSelected());
