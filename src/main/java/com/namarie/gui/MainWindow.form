@@ -108,7 +108,7 @@
                   <horizontalAlignment value="0"/>
                   <horizontalTextPosition value="0"/>
                   <requestFocusEnabled value="false"/>
-                  <text value=" - - - - - "/>
+                  <text value="-"/>
                 </properties>
               </component>
               <component id="5e160" class="javax.swing.JLabel" binding="currentCreditsLabel">

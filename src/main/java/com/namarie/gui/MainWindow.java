@@ -4,6 +4,7 @@ import com.namarie.filemanager.FileManager;
 import com.namarie.models.Song;
 import org.json.JSONException;
 import org.json.JSONObject;
+import uk.co.caprica.vlcj.player.base.MediaPlayer;
 import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -111,6 +112,7 @@ public class MainWindow extends javax.swing.JFrame {
     private int selectedGender;
     private int selectedSong;
 
+    private String[] stringLabel;
     private int currentCredits;
 
     // Data
@@ -243,7 +245,7 @@ public class MainWindow extends javax.swing.JFrame {
                 }
                 if (e.getKeyCode() == powerOff) {
 
-//                    embeddedMediaPlayer.stop();
+                    mediaPlayerComponent.mediaPlayer().controls().stop();
 
                 }
                 if (e.getKeyCode() == 10) {
@@ -273,6 +275,36 @@ public class MainWindow extends javax.swing.JFrame {
                     songsGenderLabel.setText(genders[selectedGender]);
                     songsListJList.ensureIndexIsVisible(selectedSong);
 
+                }
+                if (e.getKeyCode() == 48 || e.getKeyCode() == 96) {
+                    setString("0");
+                }
+                if (e.getKeyCode() == 49 || e.getKeyCode() == 97) {
+                    setString("1");
+                }
+                if (e.getKeyCode() == 50 || e.getKeyCode() == 98) {
+                    setString("2");
+                }
+                if (e.getKeyCode() == 51 || e.getKeyCode() == 99) {
+                    setString("3");
+                }
+                if (e.getKeyCode() == 52 || e.getKeyCode() == 100) {
+                    setString("4");
+                }
+                if (e.getKeyCode() == 53 || e.getKeyCode() == 101) {
+                    setString("5");
+                }
+                if (e.getKeyCode() == 54 || e.getKeyCode() == 102) {
+                    setString("6");
+                }
+                if (e.getKeyCode() == 55 || e.getKeyCode() == 103) {
+                    setString("7");
+                }
+                if (e.getKeyCode() == 56 || e.getKeyCode() == 104) {
+                    setString("8");
+                }
+                if (e.getKeyCode() == 57 || e.getKeyCode() == 105) {
+                    setString("9");
                 }
             }
         });
@@ -336,7 +368,19 @@ public class MainWindow extends javax.swing.JFrame {
 
         try {
             // Create a VLC instance and add to the video panel
-            mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
+            mediaPlayerComponent = new EmbeddedMediaPlayerComponent(){
+                @Override
+                public void playing(MediaPlayer mediaPlayer) {
+                }
+
+                @Override
+                public void finished(MediaPlayer mediaPlayer) {
+                }
+
+                @Override
+                public void error(MediaPlayer mediaPlayer) {
+                }
+            };
 
             // Add to the player container our canvas
             videoPanel.add(mediaPlayerComponent);
@@ -359,7 +403,49 @@ public class MainWindow extends javax.swing.JFrame {
             songsGenderLabel.setText(genders[selectedGender]);
         }
 
+        stringLabel = new String[5];
+
+
+        setDefaultString();
+
         getContentPane().requestFocus();
+
+    }
+
+    private void setDefaultString() {
+
+        for (int i = 0; i < stringLabel.length; i++) {
+
+            stringLabel[i] = "-";
+
+        }
+
+        numberSong.setText(String.format(" %s %s %s %s %s ", stringLabel[0], stringLabel[1], stringLabel[2], stringLabel[3], stringLabel[4]));
+
+    }
+
+    private void setString(String value) {
+
+        for (int i = 0; i < stringLabel.length; i++) {
+
+            if (stringLabel[i] == "-") {
+                stringLabel[i] = value;
+                break;
+            }
+        }
+
+        if (!Arrays.stream(stringLabel).anyMatch("-"::equals)) {
+
+            selectedSong = Integer.parseInt(String.format("%s%s%s%s%s", stringLabel[0], stringLabel[1], stringLabel[2], stringLabel[3], stringLabel[4]));
+
+            Song song = musicList().get(selectedSong);
+
+            mediaPlayerComponent.mediaPlayer().media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, song.getGender(), song.getSinger(), song.getName()));
+
+            setDefaultString();
+        }
+
+        numberSong.setText(String.format(" %s %s %s %s %s ", stringLabel[0], stringLabel[1], stringLabel[2], stringLabel[3], stringLabel[4]));
 
     }
 
@@ -408,7 +494,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         for (String gender : genders) {
 
-            File genderDirectory = new File(String.format("%s"  + File.separator + "%s", songsPath, gender));
+            File genderDirectory = new File(String.format("%s" + File.separator + "%s", songsPath, gender));
 
             if (genderDirectory.isDirectory()) {
 
