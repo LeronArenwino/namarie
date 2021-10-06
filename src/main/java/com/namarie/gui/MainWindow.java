@@ -20,7 +20,6 @@ import java.util.List;
 public class MainWindow extends javax.swing.JFrame {
 
     // Folders TabPanel
-    public final static String KEY_PATH_VLC = "pathVLC";
     public final static String KEY_PATH_VIDEOS = "pathVideos";
     public final static String KEY_PATH_SONGS = "pathSongs";
     public final static String KEY_PROMOTIONAL_VIDEO = "promotionalVideo";
@@ -58,7 +57,6 @@ public class MainWindow extends javax.swing.JFrame {
 
     // MainFrame
     // Folders
-    private String vlcPath;
     private String videosPath;
     private String songsPath;
     private boolean promotionalVideo;
@@ -579,7 +577,6 @@ public class MainWindow extends javax.swing.JFrame {
 
         try {
             //Folders
-            vlcPath = (String) values.get(KEY_PATH_VLC);
             videosPath = (String) values.get(KEY_PATH_VIDEOS);
             songsPath = (String) values.get(KEY_PATH_SONGS);
             promotionalVideo = (boolean) values.get(KEY_PROMOTIONAL_VIDEO);

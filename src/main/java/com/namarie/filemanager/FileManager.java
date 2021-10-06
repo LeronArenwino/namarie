@@ -106,7 +106,6 @@ public class FileManager {
         Map<String, Object> defaultSettings = new HashMap<>();
 
         //Folders
-        defaultSettings.put(KEY_PATH_VLC, "");
         defaultSettings.put(KEY_PATH_VIDEOS, "");
         defaultSettings.put(KEY_PATH_SONGS, "");
         defaultSettings.put(KEY_PROMOTIONAL_VIDEO, false);
