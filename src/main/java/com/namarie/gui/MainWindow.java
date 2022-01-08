@@ -13,6 +13,7 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -241,7 +242,7 @@ public class MainWindow extends javax.swing.JFrame {
                     songsListJList.ensureIndexIsVisible(selectedSong);
 
                 }
-                if (e.getKeyCode() == powerOff) {
+                if (e.getKeyCode() == nextSong) {
 
                     if (!musicQueue.isEmpty()) {
 
@@ -278,6 +279,29 @@ public class MainWindow extends javax.swing.JFrame {
                         }
 
                     }
+                }
+                if (e.getKeyCode() == powerOff) {
+
+                    String s = (String)JOptionPane.showInputDialog(
+                            null,
+                            "Ingrese la contraseña",
+                            "Apagar equipo",
+                            JOptionPane.PLAIN_MESSAGE);
+
+                    if("031217".equals(s)){
+
+                        mediaPlayerComponent.release();
+                        
+                        Runtime runtime = Runtime.getRuntime();
+                        try {
+                            Process proc = runtime.exec("shutdown -s -t 0");
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                        System.exit(0);
+
+                    }
+
                 }
                 if (e.getKeyCode() == 82) {
 
