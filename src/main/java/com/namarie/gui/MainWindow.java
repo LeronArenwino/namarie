@@ -91,7 +91,7 @@ public class MainWindow extends javax.swing.JFrame {
     private JPanel musicListPanel;
     private JPanel songsListPanel;
     private JList songsListJList;
-    private JList musicListJList;
+    private JList musicQueueJList;
     private JScrollPane musicListScrollPanel;
     private JScrollPane songsListScrollPanel;
     private JPanel centerPanel;
@@ -105,6 +105,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     private EmbeddedMediaPlayerComponent mediaPlayerComponent;
 
+    private ArrayList<Song> musicQueue;
     private ArrayList<ArrayList<Song>> musicListByGenders;
     private String[] genders;
     private int selectedGender;
@@ -120,14 +121,13 @@ public class MainWindow extends javax.swing.JFrame {
     public MainWindow() {
 
         resolution = Toolkit.getDefaultToolkit().getScreenSize();
-//        System.out.println(resolution.toString());
 
         this.setTitle("MainWindow");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
-//        this.setResizable(false);
-//        this.setUndecorated(true);
+        this.setResizable(false);
+        this.setUndecorated(true);
         this.setMaximumSize(resolution);
 
         getContentPane().add(containerPanel);
@@ -243,14 +243,40 @@ public class MainWindow extends javax.swing.JFrame {
                 }
                 if (e.getKeyCode() == powerOff) {
 
-                    mediaPlayerComponent.mediaPlayer().controls().stop();
+                    if (!musicQueue.isEmpty()) {
 
+                        Song song = musicQueue.get(0);
+
+                        mediaPlayerComponent.mediaPlayer().media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, song.getGender(), song.getSinger(), song.getName()));
+
+
+                        musicQueue.remove(0);
+
+                        setMusicQueue(musicQueue);
+
+                    } else {
+
+                        mediaPlayerComponent.mediaPlayer().controls().stop();
+
+                    }
                 }
                 if (e.getKeyCode() == 10) {
                     Song selectedSong = (Song) songsListJList.getSelectedValue();
 
                     if (selectedSong != null) {
-                        mediaPlayerComponent.mediaPlayer().media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, selectedSong.getGender(), selectedSong.getSinger(), selectedSong.getName()));
+
+                        if (!mediaPlayerComponent.mediaPlayer().status().isPlaying()) {
+
+                            mediaPlayerComponent.mediaPlayer().media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, selectedSong.getGender(), selectedSong.getSinger(), selectedSong.getName()));
+
+                        } else {
+
+                            musicQueue.add(selectedSong);
+
+                            setMusicQueue(musicQueue);
+
+                        }
+
                     }
                 }
                 if (e.getKeyCode() == 82) {
@@ -366,13 +392,31 @@ public class MainWindow extends javax.swing.JFrame {
 
         try {
             // Create a VLC instance and add to the video panel
-            mediaPlayerComponent = new EmbeddedMediaPlayerComponent(){
+            mediaPlayerComponent = new EmbeddedMediaPlayerComponent() {
                 @Override
                 public void playing(MediaPlayer mediaPlayer) {
                 }
 
                 @Override
                 public void finished(MediaPlayer mediaPlayer) {
+
+                    if (!musicQueue.isEmpty()) {
+
+                        Song song = musicQueue.get(0);
+
+                        mediaPlayer.submit(new Runnable() {
+                            @Override
+                            public void run() {
+                                mediaPlayer.media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, song.getGender(), song.getSinger(), song.getName()));
+                            }
+                        });
+
+                        musicQueue.remove(0);
+
+                        setMusicQueue(musicQueue);
+
+                    }
+
                 }
 
                 @Override
@@ -389,6 +433,8 @@ public class MainWindow extends javax.swing.JFrame {
         genders = gendersList();
 
         musicListByGenders = musicListByGenders(musicList(), genders);
+
+        musicQueue = new ArrayList<>();
 
         if (musicListByGenders != null) {
 
@@ -438,7 +484,18 @@ public class MainWindow extends javax.swing.JFrame {
 
             Song song = musicList().get(selectedSong);
 
-            mediaPlayerComponent.mediaPlayer().media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, song.getGender(), song.getSinger(), song.getName()));
+            if (mediaPlayerComponent.mediaPlayer().status().isPlaying()) {
+
+                musicQueue.add(song);
+                setMusicQueue(musicQueue);
+
+            }
+
+            if (musicQueue.isEmpty()) {
+
+                mediaPlayerComponent.mediaPlayer().media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, song.getGender(), song.getSinger(), song.getName()));
+
+            }
 
             setDefaultString();
         }
@@ -554,6 +611,24 @@ public class MainWindow extends javax.swing.JFrame {
         }
 
         return musicListByGenders;
+    }
+
+    private void setMusicQueue(ArrayList<Song> musicQueue) {
+
+        if (musicQueue != null) {
+
+            DefaultListModel model = new DefaultListModel();
+
+            for (Song song : musicQueue) {
+
+                model.addElement(song);
+
+            }
+
+            musicQueueJList.setModel(model);
+
+        }
+
     }
 
     private void setMusicList(ArrayList<Song> musicList, String selectedGender) {
