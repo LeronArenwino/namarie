@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import uk.co.caprica.vlcj.player.base.MediaPlayer;
 import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent;
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -282,16 +283,16 @@ public class MainWindow extends javax.swing.JFrame {
                 }
                 if (e.getKeyCode() == powerOff) {
 
-                    String s = (String)JOptionPane.showInputDialog(
+                    String s = (String) JOptionPane.showInputDialog(
                             null,
-                            "Ingrese la contraseña",
-                            "Apagar equipo",
+                            "Password:",
+                            "Power off",
                             JOptionPane.PLAIN_MESSAGE);
 
-                    if("031217".equals(s)){
+                    if ("031217".equals(s)) {
 
                         mediaPlayerComponent.release();
-                        
+
                         Runtime runtime = Runtime.getRuntime();
                         try {
                             Process proc = runtime.exec("shutdown -s -t 0");
@@ -354,6 +355,9 @@ public class MainWindow extends javax.swing.JFrame {
                 if (e.getKeyCode() == 57 || e.getKeyCode() == 105) {
                     setString("9");
                 }
+                if(e.getKeyCode() == 110){
+                    setDefaultString();
+                }
             }
         });
         songsListJList.addListSelectionListener(new ListSelectionListener() {
@@ -371,7 +375,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     public static void main(String[] args) {
         /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        //<editor-fold default state="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
@@ -406,7 +410,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         // Validate credits
         currentCredits = 0;
-        currentCreditsLabel.setText(String.format("Creditos disponibles: %d", currentCredits));
+        currentCreditsLabel.setText(String.format("C: %d", currentCredits));
 
         // Reshape components to screen resolution
         centerPanel.setPreferredSize(new Dimension((int) resolution.getWidth() / 2, (int) resolution.getHeight()));
@@ -506,18 +510,22 @@ public class MainWindow extends javax.swing.JFrame {
 
             selectedSong = Integer.parseInt(String.format("%s%s%s%s%s", stringLabel[0], stringLabel[1], stringLabel[2], stringLabel[3], stringLabel[4]));
 
-            Song song = musicList().get(selectedSong);
+            if (selectedSong <= musicList().size() - 1) {
 
-            if (mediaPlayerComponent.mediaPlayer().status().isPlaying()) {
+                Song song = musicList().get(selectedSong);
 
-                musicQueue.add(song);
-                setMusicQueue(musicQueue);
+                if (mediaPlayerComponent.mediaPlayer().status().isPlaying()) {
 
-            }
+                    musicQueue.add(song);
+                    setMusicQueue(musicQueue);
 
-            if (musicQueue.isEmpty()) {
+                }
 
-                mediaPlayerComponent.mediaPlayer().media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, song.getGender(), song.getSinger(), song.getName()));
+                if (musicQueue.isEmpty()) {
+
+                    mediaPlayerComponent.mediaPlayer().media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, song.getGender(), song.getSinger(), song.getName()));
+
+                }
 
             }
 
