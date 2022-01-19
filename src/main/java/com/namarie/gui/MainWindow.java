@@ -680,6 +680,15 @@ public class MainWindow extends javax.swing.JFrame {
 
     }
 
+    private void creditsValidate(boolean state) {
+
+        musicListPanel.setVisible(state);
+        songsListPanel.setVisible(state);
+
+        currentCreditsLabel.setText(String.format("Credits: %s", currentCredits));
+
+    }
+
     private void loadSettings(JSONObject values) {
 
         try {
