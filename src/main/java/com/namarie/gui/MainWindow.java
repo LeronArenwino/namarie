@@ -15,9 +15,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
+import java.util.Timer;
 
 public class MainWindow extends javax.swing.JFrame {
 
@@ -112,6 +112,8 @@ public class MainWindow extends javax.swing.JFrame {
     private String[] genders;
     private int selectedGender;
     private int selectedSong;
+    private java.util.Timer timer;
+    private TimerTask task;
 
     private String[] stringLabel;
     private int currentCredits;
@@ -501,6 +503,34 @@ public class MainWindow extends javax.swing.JFrame {
         setDefaultString();
 
         getContentPane().requestFocus();
+
+        timer = new Timer();
+        task = new TimerTask() {
+            @Override
+            public void run() {
+
+                playRandomSong();
+
+            }
+        };
+
+        timer.schedule(task, 0, randomSong * 60000);
+
+    }
+
+    private void playRandomSong() {
+
+        if (!mediaPlayerComponent.mediaPlayer().status().isPlaying()) {
+
+            Random rand = new Random();
+
+            int randSong = rand.nextInt(musicList().size() - 1);
+
+            Song song = musicList().get(randSong);
+
+            mediaPlayerComponent.mediaPlayer().media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, song.getGender(), song.getSinger(), song.getName()));
+
+        }
 
     }
 
