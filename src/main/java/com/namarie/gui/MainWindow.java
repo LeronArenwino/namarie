@@ -278,23 +278,31 @@ public class MainWindow extends javax.swing.JFrame {
                     }
                 }
                 if (e.getKeyCode() == 10) {
-                    Song selectedSong = (Song) songsListJList.getSelectedValue();
 
-                    if (selectedSong != null) {
+                    if (currentCredits > 0) {
 
-                        if (!mediaPlayerComponent.mediaPlayer().status().isPlaying()) {
+                        Song selectedSong = (Song) songsListJList.getSelectedValue();
 
-                            mediaPlayerComponent.mediaPlayer().media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, selectedSong.getGender(), selectedSong.getSinger(), selectedSong.getName()));
+                        if (selectedSong != null) {
 
-                        } else {
+                            if (!mediaPlayerComponent.mediaPlayer().status().isPlaying()) {
 
-                            musicQueue.add(selectedSong);
+                                mediaPlayerComponent.mediaPlayer().media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, selectedSong.getGender(), selectedSong.getSinger(), selectedSong.getName()));
 
-                            setMusicQueue(musicQueue);
+                            } else {
+
+                                musicQueue.add(selectedSong);
+
+                                setMusicQueue(musicQueue);
+
+                            }
+
+                            currentCredits -= 1;
+                            creditsValidate(currentCredits > 0);
 
                         }
-
                     }
+
                 }
                 if (e.getKeyCode() == powerOff) {
 
@@ -540,6 +548,9 @@ public class MainWindow extends javax.swing.JFrame {
                         mediaPlayerComponent.mediaPlayer().media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, song.getGender(), song.getSinger(), song.getName()));
 
                     }
+
+                    currentCredits -= 1;
+                    creditsValidate(currentCredits > 0);
 
                 }
 
