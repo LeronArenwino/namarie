@@ -15,6 +15,7 @@
         <properties>
           <focusable value="false"/>
           <requestFocusEnabled value="false"/>
+          <visible value="true"/>
         </properties>
         <border type="empty"/>
         <children>
@@ -89,6 +90,7 @@
               <background color="-14128769"/>
               <focusable value="false"/>
               <requestFocusEnabled value="false"/>
+              <visible value="true"/>
             </properties>
             <border type="empty"/>
             <children>
@@ -142,7 +144,7 @@
                   <horizontalTextPosition value="0"/>
                   <opaque value="true"/>
                   <requestFocusEnabled value="false"/>
-                  <text value="Creditos"/>
+                  <text value="Credits: 0"/>
                 </properties>
               </component>
             </children>
@@ -150,7 +152,9 @@
           <grid id="382de" binding="videoPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints border-constraint="Center"/>
             <properties>
+              <background color="-16777216"/>
               <focusable value="false"/>
+              <opaque value="true"/>
               <requestFocusEnabled value="false"/>
             </properties>
             <border type="empty"/>
