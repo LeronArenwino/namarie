@@ -18,8 +18,12 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 import java.util.Timer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainWindow extends javax.swing.JFrame {
+
+    private static final String PATTERN = "([^\\s]+(\\.(?i)(mp3))$)";
 
     // Folders TabPanel
     public final static String KEY_PATH_VIDEOS = "pathVideos";
@@ -114,6 +118,7 @@ public class MainWindow extends javax.swing.JFrame {
     private int selectedSong;
     private java.util.Timer timer;
     private TimerTask task;
+    private Pattern pattern;
 
     private String[] stringLabel;
     private int currentCredits;
@@ -418,6 +423,8 @@ public class MainWindow extends javax.swing.JFrame {
 
     public void initComponents() {
 
+        pattern = Pattern.compile(PATTERN);
+
         // Load data from JSON file
         File file = new File(new java.io.File("") + "config.json");
         if (!file.exists()) fileManager.saveDefaultSettings();
@@ -514,17 +521,17 @@ public class MainWindow extends javax.swing.JFrame {
             }
         };
 
-        timer.schedule(task, 0, randomSong * 60000);
+        timer.scheduleAtFixedRate(task, 10000, randomSong * 60000);
 
     }
 
     private void playRandomSong() {
 
-        if (!mediaPlayerComponent.mediaPlayer().status().isPlaying()) {
+        if (!mediaPlayerComponent.mediaPlayer().status().isPlaying() && musicQueue.isEmpty()) {
 
             Random rand = new Random();
 
-            int randSong = rand.nextInt(musicList().size() - 1);
+            int randSong = rand.nextInt(musicList().size());
 
             Song song = musicList().get(randSong);
 
@@ -653,19 +660,16 @@ public class MainWindow extends javax.swing.JFrame {
                             File songFile = new File(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, gender, singer, song));
 
                             if (songFile.isFile()) {
-                                String extension = "";
 
-                                int pointIndex = songFile.getName().lastIndexOf('.');
+                                Matcher matcher = pattern.matcher(songFile.getName());
 
-                                if (pointIndex > 0) {
-                                    extension = songFile.getName().substring(pointIndex + 1);
+                                if (matcher.find()) {
 
-                                    // TODO validate extensions
-                                    if (!extension.equals("pdf")) {
-                                        musicList.add(new Song(songCounter, song, singer, gender));
-                                        songCounter++;
-                                    }
+                                    musicList.add(new Song(songCounter, song, singer, gender));
+                                    songCounter++;
+
                                 }
+
                             }
                         }
                     }
