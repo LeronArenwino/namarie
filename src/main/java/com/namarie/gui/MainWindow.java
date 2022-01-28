@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 
 public class MainWindow extends javax.swing.JFrame {
 
-    private static final String PATTERN = "([^\\s]+(\\.(?i)(mp3))$)";
+    private static final String PATTERN = "([^\\s]+(\\.(?i)(mp3|mp4|wav|wma|mov|wmv|avi|flv|mkv|mpg|mpeg))$)";
 
     // Folders TabPanel
     public final static String KEY_PATH_VIDEOS = "pathVideos";
