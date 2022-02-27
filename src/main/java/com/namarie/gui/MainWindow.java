@@ -5,12 +5,15 @@ import com.namarie.models.Song;
 import org.json.JSONException;
 import org.json.JSONObject;
 import uk.co.caprica.vlcj.player.base.MediaPlayer;
+import uk.co.caprica.vlcj.player.component.AudioPlayerComponent;
 import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -23,7 +26,10 @@ import java.util.regex.Pattern;
 
 public class MainWindow extends javax.swing.JFrame {
 
+    // Regex
     private static final String PATTERN = "([^\\s]+(\\.(?i)(mp3|mp4|wav|wma|mov|wmv|avi|flv|mkv|mpg|mpeg))$)";
+    private static final String PATTERN_VIDEO = "([^\\s]+(\\.(?i)(mp4|mov|wmv|avi|flv|mkv|mpg))$)";
+    private static final String PATTERN_AUDIO = "([^\\s]+(\\.(?i)(mp3|wav|wma|mpeg))$)";
 
     // Folders TabPanel
     public final static String KEY_PATH_VIDEOS = "pathVideos";
@@ -90,8 +96,6 @@ public class MainWindow extends javax.swing.JFrame {
     private int nextSong;
 
     private Dimension resolution;
-    private int widthScreen;
-    private int heightScreen;
     private JPanel containerPanel;
     private JPanel videoPanel;
     private JPanel musicListPanel;
@@ -109,9 +113,11 @@ public class MainWindow extends javax.swing.JFrame {
     private JButton searchSongsListButton;
     private SettingsWindow settingsWindow;
 
-    private EmbeddedMediaPlayerComponent mediaPlayerComponent;
+    private EmbeddedMediaPlayerComponent videoMediaPlayer;
+    private AudioPlayerComponent audioMediaPlayer;
 
     private ArrayList<Song> musicQueue;
+    private ArrayList<Song> videosQueue;
     private ArrayList<ArrayList<Song>> musicListByGenders;
     private String[] genders;
     private int selectedGender;
@@ -119,6 +125,8 @@ public class MainWindow extends javax.swing.JFrame {
     private java.util.Timer timer;
     private TimerTask task;
     private Pattern pattern;
+    private Pattern patternVideo;
+    private Pattern patternAudio;
 
     private String[] stringLabel;
     private int currentCredits;
@@ -128,36 +136,9 @@ public class MainWindow extends javax.swing.JFrame {
     private final FileManager fileManager = new FileManager();
 
     public MainWindow() {
-
-        resolution = Toolkit.getDefaultToolkit().getScreenSize();
-
-        this.setTitle("MainWindow");
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        this.setLocationRelativeTo(null);
-        this.setResizable(false);
-        this.setUndecorated(true);
-
-        getContentPane().add(containerPanel);
-        this.setVisible(true);
-
         initComponents();
 
-        getContentPane().addKeyListener(new KeyAdapter() {
-            /**
-             * Invoked when a key has been pressed.
-             *
-             * @param e
-             */
-            @Override
-            public void keyReleased(KeyEvent e) {
-                if (e.getKeyCode() == 81) {
-                    settingsWindow = new SettingsWindow();
-                    settingsWindow.setVisible(true);
-                }
-            }
-        });
-        getContentPane().addKeyListener(new KeyAdapter() {
+        containerPanel.addKeyListener(new KeyAdapter() {
             /**
              * Invoked when a key has been pressed.
              *
@@ -165,26 +146,30 @@ public class MainWindow extends javax.swing.JFrame {
              */
             @Override
             public void keyPressed(KeyEvent e) {
+
+                // Event to open a settings window (Key 'Q')
+                if (e.getKeyCode() == 81) {
+                    settingsWindow = new SettingsWindow();
+                    settingsWindow.setVisible(true);
+                }
+
+                // Event to open add coin
                 if (e.getKeyCode() == addCoin) {
-
                     if (currentCredits < 25) {
-
                         currentCredits += 1;
                         creditsValidate(currentCredits > 0);
-
                     }
-
                 }
+
+                // Event to open remove coin
                 if (e.getKeyCode() == removeCoin) {
-
                     if (currentCredits > 0) {
-
                         currentCredits -= 1;
                         creditsValidate(currentCredits > 0);
-
                     }
-
                 }
+
+                // Event to up gender in gender list
                 if (e.getKeyCode() == upGender) {
                     if (selectedGender < genders.length - 1) {
                         selectedGender++;
@@ -193,13 +178,15 @@ public class MainWindow extends javax.swing.JFrame {
                     }
                     setMusicList(musicListByGenders.get(selectedGender), genders[selectedGender]);
 
-                    songsGenderLabel.setText(genders[selectedGender]);
+                    songsGenderLabel.setText("Gender: " + genders[selectedGender]);
 
                     selectedSong = 0;
                     songsListJList.setSelectedIndex(selectedSong);
                     songsListJList.ensureIndexIsVisible(selectedSong);
 
                 }
+
+                // Event to down gender in gender list
                 if (e.getKeyCode() == downGender) {
                     if (selectedGender > 0) {
                         selectedGender--;
@@ -208,13 +195,15 @@ public class MainWindow extends javax.swing.JFrame {
                     }
                     setMusicList(musicListByGenders.get(selectedGender), genders[selectedGender]);
 
-                    songsGenderLabel.setText(genders[selectedGender]);
+                    songsGenderLabel.setText("Gender: " + genders[selectedGender]);
 
                     selectedSong = 0;
                     songsListJList.setSelectedIndex(selectedSong);
                     songsListJList.ensureIndexIsVisible(selectedSong);
 
                 }
+
+                // Event to up a song in music list
                 if (e.getKeyCode() == upSong) {
                     if (selectedSong > 0) {
                         selectedSong--;
@@ -226,6 +215,8 @@ public class MainWindow extends javax.swing.JFrame {
                     songsListJList.ensureIndexIsVisible(selectedSong);
 
                 }
+
+                // Event to down a song in music list
                 if (e.getKeyCode() == downSong) {
                     if (selectedSong < songsListJList.getModel().getSize() - 1) {
                         selectedSong++;
@@ -237,20 +228,8 @@ public class MainWindow extends javax.swing.JFrame {
                     songsListJList.ensureIndexIsVisible(selectedSong);
 
                 }
-                if (e.getKeyCode() == downSongs) {
-                    if (selectedSong > 0) {
-                        selectedSong -= 20;
-                        if (selectedSong < 0) {
-                            selectedSong = 0;
-                        }
-                    } else {
-                        selectedSong = songsListJList.getModel().getSize() - 1;
-                    }
 
-                    songsListJList.setSelectedIndex(selectedSong);
-                    songsListJList.ensureIndexIsVisible(selectedSong);
-
-                }
+                // Event to up 20 songs in music list
                 if (e.getKeyCode() == upSongs) {
                     if (selectedSong < songsListJList.getModel().getSize() - 1) {
                         selectedSong += 20;
@@ -265,25 +244,29 @@ public class MainWindow extends javax.swing.JFrame {
                     songsListJList.ensureIndexIsVisible(selectedSong);
 
                 }
-                if (e.getKeyCode() == nextSong) {
 
-                    if (!musicQueue.isEmpty()) {
-
-                        Song song = musicQueue.get(0);
-
-                        mediaPlayerComponent.mediaPlayer().media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, song.getGender(), song.getSinger(), song.getName()));
-
-
-                        musicQueue.remove(0);
-
-                        setMusicQueue(musicQueue);
-
+                // Event to down 20 songs in music list
+                if (e.getKeyCode() == downSongs) {
+                    if (selectedSong > 0) {
+                        selectedSong -= 20;
+                        if (selectedSong < 0) {
+                            selectedSong = 0;
+                        }
                     } else {
-
-                        mediaPlayerComponent.mediaPlayer().controls().stop();
-
+                        selectedSong = songsListJList.getModel().getSize() - 1;
                     }
+
+                    songsListJList.setSelectedIndex(selectedSong);
+                    songsListJList.ensureIndexIsVisible(selectedSong);
+
                 }
+
+                // Event to play the next song in music queue
+                if (e.getKeyCode() == nextSong) {
+                    nextSong();
+                }
+
+                // Event to play or add a song to music queue with ENTER
                 if (e.getKeyCode() == 10) {
 
                     if (currentCredits > 0) {
@@ -292,9 +275,9 @@ public class MainWindow extends javax.swing.JFrame {
 
                         if (selectedSong != null) {
 
-                            if (!mediaPlayerComponent.mediaPlayer().status().isPlaying()) {
+                            if (!videoMediaPlayer.mediaPlayer().status().isPlaying()) {
 
-                                mediaPlayerComponent.mediaPlayer().media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, selectedSong.getGender(), selectedSong.getSinger(), selectedSong.getName()));
+                                videoMediaPlayer.mediaPlayer().media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, selectedSong.getGender(), selectedSong.getSinger(), selectedSong.getName()));
 
                             } else {
 
@@ -311,25 +294,8 @@ public class MainWindow extends javax.swing.JFrame {
                     }
 
                 }
-                if (e.getKeyCode() == powerOff) {
 
-                    String s = (String) JOptionPane.showInputDialog(null, "Password:", "Power off", JOptionPane.PLAIN_MESSAGE);
-
-                    if ("031217".equals(s)) {
-
-                        mediaPlayerComponent.release();
-
-                        Runtime runtime = Runtime.getRuntime();
-                        try {
-                            Process proc = runtime.exec("shutdown -s -t 0");
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        }
-                        System.exit(0);
-
-                    }
-
-                }
+                // Event to reload settings
                 if (e.getKeyCode() == 82) {
 
                     selectedGender = 0;
@@ -347,42 +313,86 @@ public class MainWindow extends javax.swing.JFrame {
                     selectedSong = 0;
                     songsListJList.setSelectedIndex(selectedSong);
 
-                    songsGenderLabel.setText(genders[selectedGender]);
+                    songsGenderLabel.setText("Gender: " + genders[selectedGender]);
                     songsListJList.ensureIndexIsVisible(selectedSong);
 
                 }
+
+                // Event to set '0' value in String to select a song
                 if (e.getKeyCode() == 48 || e.getKeyCode() == 96) {
                     setString("0");
                 }
+
+                // Event to set '1' value in String to select a song
                 if (e.getKeyCode() == 49 || e.getKeyCode() == 97) {
                     setString("1");
                 }
+
+                // Event to set '2' value in String to select a song
                 if (e.getKeyCode() == 50 || e.getKeyCode() == 98) {
                     setString("2");
                 }
+
+                // Event to set '3' value in String to select a song
                 if (e.getKeyCode() == 51 || e.getKeyCode() == 99) {
                     setString("3");
                 }
+
+                // Event to set '4' value in String to select a song
                 if (e.getKeyCode() == 52 || e.getKeyCode() == 100) {
                     setString("4");
                 }
+
+                // Event to set '5' value in String to select a song
                 if (e.getKeyCode() == 53 || e.getKeyCode() == 101) {
                     setString("5");
                 }
+
+                // Event to set '6' value in String to select a song
                 if (e.getKeyCode() == 54 || e.getKeyCode() == 102) {
                     setString("6");
                 }
+
+                // Event to set '7' value in String to select a song
                 if (e.getKeyCode() == 55 || e.getKeyCode() == 103) {
                     setString("7");
                 }
+
+                // Event to set '8' value in String to select a song
                 if (e.getKeyCode() == 56 || e.getKeyCode() == 104) {
                     setString("8");
                 }
+
+                // Event to set '9' value in String to select a song
                 if (e.getKeyCode() == 57 || e.getKeyCode() == 105) {
                     setString("9");
                 }
+
+                // Event to set default value in String to select a song
                 if (e.getKeyCode() == 110) {
                     setDefaultString();
+                }
+
+                // Event to power off computer
+                if (e.getKeyCode() == powerOff) {
+
+                    String s = JOptionPane.showInputDialog(null, "Password:", "Power off", JOptionPane.PLAIN_MESSAGE);
+
+                    if ("031217".equals(s)) {
+
+                        videoMediaPlayer.release();
+                        audioMediaPlayer.release();
+
+                        Runtime runtime = Runtime.getRuntime();
+                        try {
+                            Process proc = runtime.exec("shutdown -s -t 0");
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                        System.exit(0);
+
+                    }
+
                 }
             }
         });
@@ -397,14 +407,23 @@ public class MainWindow extends javax.swing.JFrame {
                 selectedSong = songsListJList.getSelectedIndex();
             }
         });
+        searchSongsListTextField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                getContentPane().requestFocus();
+            }
+        });
+
     }
 
     public static void main(String[] args) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold default state="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
+
+        // Look and feel to mainWindow
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Windows".equals(info.getName())) {
@@ -415,15 +434,28 @@ public class MainWindow extends javax.swing.JFrame {
         } catch (ClassNotFoundException | InstantiationException | UnsupportedLookAndFeelException | IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new MainWindow().setVisible(true));
+        JFrame mainWindow = new MainWindow();
+        mainWindow.setVisible(true);
     }
 
     public void initComponents() {
 
+        resolution = Toolkit.getDefaultToolkit().getScreenSize();
+
+        // Set default configuration to JFrame
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setLocationRelativeTo(null);
+        setResizable(false);
+        setUndecorated(true);
+        setTitle("Namarie");
+        setContentPane(containerPanel);
+
+        // Regex to extensions
         pattern = Pattern.compile(PATTERN);
+        patternVideo = Pattern.compile(PATTERN_VIDEO);
+        patternAudio = Pattern.compile(PATTERN_AUDIO);
 
         // Load data from JSON file
         File file = new File(new java.io.File("") + "config.json");
@@ -446,8 +478,8 @@ public class MainWindow extends javax.swing.JFrame {
 
         try {
 
-            // Create a VLC instance and add to the video panel
-            mediaPlayerComponent = new EmbeddedMediaPlayerComponent() {
+            // Create EmbeddedMediaPlayerComponent instances and add to the video panel
+            videoMediaPlayer = new EmbeddedMediaPlayerComponent() {
 
                 @Override
                 public void playing(MediaPlayer mediaPlayer) {
@@ -456,20 +488,19 @@ public class MainWindow extends javax.swing.JFrame {
                 @Override
                 public void finished(MediaPlayer mediaPlayer) {
 
-                    if (!musicQueue.isEmpty()) {
+                    if (!musicQueue.isEmpty() && !audioMediaPlayer.mediaPlayer().status().isPlaying()) {
 
-                        Song song = musicQueue.get(0);
+                        nextSong(mediaPlayer);
 
-                        mediaPlayer.submit(new Runnable() {
-                            @Override
-                            public void run() {
-                                mediaPlayer.media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, song.getGender(), song.getSinger(), song.getName()));
-                            }
-                        });
+                    } else {
 
-                        musicQueue.remove(0);
+                        Random rand = new Random();
 
-                        setMusicQueue(musicQueue);
+                        int randVideo = rand.nextInt(videosQueue.size());
+
+                        Song video = videosQueue.get(randVideo);
+
+                        mediaPlayer.submit(() -> mediaPlayer().media().play(String.format("%s" + File.separator + "%s", videosPath, video.getName())));
 
                     }
 
@@ -481,11 +512,38 @@ public class MainWindow extends javax.swing.JFrame {
             };
 
             // Add to the player container our canvas
-            videoPanel.add(mediaPlayerComponent);
+            videoPanel.add(videoMediaPlayer);
+
+            // Create AudioPlayerComponent instances
+            audioMediaPlayer = new AudioPlayerComponent() {
+
+                @Override
+                public void playing(MediaPlayer mediaPlayer) {
+                }
+
+                @Override
+                public void finished(MediaPlayer mediaPlayer) {
+
+                    videoMediaPlayer.mediaPlayer().controls().stop();
+
+                    if (!musicQueue.isEmpty()) {
+
+                        nextSong(mediaPlayer);
+
+                    }
+
+                }
+
+                @Override
+                public void error(MediaPlayer mediaPlayer) {
+                }
+            };
 
         } catch (UnsatisfiedLinkError e) {
             e.printStackTrace();
         }
+
+        videosQueue = videoQueue();
 
         genders = gendersList();
 
@@ -501,15 +559,14 @@ public class MainWindow extends javax.swing.JFrame {
 
             songsListJList.setSelectedIndex(selectedSong);
 
-            songsGenderLabel.setText(genders[selectedGender]);
+            songsGenderLabel.setText("Gender: " + genders[selectedGender]);
         }
 
         stringLabel = new String[5];
 
-
         setDefaultString();
 
-        getContentPane().requestFocus();
+        containerPanel.requestFocus();
 
         timer = new Timer();
         task = new TimerTask() {
@@ -521,13 +578,12 @@ public class MainWindow extends javax.swing.JFrame {
             }
         };
 
-        timer.scheduleAtFixedRate(task, 10000, randomSong * 60000);
-
+        timer.scheduleAtFixedRate(task, 15000, randomSong * 60000);
     }
 
     private void playRandomSong() {
 
-        if (!mediaPlayerComponent.mediaPlayer().status().isPlaying() && musicQueue.isEmpty()) {
+        if (!videoMediaPlayer.mediaPlayer().status().isPlaying() && !audioMediaPlayer.mediaPlayer().status().isPlaying() && musicQueue.isEmpty()) {
 
             Random rand = new Random();
 
@@ -535,9 +591,67 @@ public class MainWindow extends javax.swing.JFrame {
 
             Song song = musicList().get(randSong);
 
-            mediaPlayerComponent.mediaPlayer().media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, song.getGender(), song.getSinger(), song.getName()));
+            playSong(song);
 
         }
+
+    }
+
+    private void playSong(Song song) {
+
+        Matcher matcher = patternVideo.matcher(song.getName());
+
+        if (matcher.find()) {
+
+            videoMediaPlayer.mediaPlayer().media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, song.getGender(), song.getSinger(), song.getName()));
+
+        }
+
+        matcher = patternAudio.matcher(song.getName());
+
+        if (matcher.find()) {
+
+            Random rand = new Random();
+
+            int randVideo = rand.nextInt(videosQueue.size());
+
+            Song video = videosQueue.get(randVideo);
+
+            videoMediaPlayer.mediaPlayer().media().play(String.format("%s" + File.separator + "%s", videosPath, video.getName()));
+            audioMediaPlayer.mediaPlayer().media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, song.getGender(), song.getSinger(), song.getName()));
+
+        }
+
+    }
+
+    private void nextSong() {
+
+        videoMediaPlayer.mediaPlayer().controls().stop();
+        audioMediaPlayer.mediaPlayer().controls().stop();
+
+        if (!musicQueue.isEmpty()) {
+
+            Song song = musicQueue.get(0);
+
+            playSong(song);
+
+            musicQueue.remove(0);
+
+            setMusicQueue(musicQueue);
+
+        }
+
+    }
+
+    private void nextSong(MediaPlayer mediaPlayer) {
+
+        Song song = musicQueue.get(0);
+
+        mediaPlayer.submit(() -> mediaPlayer.media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, song.getGender(), song.getSinger(), song.getName())));
+
+        musicQueue.remove(0);
+
+        setMusicQueue(musicQueue);
 
     }
 
@@ -573,7 +687,7 @@ public class MainWindow extends javax.swing.JFrame {
 
                     Song song = musicList().get(selectedSong);
 
-                    if (mediaPlayerComponent.mediaPlayer().status().isPlaying()) {
+                    if (videoMediaPlayer.mediaPlayer().status().isPlaying()) {
 
                         musicQueue.add(song);
                         setMusicQueue(musicQueue);
@@ -582,7 +696,7 @@ public class MainWindow extends javax.swing.JFrame {
 
                     if (musicQueue.isEmpty()) {
 
-                        mediaPlayerComponent.mediaPlayer().media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, song.getGender(), song.getSinger(), song.getName()));
+                        videoMediaPlayer.mediaPlayer().media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, song.getGender(), song.getSinger(), song.getName()));
 
                     }
 
@@ -597,6 +711,41 @@ public class MainWindow extends javax.swing.JFrame {
             numberSong.setText(String.format(" %s %s %s %s %s ", stringLabel[0], stringLabel[1], stringLabel[2], stringLabel[3], stringLabel[4]));
 
         }
+
+    }
+
+    private ArrayList<Song> videoQueue() {
+
+        String[] videos = null;
+        int videoCounter = 0;
+        ArrayList<Song> videoList = new ArrayList<>();
+
+        File directory = new File(videosPath);
+
+        if (directory.isDirectory()) videos = directory.list();
+
+        if (videos == null) return null;
+
+        for (String video : videos) {
+
+            File videoDirectory = new File(String.format("%s" + File.separator + "%s", videosPath, video));
+
+            if (videoDirectory.isFile()) {
+
+                Matcher matcher = pattern.matcher(videoDirectory.getName());
+
+                if (matcher.find()) {
+
+                    videoList.add(new Song(videoCounter, video, "", ""));
+                    videoCounter++;
+
+                }
+
+            }
+
+        }
+
+        return videoList;
 
     }
 
