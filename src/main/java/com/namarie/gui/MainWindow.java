@@ -4,7 +4,10 @@ import com.namarie.filemanager.FileManager;
 import com.namarie.models.Song;
 import org.json.JSONException;
 import org.json.JSONObject;
+import uk.co.caprica.vlcj.player.base.Marquee;
+import uk.co.caprica.vlcj.player.base.MarqueePosition;
 import uk.co.caprica.vlcj.player.base.MediaPlayer;
+import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter;
 import uk.co.caprica.vlcj.player.component.AudioPlayerComponent;
 import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent;
 
@@ -12,15 +15,11 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
-import java.util.Timer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -122,8 +121,8 @@ public class MainWindow extends javax.swing.JFrame {
     private String[] genders;
     private int selectedGender;
     private int selectedSong;
-    private java.util.Timer timer;
-    private TimerTask task;
+
+    private javax.swing.Timer timerRandomSong;
     private Pattern pattern;
     private Pattern patternVideo;
     private Pattern patternAudio;
@@ -263,7 +262,11 @@ public class MainWindow extends javax.swing.JFrame {
 
                 // Event to play the next song in music queue
                 if (e.getKeyCode() == nextSong) {
+
+                    timerRandomSong.start();
+
                     nextSong();
+
                 }
 
                 // Event to play or add a song to music queue with ENTER
@@ -275,9 +278,9 @@ public class MainWindow extends javax.swing.JFrame {
 
                         if (selectedSong != null) {
 
-                            if (!videoMediaPlayer.mediaPlayer().status().isPlaying()) {
+                            if (!videoMediaPlayer.mediaPlayer().status().isPlaying() && !audioMediaPlayer.mediaPlayer().status().isPlaying()) {
 
-                                videoMediaPlayer.mediaPlayer().media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, selectedSong.getGender(), selectedSong.getSinger(), selectedSong.getName()));
+                                playSong(selectedSong);
 
                             } else {
 
@@ -476,6 +479,14 @@ public class MainWindow extends javax.swing.JFrame {
         musicListPanel.setPreferredSize(new Dimension((int) resolution.getWidth() / 4, (int) resolution.getHeight() / 2));
         songsListPanel.setPreferredSize(new Dimension((int) resolution.getWidth() / 2, (int) resolution.getHeight()));
 
+        Marquee marquee = Marquee.marquee()
+                .size(40)
+                .colour(Color.WHITE)
+                .timeout(10000)
+                .position(MarqueePosition.BOTTOM_RIGHT)
+                .opacity(1f)
+                .enable();
+
         try {
 
             // Create EmbeddedMediaPlayerComponent instances and add to the video panel
@@ -488,11 +499,15 @@ public class MainWindow extends javax.swing.JFrame {
                 @Override
                 public void finished(MediaPlayer mediaPlayer) {
 
-                    if (!musicQueue.isEmpty() && !audioMediaPlayer.mediaPlayer().status().isPlaying()) {
+                    timerRandomSong.start();
+
+                    if (!audioMediaPlayer.mediaPlayer().status().isPlaying()) {
 
                         nextSong(mediaPlayer);
 
                     } else {
+
+                        timerRandomSong.stop();
 
                         Random rand = new Random();
 
@@ -511,6 +526,8 @@ public class MainWindow extends javax.swing.JFrame {
                 }
             };
 
+            videoMediaPlayer.mediaPlayer().marquee().set(marquee);
+
             // Add to the player container our canvas
             videoPanel.add(videoMediaPlayer);
 
@@ -524,13 +541,11 @@ public class MainWindow extends javax.swing.JFrame {
                 @Override
                 public void finished(MediaPlayer mediaPlayer) {
 
+                    timerRandomSong.start();
+
                     videoMediaPlayer.mediaPlayer().controls().stop();
 
-                    if (!musicQueue.isEmpty()) {
-
-                        nextSong(mediaPlayer);
-
-                    }
+                    nextSong(mediaPlayer);
 
                 }
 
@@ -568,17 +583,16 @@ public class MainWindow extends javax.swing.JFrame {
 
         containerPanel.requestFocus();
 
-        timer = new Timer();
-        task = new TimerTask() {
-            @Override
-            public void run() {
+        ActionListener playRandomSong = e -> {
 
-                playRandomSong();
+            playRandomSong();
 
-            }
         };
 
-        timer.scheduleAtFixedRate(task, 15000, randomSong * 60000);
+        timerRandomSong = new javax.swing.Timer(randomSong * 60000, playRandomSong);
+        timerRandomSong.setRepeats(false);
+        timerRandomSong.start();
+
     }
 
     private void playRandomSong() {
@@ -603,6 +617,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         if (matcher.find()) {
 
+            videoMediaPlayer.mediaPlayer().marquee().setText(song.getName().substring(0, song.getName().length() - 4).toUpperCase());
             videoMediaPlayer.mediaPlayer().media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, song.getGender(), song.getSinger(), song.getName()));
 
         }
@@ -617,8 +632,15 @@ public class MainWindow extends javax.swing.JFrame {
 
             Song video = videosQueue.get(randVideo);
 
+            videoMediaPlayer.mediaPlayer().marquee().setText(song.getName().substring(0, song.getName().length() - 4).toUpperCase());
             videoMediaPlayer.mediaPlayer().media().play(String.format("%s" + File.separator + "%s", videosPath, video.getName()));
             audioMediaPlayer.mediaPlayer().media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, song.getGender(), song.getSinger(), song.getName()));
+
+        }
+
+        if (timerRandomSong.isRunning()) {
+
+            timerRandomSong.stop();
 
         }
 
@@ -630,6 +652,8 @@ public class MainWindow extends javax.swing.JFrame {
         audioMediaPlayer.mediaPlayer().controls().stop();
 
         if (!musicQueue.isEmpty()) {
+
+            timerRandomSong.stop();
 
             Song song = musicQueue.get(0);
 
@@ -646,6 +670,8 @@ public class MainWindow extends javax.swing.JFrame {
     private void nextSong(MediaPlayer mediaPlayer) {
 
         Song song = musicQueue.get(0);
+
+        mediaPlayer.marquee().setText(song.getName().substring(0, song.getName().length() - 4).toUpperCase(Locale.ROOT));
 
         mediaPlayer.submit(() -> mediaPlayer.media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, song.getGender(), song.getSinger(), song.getName())));
 
