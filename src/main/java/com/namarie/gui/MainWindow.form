@@ -38,7 +38,7 @@
                 <properties>
                   <background color="-16777216"/>
                   <focusable value="false"/>
-                  <font name="MS Gothic" size="22" style="1"/>
+                  <font name="Roboto Light" size="28" style="0"/>
                   <foreground color="-1"/>
                   <requestFocusEnabled value="false"/>
                   <selectionBackground color="-1"/>
@@ -124,7 +124,7 @@
                       <background color="-16777216"/>
                       <enabled value="true"/>
                       <focusable value="false"/>
-                      <font name="MS Gothic" size="22" style="1"/>
+                      <font name="MS Gothic" size="26" style="1"/>
                       <foreground color="-1"/>
                       <requestFocusEnabled value="false"/>
                       <selectionBackground color="-1"/>
