@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.namarie.gui.SettingsWindow">
   <grid id="27dc6" binding="containerPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="519" height="400"/>
+      <xy x="20" y="20" width="529" height="400"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -43,7 +43,7 @@
                       <horizontalTextPosition value="0"/>
                       <minimumSize width="275" height="30"/>
                       <preferredSize width="275" height="40"/>
-                      <text value="Welcome to WhisperRockola"/>
+                      <text value="Welcome to Namarie"/>
                     </properties>
                   </component>
                   <grid id="d0e44" binding="containerWelcomePanel" layout-manager="GridLayoutManager" row-count="4" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -923,38 +923,6 @@
                           <text value=""/>
                         </properties>
                       </component>
-                      <component id="6a306" class="javax.swing.JLabel" binding="foregroundLabel">
-                        <constraints>
-                          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties>
-                          <text value="Foreground"/>
-                        </properties>
-                      </component>
-                      <component id="e6b12" class="javax.swing.JButton" binding="foregroundSearchButton">
-                        <constraints>
-                          <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties>
-                          <text value="Search"/>
-                        </properties>
-                      </component>
-                      <component id="dd033" class="javax.swing.JLabel" binding="fontSizeLabel">
-                        <constraints>
-                          <grid row="3" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties>
-                          <horizontalAlignment value="4"/>
-                          <horizontalTextPosition value="0"/>
-                          <text value="Font size"/>
-                        </properties>
-                      </component>
-                      <component id="4c69e" class="javax.swing.JComboBox" binding="fontSizeComboBox">
-                        <constraints>
-                          <grid row="3" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties/>
-                      </component>
                       <component id="1fc25" class="javax.swing.JLabel" binding="clickLabel">
                         <constraints>
                           <grid row="4" column="2" row-span="1" col-span="5" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -973,6 +941,58 @@
                           <horizontalAlignment value="4"/>
                           <horizontalTextPosition value="11"/>
                           <text value="Bold"/>
+                        </properties>
+                      </component>
+                      <component id="e6b12" class="javax.swing.JButton" binding="foregroundSearchButton">
+                        <constraints>
+                          <grid row="3" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Search"/>
+                        </properties>
+                      </component>
+                      <component id="6a306" class="javax.swing.JLabel" binding="foregroundLabel">
+                        <constraints>
+                          <grid row="3" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Foreground"/>
+                        </properties>
+                      </component>
+                      <component id="4c69e" class="javax.swing.JComboBox" binding="fontSizeComboBox">
+                        <constraints>
+                          <grid row="3" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <model/>
+                        </properties>
+                      </component>
+                      <component id="dd033" class="javax.swing.JLabel" binding="fontSizeLabel">
+                        <constraints>
+                          <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <horizontalAlignment value="4"/>
+                          <horizontalTextPosition value="0"/>
+                          <text value="Font size"/>
+                        </properties>
+                      </component>
+                      <component id="9e419" class="javax.swing.JLabel" binding="fontStyleLabel">
+                        <constraints>
+                          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <horizontalAlignment value="10"/>
+                          <horizontalTextPosition value="0"/>
+                          <text value="Font style"/>
+                        </properties>
+                      </component>
+                      <component id="a8e02" class="javax.swing.JComboBox" binding="fontStyleComboBox">
+                        <constraints>
+                          <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <model/>
                         </properties>
                       </component>
                     </children>
