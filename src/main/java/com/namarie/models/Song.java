@@ -32,6 +32,6 @@ public class Song {
 
     @Override
     public String toString() {
-        return String.format("%05d %s %s", getNumber(), getSinger(), getName().substring(0,getName().length()-4));
+        return String.format(" %05d %s - %s", getNumber(), getSinger(), getName().substring(0,getName().length()-4));
     }
 }
