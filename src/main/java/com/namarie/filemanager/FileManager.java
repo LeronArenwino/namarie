@@ -136,9 +136,10 @@ public class FileManager {
         //View
         defaultSettings.put(KEY_COLOR1, "102,204,255");
         defaultSettings.put(KEY_COLOR2, "255,255,255");
-        defaultSettings.put(KEY_FONT, "Consolas");
-        defaultSettings.put(KEY_FOREGROUND, "000,000,000");
+        defaultSettings.put(KEY_FONT, "Arial");
+        defaultSettings.put(KEY_FONT_STYLE, "Regular");
         defaultSettings.put(KEY_FONT_SIZE, 20);
+        defaultSettings.put(KEY_FOREGROUND, "000,000,000");
         defaultSettings.put(KEY_BOLD, true);
 
         saveFile("config.json", defaultSettings);
