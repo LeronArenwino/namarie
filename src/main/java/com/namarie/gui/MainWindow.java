@@ -59,6 +59,7 @@ public class MainWindow extends javax.swing.JFrame {
     public final static String KEY_COLOR1 = "color1";
     public final static String KEY_COLOR2 = "color2";
     public final static String KEY_FONT = "font";
+    public final static String KEY_FONT_STYLE = "Regular";
     public final static String KEY_FOREGROUND = "foreground";
     public final static String KEY_FONT_SIZE = "fontSize";
     public final static String KEY_BOLD = "bold";
