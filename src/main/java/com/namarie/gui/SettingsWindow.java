@@ -111,6 +111,8 @@ public class SettingsWindow extends JFrame {
     private JLabel upSongsSymbolLabel;
     private JLabel downSongsSymbolLabel;
     private JLabel downSongsLabel;
+    private JLabel fontStyleLabel;
+    private JComboBox fontStyleComboBox;
 
     private JSONObject loadedSettings;
 

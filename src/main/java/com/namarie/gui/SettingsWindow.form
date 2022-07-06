@@ -977,22 +977,20 @@
                           <text value="Font size"/>
                         </properties>
                       </component>
-                      <component id="9e419" class="javax.swing.JLabel" binding="fontStyleLabel">
-                        <constraints>
-                          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties>
-                          <horizontalAlignment value="10"/>
-                          <horizontalTextPosition value="0"/>
-                          <text value="Font style"/>
-                        </properties>
-                      </component>
                       <component id="a8e02" class="javax.swing.JComboBox" binding="fontStyleComboBox">
                         <constraints>
                           <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
                           <model/>
+                        </properties>
+                      </component>
+                      <component id="7ad04" class="javax.swing.JLabel" binding="fontStyleLabel">
+                        <constraints>
+                          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Font style"/>
                         </properties>
                       </component>
                     </children>
