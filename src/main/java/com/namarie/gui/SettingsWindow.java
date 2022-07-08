@@ -1,6 +1,6 @@
 package com.namarie.gui;
 
-import com.namarie.filemanager.FileManager;
+import com.namarie.dao.FileManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
