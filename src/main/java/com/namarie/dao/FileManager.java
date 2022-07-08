@@ -1,4 +1,4 @@
-package com.namarie.filemanager;
+package com.namarie.dao;
 
 import org.json.JSONException;
 import org.json.JSONObject;
