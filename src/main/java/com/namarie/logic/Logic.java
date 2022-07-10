@@ -56,6 +56,18 @@ public class Logic {
     private static final FileManager fileManager = new FileManager();
 
     /**
+     * This method save a file (settings.json) with the values given in the path relative to the execution.
+     *
+     * @param values Values to save in the file
+     * @author Francisco Dueñas
+     */
+    public static void save(Map<String, Object> values){
+
+        fileManager.saveFile(PATH, values);
+
+    }
+
+    /**
      * This method save a file with the path and values given.
      *
      * @param path   Path where save the file
