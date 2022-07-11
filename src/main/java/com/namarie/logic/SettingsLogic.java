@@ -8,9 +8,10 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-/** This class control the logic of the application relative with settings.
+/**
+ * This class control the logic of the application relative with settings.
  *
- * @author Francisco Dueñas
+ * @author Francisco Dueñas.
  */
 public class SettingsLogic {
 
@@ -100,10 +101,9 @@ public class SettingsLogic {
     /**
      * This method load a file (settings.json) with the values in the path relative to the execution.
      *
-     * @return A JSONObject with the settings
-     * @author Francisco Dueñas
+     * @return A JSONObject with the settings.
      */
-    public static JSONObject loadSettings(){
+    public static JSONObject loadSettings() {
 
         File file = new File(PATH);
         if (!file.exists())
@@ -116,10 +116,9 @@ public class SettingsLogic {
     /**
      * This method save a file (settings.json) with the values given in the path relative to the execution.
      *
-     * @param values Values to save in the file
-     * @author Francisco Dueñas
+     * @param values Values to save in the file.
      */
-    public static void save(Map<String, Object> values){
+    public static void save(Map<String, Object> values) {
 
         fileManager.saveFile(PATH, values);
 
@@ -127,8 +126,6 @@ public class SettingsLogic {
 
     /**
      * This method save a file (settings.json) with the default values in the path relative to the execution.
-     *
-     * @author Francisco Dueñas
      */
     public static void saveDefault() {
 
