@@ -10,8 +10,7 @@ import java.util.Map;
 
 import static com.namarie.gui.MainWindow.*;
 
-/**
- * This class control the logic of the application relative with settings.
+/** This class control the logic of the application relative with settings.
  *
  * @author Francisco Dueñas
  */
