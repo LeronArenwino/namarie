@@ -866,8 +866,7 @@ public class MainWindow extends javax.swing.JFrame {
         if (currentCredits > 0) {
 
             for (int i = 0; i < stringLabel.length; i++) {
-
-                if (stringLabel[i] == "-") {
+                if ("-".equals(stringLabel[i])) {
                     stringLabel[i] = value;
                     break;
                 }
