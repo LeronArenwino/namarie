@@ -3,6 +3,8 @@ package com.namarie.dao;
 import com.namarie.logic.Logic;
 import org.json.JSONException;
 import org.json.JSONObject;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import java.io.*;
 import java.util.Map;
@@ -12,6 +14,10 @@ import java.util.Map;
  */
 public class FileManager {
 
+    // Create a Logger
+    private final Logger logger
+            = Logger.getLogger(
+            FileManager.class.getName());
     private JSONObject settings;
 
     public JSONObject openFile(String path) {
@@ -59,7 +65,7 @@ public class FileManager {
 
         // Check if this file object exists and delete if exists
         if (file.exists() && file.delete()) {
-                System.err.println("File delete failed!");
+            logger.log(Level.WARNING, "File delete failed!");
         }
 
         try {
