@@ -68,19 +68,6 @@ public class Logic {
     }
 
     /**
-     * This method save a file with the path and values given.
-     *
-     * @param path   Path where save the file
-     * @param values Values to save in the file
-     * @author Francisco Dueñas
-     */
-    public static void saveAs(String path, Map<String, Object> values) {
-
-        fileManager.saveFile(path, values);
-
-    }
-
-    /**
      * This method save a file (settings.json) with the default values in the path relative to the execution.
      *
      * @author Francisco Dueñas
