@@ -16,7 +16,9 @@ import java.util.Map;
 public class SettingsLogic {
 
     public static final String PATH = "settings.json";
-    public static final Dimension RESOLUTION = Toolkit.getDefaultToolkit().getScreenSize();
+    public static final GraphicsDevice RESOLUTION = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    public static final int RESOLUTION_WIDTH = RESOLUTION.getDisplayMode().getWidth();
+    public static final int RESOLUTION_HEIGHT = RESOLUTION.getDisplayMode().getHeight();
 
     // Folders TabPanel
     public static final String KEY_PATH_VIDEOS = "pathVideos";
