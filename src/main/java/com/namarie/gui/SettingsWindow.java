@@ -579,20 +579,15 @@ public class SettingsWindow extends JFrame {
 
     }
 
-    public void robotMove(){
-        //Deja el puntero en la esquina inferior derecha
-        Robot robot = null;
+    private JDialog keySelector() {
+        JDialog dialog = new JDialog();
 
-        try {
-            robot = new Robot();
-        } catch (AWTException e) {
-            e.printStackTrace();
-        }
+        dialog.setTitle("Select Key");
+        dialog.setLocationRelativeTo(this);
+        dialog.setMinimumSize(new Dimension((int) Logic.RESOLUTION.getWidth() / 8, (int) Logic.RESOLUTION.getHeight() / 8));
+        dialog.setVisible(true);
 
-        if (robot != null) {
-            robot.mouseMove((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(),
-                    (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight());
-        }
+        return dialog;
     }
 
 }
