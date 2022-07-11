@@ -102,8 +102,8 @@ public class MainWindow extends javax.swing.JFrame {
     private JPanel musicListPanel;
     private JPanel songsListPanel;
     private JScrollPane songsListScrollPanel;
-    private JList songsListJList;
-    private JList musicQueueJList;
+    private JList<Song> songsListJList;
+    private JList<Song> musicQueueJList;
     private JPanel centerPanel;
     private JLabel songsGenderLabel;
     private JLabel numberSong;
