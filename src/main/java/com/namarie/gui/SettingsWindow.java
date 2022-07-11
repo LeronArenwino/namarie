@@ -218,18 +218,17 @@ public class SettingsWindow extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-                String path;
-
                 JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setDialogTitle("VLC directory");
+
+                fileChooser.setDialogTitle("Video Directory");
+                fileChooser.setMultiSelectionEnabled(false);
                 fileChooser.setCurrentDirectory(new File("."));
                 fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 fileChooser.setAcceptAllFileFilterUsed(false);
+
                 if (fileChooser.showOpenDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
                     // This returns the path from the selected file
-                    path = fileChooser.getSelectedFile().getAbsolutePath();
-                    videoTextField.setText(path);
-
+                    videoTextField.setText(fileChooser.getSelectedFile().getAbsolutePath());
                 }
             }
         });
@@ -241,18 +240,17 @@ public class SettingsWindow extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-                String path;
-
                 JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setDialogTitle("VLC directory");
+
+                fileChooser.setDialogTitle("Music Directory");
+                fileChooser.setMultiSelectionEnabled(false);
                 fileChooser.setCurrentDirectory(new File("."));
                 fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 fileChooser.setAcceptAllFileFilterUsed(false);
+
                 if (fileChooser.showOpenDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
                     // This returns the path from the selected file
-                    path = fileChooser.getSelectedFile().getAbsolutePath();
-                    musicTextField.setText(path);
-
+                    musicTextField.setText(fileChooser.getSelectedFile().getAbsolutePath());
                 }
             }
         });
@@ -264,18 +262,17 @@ public class SettingsWindow extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-                String path;
-
                 JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setDialogTitle("VLC directory");
+
+                fileChooser.setDialogTitle("Promotional Videos Directory");
+                fileChooser.setMultiSelectionEnabled(false);
                 fileChooser.setCurrentDirectory(new File("."));
                 fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 fileChooser.setAcceptAllFileFilterUsed(false);
+
                 if (fileChooser.showOpenDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
                     // This returns the path from the selected file
-                    path = fileChooser.getSelectedFile().getAbsolutePath();
-                    promotionalTextField.setText(path);
-
+                    promotionalTextField.setText(fileChooser.getSelectedFile().getAbsolutePath());
                 }
             }
         });
