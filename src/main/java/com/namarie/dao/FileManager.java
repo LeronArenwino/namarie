@@ -4,7 +4,6 @@ import com.namarie.logic.Logic;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.swing.*;
 import java.io.*;
 import java.util.Map;
 
@@ -36,33 +35,17 @@ public class FileManager {
                 buffer.append(line).append("\n");
             }
 
-            if (buffer.length() == 0) {
-                JOptionPane.showMessageDialog(
-                        null,
-                        "Configuration file is empty",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE);
-            }
-
             settingsJsonStr = buffer.toString();
 
             settings = new JSONObject(settingsJsonStr);
         } catch (IOException | JSONException e) {
-            JOptionPane.showMessageDialog(
-                    null,
-                    e.toString(),
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         } finally {
             if (reader != null) {
                 try {
                     reader.close();
                 } catch (IOException e) {
-                    JOptionPane.showMessageDialog(
-                            null,
-                            e.toString(),
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE);
+                    e.printStackTrace();
                 }
             }
         }
