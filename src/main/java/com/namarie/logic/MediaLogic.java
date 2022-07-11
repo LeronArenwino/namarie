@@ -66,6 +66,10 @@ public class MediaLogic {
 
     }
 
+    private MediaLogic() {
+        throw new IllegalStateException("Utility class");
+    }
+
     /**
      * This method generates a genders list with directories name relative to path given.
      *
