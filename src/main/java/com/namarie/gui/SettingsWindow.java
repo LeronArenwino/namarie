@@ -47,10 +47,10 @@ public class SettingsWindow extends JFrame {
     private JFormattedTextField promotionalTextField;
     private JButton promotionalSearchButton;
     private JTextPane textTimePanel;
-    private JComboBox timeRandomSongComboBox;
-    private JComboBox timeLimitComboBox;
+    private JComboBox<Integer> timeRandomSongComboBox;
+    private JComboBox<Integer> timeLimitComboBox;
     private JTextPane textCreditsPanel;
-    private JComboBox creditsComboBox;
+    private JComboBox<Integer> creditsComboBox;
     private JCheckBox blockScreenWhenHavenCheckBox;
     private JCheckBox saveSongsWhenPowerCheckBox;
     private JTextPane textKeysPanel;
@@ -68,9 +68,9 @@ public class SettingsWindow extends JFrame {
     private JTextPane textViewPanel;
     private JButton color1SearchButton;
     private JButton color2SearchButton;
-    private JComboBox fontComboBox;
+    private JComboBox<String> fontComboBox;
     private JButton foregroundSearchButton;
-    private JComboBox fontSizeComboBox;
+    private JComboBox<Integer> fontSizeComboBox;
     private JCheckBox boldCheckBox;
     private JTextPane textWelcomePanel;
     private JLabel videoLabel;
@@ -110,7 +110,7 @@ public class SettingsWindow extends JFrame {
     private JLabel downSongsSymbolLabel;
     private JLabel downSongsLabel;
     private JLabel fontStyleLabel;
-    private JComboBox fontStyleComboBox;
+    private JComboBox<String> fontStyleComboBox;
     private JButton exitButton;
 
     public SettingsWindow() {
