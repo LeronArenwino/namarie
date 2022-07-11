@@ -299,13 +299,7 @@ public class SettingsWindow extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-                JDialog dialog = new JDialog();
-
-                dialog.setLocationRelativeTo(getContentPane());
-                dialog.setTitle("Select key");
-                dialog.setMinimumSize(new Dimension(200, 120));
-                dialog.setVisible(true);
-                dialog.pack();
+                JDialog dialog = keySelector();
                 dialog.addKeyListener(new KeyAdapter() {
                     @Override
                     public void keyPressed(KeyEvent e) {
@@ -324,13 +318,7 @@ public class SettingsWindow extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-                JDialog dialog = new JDialog();
-
-                dialog.setLocationRelativeTo(getContentPane());
-                dialog.setTitle("Select key");
-                dialog.setMinimumSize(new Dimension(200, 120));
-                dialog.setVisible(true);
-                dialog.pack();
+                JDialog dialog = keySelector();
                 dialog.addKeyListener(new KeyAdapter() {
                     @Override
                     public void keyPressed(KeyEvent e) {
@@ -349,13 +337,7 @@ public class SettingsWindow extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-                JDialog dialog = new JDialog();
-
-                dialog.setLocationRelativeTo(getContentPane());
-                dialog.setTitle("Select key");
-                dialog.setMinimumSize(new Dimension(200, 120));
-                dialog.setVisible(true);
-                dialog.pack();
+                JDialog dialog = keySelector();
                 dialog.addKeyListener(new KeyAdapter() {
                     @Override
                     public void keyPressed(KeyEvent e) {
@@ -374,13 +356,7 @@ public class SettingsWindow extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-                JDialog dialog = new JDialog();
-
-                dialog.setLocationRelativeTo(getContentPane());
-                dialog.setTitle("Select key");
-                dialog.setMinimumSize(new Dimension(200, 120));
-                dialog.setVisible(true);
-                dialog.pack();
+                JDialog dialog = keySelector();
                 dialog.addKeyListener(new KeyAdapter() {
                     @Override
                     public void keyPressed(KeyEvent e) {
@@ -399,13 +375,7 @@ public class SettingsWindow extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-                JDialog dialog = new JDialog();
-
-                dialog.setLocationRelativeTo(getContentPane());
-                dialog.setTitle("Select key");
-                dialog.setMinimumSize(new Dimension(200, 120));
-                dialog.setVisible(true);
-                dialog.pack();
+                JDialog dialog = keySelector();
                 dialog.addKeyListener(new KeyAdapter() {
                     @Override
                     public void keyPressed(KeyEvent e) {
@@ -424,13 +394,7 @@ public class SettingsWindow extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-                JDialog dialog = new JDialog();
-
-                dialog.setLocationRelativeTo(getContentPane());
-                dialog.setTitle("Select key");
-                dialog.setMinimumSize(new Dimension(200, 120));
-                dialog.setVisible(true);
-                dialog.pack();
+                JDialog dialog = keySelector();
                 dialog.addKeyListener(new KeyAdapter() {
                     @Override
                     public void keyPressed(KeyEvent e) {
@@ -449,13 +413,7 @@ public class SettingsWindow extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-                JDialog dialog = new JDialog();
-
-                dialog.setLocationRelativeTo(getContentPane());
-                dialog.setTitle("Select key");
-                dialog.setMinimumSize(new Dimension(200, 120));
-                dialog.setVisible(true);
-                dialog.pack();
+                JDialog dialog = keySelector();
                 dialog.addKeyListener(new KeyAdapter() {
                     @Override
                     public void keyPressed(KeyEvent e) {
@@ -474,13 +432,7 @@ public class SettingsWindow extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-                JDialog dialog = new JDialog();
-
-                dialog.setLocationRelativeTo(getContentPane());
-                dialog.setTitle("Select key");
-                dialog.setMinimumSize(new Dimension(200, 120));
-                dialog.setVisible(true);
-                dialog.pack();
+                JDialog dialog = keySelector();
                 dialog.addKeyListener(new KeyAdapter() {
                     @Override
                     public void keyPressed(KeyEvent e) {
