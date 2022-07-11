@@ -75,8 +75,10 @@ public class FileManager {
         File file = new File(path);
 
         // Check if this file object exists and delete if exists
-        if (file.exists())
-            file.delete();
+        if (file.exists()) {
+            if (!file.delete())
+                System.out.println("File delete failed!");
+        }
 
         try {
             settings = new JSONObject("{}");
