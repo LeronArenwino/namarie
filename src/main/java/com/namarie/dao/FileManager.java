@@ -1,6 +1,6 @@
 package com.namarie.dao;
 
-import com.namarie.logic.Logic;
+import com.namarie.logic.SettingsLogic;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.logging.Level;
@@ -31,7 +31,7 @@ public class FileManager {
             String settingsJsonStr;
 
             if (!new File(path).exists()) {
-                Logic.saveDefault();
+                SettingsLogic.saveDefault();
             }
             reader = new BufferedReader(file);
 

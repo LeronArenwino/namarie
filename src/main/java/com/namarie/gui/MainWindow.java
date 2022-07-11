@@ -2,7 +2,7 @@ package com.namarie.gui;
 
 import com.namarie.entity.Media;
 import com.namarie.entity.Song;
-import com.namarie.logic.Logic;
+import com.namarie.logic.SettingsLogic;
 import org.json.JSONException;
 import org.json.JSONObject;
 import uk.co.caprica.vlcj.player.base.MediaPlayer;
@@ -323,7 +323,7 @@ public class MainWindow extends javax.swing.JFrame {
                 selectedGender = 0;
 
                 // Load values from JSON file
-                loadSettings(Logic.loadSettings());
+                loadSettings(SettingsLogic.loadSettings());
 
                 genders = gendersList();
 
@@ -498,7 +498,7 @@ public class MainWindow extends javax.swing.JFrame {
         patternAudio = Pattern.compile(PATTERN_AUDIO);
 
         // Load data from JSON file
-        loadSettings(Logic.loadSettings());
+        loadSettings(SettingsLogic.loadSettings());
 
         selectedGender = 0;
 

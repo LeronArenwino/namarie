@@ -14,7 +14,7 @@ import static com.namarie.gui.MainWindow.*;
  *
  * @author Francisco Dueñas
  */
-public class Logic {
+public class SettingsLogic {
 
     public static final String PATH = "settings.json";
     public static final Dimension RESOLUTION = Toolkit.getDefaultToolkit().getScreenSize();
@@ -58,7 +58,7 @@ public class Logic {
 
     private static final FileManager fileManager = new FileManager();
 
-    private Logic() {
+    private SettingsLogic() {
         throw new IllegalStateException("Utility class");
     }
 
@@ -72,7 +72,7 @@ public class Logic {
 
         File file = new File(PATH);
         if (!file.exists())
-            Logic.saveDefault();
+            SettingsLogic.saveDefault();
 
         return fileManager.openFile(PATH);
 

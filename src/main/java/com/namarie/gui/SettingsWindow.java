@@ -1,6 +1,6 @@
 package com.namarie.gui;
 
-import com.namarie.logic.Logic;
+import com.namarie.logic.SettingsLogic;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -129,14 +129,14 @@ public class SettingsWindow extends JFrame {
 
                 fileChooser.setDialogTitle("Save Settings");
                 fileChooser.setMultiSelectionEnabled(false);
-                fileChooser.setSelectedFile(new File(Logic.PATH));
+                fileChooser.setSelectedFile(new File(SettingsLogic.PATH));
                 fileChooser.setCurrentDirectory(new File("."));
                 fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
                 fileChooser.setAcceptAllFileFilterUsed(false);
 
                 if (fileChooser.showSaveDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
-                    Logic.save(settingsValues());
-                    loadSettings(Logic.loadSettings());
+                    SettingsLogic.save(settingsValues());
+                    loadSettings(SettingsLogic.loadSettings());
                 }
             }
         });
@@ -150,8 +150,8 @@ public class SettingsWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 int selection = JOptionPane.showConfirmDialog(getContentPane(), "Are you sure?", "Warning", JOptionPane.OK_CANCEL_OPTION);
                 if (selection == JOptionPane.YES_NO_OPTION) {
-                    Logic.saveDefault();
-                    loadSettings(Logic.loadSettings());
+                    SettingsLogic.saveDefault();
+                    loadSettings(SettingsLogic.loadSettings());
                 }
             }
         });
@@ -401,7 +401,7 @@ public class SettingsWindow extends JFrame {
     private void initComponents() {
 
         this.setTitle("Settings");
-        this.setMinimumSize(new Dimension((int) Logic.RESOLUTION.getWidth() / 2, (int) Logic.RESOLUTION.getHeight() / 2));
+        this.setMinimumSize(new Dimension((int) SettingsLogic.RESOLUTION.getWidth() / 2, (int) SettingsLogic.RESOLUTION.getHeight() / 2));
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -409,7 +409,7 @@ public class SettingsWindow extends JFrame {
         this.getContentPane().add(containerPanel);
         this.setVisible(true);
 
-        loadSettings(Logic.loadSettings());
+        loadSettings(SettingsLogic.loadSettings());
 
     }
 
@@ -504,7 +504,7 @@ public class SettingsWindow extends JFrame {
 
         dialog.setTitle("Select Key");
         dialog.setLocationRelativeTo(this);
-        dialog.setMinimumSize(new Dimension((int) Logic.RESOLUTION.getWidth() / 8, (int) Logic.RESOLUTION.getHeight() / 8));
+        dialog.setMinimumSize(new Dimension((int) SettingsLogic.RESOLUTION.getWidth() / 8, (int) SettingsLogic.RESOLUTION.getHeight() / 8));
         dialog.setVisible(true);
 
         return dialog;
