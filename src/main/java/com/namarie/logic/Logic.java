@@ -4,6 +4,7 @@ import com.namarie.dao.FileManager;
 import org.json.JSONObject;
 
 import java.awt.*;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,6 +66,10 @@ public class Logic {
      * @author Francisco Dueñas
      */
     public static JSONObject loadSettings(){
+
+        File file = new File(PATH);
+        if (!file.exists())
+            Logic.saveDefault();
 
         return fileManager.openFile(PATH);
 
