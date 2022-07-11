@@ -59,6 +59,10 @@ public class Logic {
 
     private static final FileManager fileManager = new FileManager();
 
+    private Logic() {
+        throw new IllegalStateException("Utility class");
+    }
+
     /**
      * This method load a file (settings.json) with the values in the path relative to the execution.
      *
