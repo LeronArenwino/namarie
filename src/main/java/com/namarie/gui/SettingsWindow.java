@@ -95,7 +95,6 @@ public class SettingsWindow extends JFrame {
     private JLabel foregroundLabel;
     private JLabel fontSizeLabel;
     private JLabel clickLabel;
-    private JButton searchFileButton;
     private JLabel upSongSymbolLabel;
     private JLabel downSongSymbolLabel;
     private JLabel upGenderSymbolLabel;
