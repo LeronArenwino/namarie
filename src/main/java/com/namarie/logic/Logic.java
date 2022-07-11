@@ -1,6 +1,7 @@
 package com.namarie.logic;
 
 import com.namarie.dao.FileManager;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,6 +55,18 @@ public class Logic {
     private static final boolean DEFAULT_VALUE_BOLD = false;
 
     private static final FileManager fileManager = new FileManager();
+
+    /**
+     * This method load a file (settings.json) with the values in the path relative to the execution.
+     *
+     * @return A JSONObject with the settings
+     * @author Francisco Dueñas
+     */
+    public static JSONObject loadSettings(){
+
+        return fileManager.openFile(PATH);
+
+    }
 
     /**
      * This method save a file (settings.json) with the values given in the path relative to the execution.
