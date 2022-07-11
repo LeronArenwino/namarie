@@ -40,7 +40,6 @@ public class SettingsWindow extends JFrame {
     private JButton videoSearchButton;
     private JFormattedTextField musicTextField;
     private JButton musicSearchButton;
-    private JButton renameMusicFilesButton;
     private JButton saveButton;
     private JButton defaultButton;
     private JPanel containerTimePanel;
