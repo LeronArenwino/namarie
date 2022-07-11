@@ -3,6 +3,7 @@ package com.namarie.logic;
 import com.namarie.dao.FileManager;
 import org.json.JSONObject;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ import static com.namarie.gui.MainWindow.*;
 public class Logic {
 
     public static final String PATH = "settings.json";
+    public static final Dimension RESOLUTION = Toolkit.getDefaultToolkit().getScreenSize();
 
     // Folders constants
     private static final String DEFAULT_VALUE_PATH_VIDEOS = "";
