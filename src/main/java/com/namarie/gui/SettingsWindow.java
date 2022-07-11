@@ -117,50 +117,8 @@ public class SettingsWindow extends JFrame {
 
     public SettingsWindow() {
 
-        this.setTitle("Settings");
-        this.setMinimumSize(new Dimension(640, 360));
-        this.setLocationRelativeTo(null);
-        this.setResizable(false);
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        initComponents();
 
-        getContentPane().setLayout(new BorderLayout(0, 0));
-
-        getContentPane().add(containerPanel);
-        this.setVisible(true);
-
-        File file = new File(new File("") + "config.json");
-        if (!file.exists())
-            fileManager.saveDefaultSettings();
-
-        loadedSettings = fileManager.openFile(new File("") + "config.json");
-        loadSettings(loadedSettings);
-
-        searchFileButton.addActionListener(new ActionListener() {
-            /**
-             * Invoked when an action occurs.
-             *
-             * @param e the event to be processed
-             */
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setDialogTitle("Open file");
-
-                String path;
-
-                fileChooser.setCurrentDirectory(new File("."));
-                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-                if (fileChooser.showOpenDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
-                    // This returns the path from the selected file
-                    path = fileChooser.getSelectedFile().getAbsolutePath();
-
-
-                    loadedSettings = fileManager.openFile(path);
-                    loadSettings(loadedSettings);
-
-                }
-            }
-        });
         saveButton.addActionListener(new ActionListener() {
             /**
              * Invoked when an action occurs.
@@ -429,6 +387,36 @@ public class SettingsWindow extends JFrame {
                 });
             }
         });
+        exitButton.addActionListener(new ActionListener() {
+            /**
+             * Invoked when an action occurs.
+             *
+             * @param e the event to be processed
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        });
+    }
+
+    private void initComponents() {
+
+        this.setTitle("Settings");
+        this.setMinimumSize(new Dimension((int) Logic.RESOLUTION.getWidth() / 2, (int) Logic.RESOLUTION.getHeight() / 2));
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        this.getContentPane().setLayout(new BorderLayout(0, 0));
+        this.getContentPane().add(containerPanel);
+        this.setVisible(true);
+
+        File file = new File(Logic.PATH);
+        if (!file.exists())
+            Logic.saveDefault();
+
+        loadSettings(Logic.loadSettings());
+
     }
 
     private void loadSettings(JSONObject values) {
