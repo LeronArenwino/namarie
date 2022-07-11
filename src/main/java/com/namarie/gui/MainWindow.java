@@ -32,41 +32,41 @@ public class MainWindow extends javax.swing.JFrame {
     private static final String PATTERN_AUDIO = "([^\\s]+(\\.(?i)(mp3|wav|wma|mpeg))$)";
 
     // Folders TabPanel
-    public final static String KEY_PATH_VIDEOS = "pathVideos";
-    public final static String KEY_PATH_SONGS = "pathSongs";
-    public final static String KEY_PROMOTIONAL_VIDEO = "promotionalVideo";
-    public final static String KEY_PATH_PROMOTIONAL_VIDEO = "pathPromotionalVideo";
+    public static final String KEY_PATH_VIDEOS = "pathVideos";
+    public static final String KEY_PATH_SONGS = "pathSongs";
+    public static final String KEY_PROMOTIONAL_VIDEO = "promotionalVideo";
+    public static final String KEY_PATH_PROMOTIONAL_VIDEO = "pathPromotionalVideo";
 
     // Time TabPanel
-    public final static String KEY_RANDOM_SONG = "randomSong";
-    public final static String KEY_REPEAT_SONGS = "repeatSongs";
+    public static final String KEY_RANDOM_SONG = "randomSong";
+    public static final String KEY_REPEAT_SONGS = "repeatSongs";
 
     // Credits TabPanel
-    public final static String KEY_AMOUNT_CREDITS = "amountCredits";
-    public final static String KEY_LOCK_SCREEN = "lockScreen";
-    public final static String KEY_SAVE_SONGS = "saveSongs";
+    public static final String KEY_AMOUNT_CREDITS = "amountCredits";
+    public static final String KEY_LOCK_SCREEN = "lockScreen";
+    public static final String KEY_SAVE_SONGS = "saveSongs";
 
     // Keys TabPanel
-    public final static String KEY_UP_SONG = "upSong";
-    public final static String KEY_DOWN_SONG = "downSong";
-    public final static String KEY_UP_SONGS = "upSongs";
-    public final static String KEY_DOWN_SONGS = "downSongs";
-    public final static String KEY_UP_GENDER = "upGender";
-    public final static String KEY_DOWN_GENDER = "downGender";
-    public final static String KEY_ADD_COIN = "addCoin";
-    public final static String KEY_REMOVE_COIN = "removeCoin";
-    public final static String KEY_POWER_OFF = "powerOff";
-    public final static String KEY_NEXT_SONG = "nextSong";
-    public final static String KEY_SETTINGS = "settings";
+    public static final String KEY_UP_SONG = "upSong";
+    public static final String KEY_DOWN_SONG = "downSong";
+    public static final String KEY_UP_SONGS = "upSongs";
+    public static final String KEY_DOWN_SONGS = "downSongs";
+    public static final String KEY_UP_GENDER = "upGender";
+    public static final String KEY_DOWN_GENDER = "downGender";
+    public static final String KEY_ADD_COIN = "addCoin";
+    public static final String KEY_REMOVE_COIN = "removeCoin";
+    public static final String KEY_POWER_OFF = "powerOff";
+    public static final String KEY_NEXT_SONG = "nextSong";
+    public static final String KEY_SETTINGS = "settings";
 
     //View TabPanel
-    public final static String KEY_BACKGROUND_COLOR = "backgroundColor";
-    public final static String KEY_TEXT_COLOR = "textColor";
-    public final static String KEY_FONT = "font";
-    public final static String KEY_FONT_STYLE = "fontStyle";
-    public final static String KEY_FOREGROUND = "foreground";
-    public final static String KEY_FONT_SIZE = "fontSize";
-    public final static String KEY_BOLD = "fontBold";
+    public static final String KEY_BACKGROUND_COLOR = "backgroundColor";
+    public static final String KEY_TEXT_COLOR = "textColor";
+    public static final String KEY_FONT = "font";
+    public static final String KEY_FONT_STYLE = "fontStyle";
+    public static final String KEY_FOREGROUND = "foreground";
+    public static final String KEY_FONT_SIZE = "fontSize";
+    public static final String KEY_BOLD = "fontBold";
 
     // MainFrame
     // Folders
