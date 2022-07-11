@@ -401,7 +401,7 @@ public class SettingsWindow extends JFrame {
     private void initComponents() {
 
         this.setTitle("Settings");
-        this.setMinimumSize(new Dimension((int) SettingsLogic.RESOLUTION.getWidth() / 2, (int) SettingsLogic.RESOLUTION.getHeight() / 2));
+        this.setMinimumSize(new Dimension(RESOLUTION_WIDTH / 2, RESOLUTION_HEIGHT / 2));
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -504,7 +504,7 @@ public class SettingsWindow extends JFrame {
 
         dialog.setTitle("Select Key");
         dialog.setLocationRelativeTo(this);
-        dialog.setMinimumSize(new Dimension((int) SettingsLogic.RESOLUTION.getWidth() / 8, (int) SettingsLogic.RESOLUTION.getHeight() / 8));
+        dialog.setMinimumSize(new Dimension(RESOLUTION_WIDTH / 8, RESOLUTION_HEIGHT / 8));
         dialog.setVisible(true);
 
         return dialog;
