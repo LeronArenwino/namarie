@@ -1,6 +1,6 @@
 package com.namarie.gui;
 
-import com.namarie.dao.FileManager;
+import com.namarie.logic.Logic;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -113,10 +113,7 @@ public class SettingsWindow extends JFrame {
     private JLabel downSongsLabel;
     private JLabel fontStyleLabel;
     private JComboBox fontStyleComboBox;
-
-    private JSONObject loadedSettings;
-
-    private FileManager fileManager = new FileManager();
+    private JButton exitButton;
 
     public SettingsWindow() {
 
@@ -172,24 +169,19 @@ public class SettingsWindow extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 JFileChooser fileChooser = new JFileChooser();
 
+                fileChooser.setDialogTitle("Save Settings");
+                fileChooser.setMultiSelectionEnabled(false);
+                fileChooser.setSelectedFile(new File(Logic.PATH));
                 fileChooser.setCurrentDirectory(new File("."));
                 fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                fileChooser.setAcceptAllFileFilterUsed(false);
 
                 if (fileChooser.showSaveDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
-                    //This returns the nameFile
-                    String nameFile = fileChooser.getSelectedFile().getName();
-
-                    fileManager.saveFile(nameFile, settingsValues());
-                    loadedSettings = fileManager.openFile(new File("") + nameFile);
-                    loadSettings(loadedSettings);
-                    robotMove();
-                    dispose();
+                    Logic.save(settingsValues());
+                    loadSettings(Logic.loadSettings());
                 }
-
-
             }
         });
         defaultButton.addActionListener(new ActionListener() {
@@ -200,13 +192,10 @@ public class SettingsWindow extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-                int res = JOptionPane.showConfirmDialog(getContentPane(), "Are you sure?", "Warning", JOptionPane.OK_CANCEL_OPTION);
-                if (res == 0) {
-                    fileManager.saveDefaultSettings();
-                    loadedSettings = fileManager.openFile("config.json");
-                    loadSettings(loadedSettings);
-                    robotMove();
-                    dispose();
+                int selection = JOptionPane.showConfirmDialog(getContentPane(), "Are you sure?", "Warning", JOptionPane.OK_CANCEL_OPTION);
+                if (selection == JOptionPane.YES_NO_OPTION) {
+                    Logic.saveDefault();
+                    loadSettings(Logic.loadSettings());
                 }
             }
         });
