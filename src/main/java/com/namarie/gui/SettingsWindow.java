@@ -14,7 +14,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.namarie.gui.MainWindow.*;
+import static com.namarie.logic.SettingsLogic.*;
 
 public class SettingsWindow extends JFrame {
 

@@ -8,8 +8,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.namarie.gui.MainWindow.*;
-
 /** This class control the logic of the application relative with settings.
  *
  * @author Francisco Dueñas
@@ -18,6 +16,43 @@ public class SettingsLogic {
 
     public static final String PATH = "settings.json";
     public static final Dimension RESOLUTION = Toolkit.getDefaultToolkit().getScreenSize();
+
+    // Folders TabPanel
+    public static final String KEY_PATH_VIDEOS = "pathVideos";
+    public static final String KEY_PATH_SONGS = "pathSongs";
+    public static final String KEY_PROMOTIONAL_VIDEO = "promotionalVideo";
+    public static final String KEY_PATH_PROMOTIONAL_VIDEO = "pathPromotionalVideo";
+
+    // Time TabPanel
+    public static final String KEY_RANDOM_SONG = "randomSong";
+    public static final String KEY_REPEAT_SONGS = "repeatSongs";
+
+    // Credits TabPanel
+    public static final String KEY_AMOUNT_CREDITS = "amountCredits";
+    public static final String KEY_LOCK_SCREEN = "lockScreen";
+    public static final String KEY_SAVE_SONGS = "saveSongs";
+
+    // Keys TabPanel
+    public static final String KEY_UP_SONG = "upSong";
+    public static final String KEY_DOWN_SONG = "downSong";
+    public static final String KEY_UP_SONGS = "upSongs";
+    public static final String KEY_DOWN_SONGS = "downSongs";
+    public static final String KEY_UP_GENDER = "upGender";
+    public static final String KEY_DOWN_GENDER = "downGender";
+    public static final String KEY_ADD_COIN = "addCoin";
+    public static final String KEY_REMOVE_COIN = "removeCoin";
+    public static final String KEY_POWER_OFF = "powerOff";
+    public static final String KEY_NEXT_SONG = "nextSong";
+    public static final String KEY_SETTINGS = "settings";
+
+    //View TabPanel
+    public static final String KEY_BACKGROUND_COLOR = "backgroundColor";
+    public static final String KEY_TEXT_COLOR = "textColor";
+    public static final String KEY_FONT = "font";
+    public static final String KEY_FONT_STYLE = "fontStyle";
+    public static final String KEY_FOREGROUND = "foreground";
+    public static final String KEY_FONT_SIZE = "fontSize";
+    public static final String KEY_BOLD = "fontBold";
 
     // Folders constants
     private static final String DEFAULT_VALUE_PATH_VIDEOS = "";
