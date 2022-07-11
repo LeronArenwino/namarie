@@ -1,14 +1,18 @@
 package com.namarie.gui;
 
-import com.namarie.filemanager.FileManager;
-import com.namarie.models.Song;
+import com.namarie.dao.FileManager;
+import com.namarie.entity.Media;
+import com.namarie.entity.Song;
+import com.namarie.logic.Logic;
 import org.json.JSONException;
 import org.json.JSONObject;
 import uk.co.caprica.vlcj.player.base.MediaPlayer;
+import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter;
 import uk.co.caprica.vlcj.player.component.AudioPlayerComponent;
 import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
@@ -56,19 +60,19 @@ public class MainWindow extends javax.swing.JFrame {
     public final static String KEY_SETTINGS = "settings";
 
     //View TabPanel
-    public final static String KEY_COLOR1 = "color1";
-    public final static String KEY_COLOR2 = "color2";
+    public final static String KEY_BACKGROUND_COLOR = "backgroundColor";
+    public final static String KEY_TEXT_COLOR = "textColor";
     public final static String KEY_FONT = "font";
-    public final static String KEY_FONT_STYLE = "Regular";
+    public final static String KEY_FONT_STYLE = "fontStyle";
     public final static String KEY_FOREGROUND = "foreground";
     public final static String KEY_FONT_SIZE = "fontSize";
-    public final static String KEY_BOLD = "bold";
+    public final static String KEY_BOLD = "fontBold";
 
     // MainFrame
     // Folders
     private String videosPath;
     private String songsPath;
-    private boolean promotionalVideo;
+    private boolean promotionalVideoValidate;
     private String promotionalVideoPath;
 
     // Time
@@ -97,14 +101,14 @@ public class MainWindow extends javax.swing.JFrame {
     private JPanel videoPanel;
     private JPanel musicListPanel;
     private JPanel songsListPanel;
+    private JScrollPane songsListScrollPanel;
     private JList songsListJList;
     private JList musicQueueJList;
-    private JScrollPane musicListScrollPanel;
-    private JScrollPane songsListScrollPanel;
     private JPanel centerPanel;
     private JLabel songsGenderLabel;
     private JLabel numberSong;
     private JLabel currentCreditsLabel;
+    private JScrollPane musicListScrollPanel;
     private JPanel searchSongsListPanel;
     private JTextField searchSongsListTextField;
     private JButton searchSongsListButton;
@@ -114,13 +118,16 @@ public class MainWindow extends javax.swing.JFrame {
     private AudioPlayerComponent audioMediaPlayer;
 
     private ArrayList<Song> musicQueue;
-    private ArrayList<Song> videosQueue;
+    private ArrayList<Media> videosQueue;
+    private ArrayList<Media> promotionalVideos;
     private ArrayList<ArrayList<Song>> musicListByGenders;
     private String[] genders;
     private int selectedGender;
     private int selectedSong;
 
     private javax.swing.Timer timerRandomSong;
+    private javax.swing.Timer timerRandomPromotionalVideo;
+    private boolean promotionalVideoStatus;
     private Pattern pattern;
     private Pattern patternVideo;
     private Pattern patternAudio;
@@ -128,299 +135,299 @@ public class MainWindow extends javax.swing.JFrame {
     private String[] stringLabel;
     private int currentCredits;
 
-    // Data
-    private JSONObject loadedSettings;
-    private final FileManager fileManager = new FileManager();
+    private final KeyListener mainWindowKeyListener = new KeyListener() {
+        /**
+         * Invoked when a key has been typed.
+         * See the class description for {@link KeyEvent} for a definition of
+         * a key typed event.
+         *
+         * @param e
+         */
+        @Override
+        public void keyTyped(KeyEvent e) {
+            e.consume();
+        }
 
-    public MainWindow() {
-        initComponents();
+        /**
+         * Invoked when a key has been pressed.
+         * See the class description for {@link KeyEvent} for a definition of
+         * a key pressed event.
+         *
+         * @param e
+         */
+        @Override
+        public void keyPressed(KeyEvent e) {
 
-        containerPanel.addKeyListener(new KeyAdapter() {
-            /**
-             * Invoked when a key has been pressed.
-             *
-             * @param e
-             */
-            @Override
-            public void keyPressed(KeyEvent e) {
+            // Event to open a settings window (Key 'Q')
+            if (e.getKeyCode() == 81) {
+                settingsWindow = new SettingsWindow();
+                settingsWindow.setVisible(true);
+            }
 
-                // Event to open a settings window (Key 'Q')
-                if (e.getKeyCode() == 81) {
-                    settingsWindow = new SettingsWindow();
-                    settingsWindow.setVisible(true);
+            // Event to open add coin
+            if (e.getKeyCode() == addCoin) {
+                if (currentCredits < 25) {
+                    currentCredits += 1;
+                    creditsValidate(currentCredits > 0);
+                }
+            }
+
+            // Event to open remove coin
+            if (e.getKeyCode() == removeCoin) {
+                if (currentCredits > 0) {
+                    currentCredits -= 1;
+                    creditsValidate(currentCredits > 0);
+                }
+            }
+
+            // Event to up gender in gender list
+            if (e.getKeyCode() == upGender) {
+                if (selectedGender < genders.length - 1) {
+                    selectedGender++;
+                } else {
+                    selectedGender = 0;
+                }
+                setMusicList(musicListByGenders.get(selectedGender), genders[selectedGender]);
+
+                songsGenderLabel.setText("Gender: " + genders[selectedGender]);
+
+                selectedSong = 0;
+                songsListJList.setSelectedIndex(selectedSong);
+                songsListJList.ensureIndexIsVisible(selectedSong);
+
+            }
+
+            // Event to down gender in gender list
+            if (e.getKeyCode() == downGender) {
+                if (selectedGender > 0) {
+                    selectedGender--;
+                } else {
+                    selectedGender = genders.length - 1;
+                }
+                setMusicList(musicListByGenders.get(selectedGender), genders[selectedGender]);
+
+                songsGenderLabel.setText("Gender: " + genders[selectedGender]);
+
+                selectedSong = 0;
+                songsListJList.setSelectedIndex(selectedSong);
+                songsListJList.ensureIndexIsVisible(selectedSong);
+
+            }
+
+            // Event to up a song in music list
+            if (e.getKeyCode() == upSong) {
+                if (selectedSong > 0) {
+                    selectedSong--;
+                } else {
+                    selectedSong = songsListJList.getModel().getSize() - 1;
                 }
 
-                // Event to open add coin
-                if (e.getKeyCode() == addCoin) {
-                    if (currentCredits < 25) {
-                        currentCredits += 1;
-                        creditsValidate(currentCredits > 0);
+                songsListJList.setSelectedIndex(selectedSong);
+                songsListJList.ensureIndexIsVisible(selectedSong);
+
+            }
+
+            // Event to down a song in music list
+            if (e.getKeyCode() == downSong) {
+                if (selectedSong < songsListJList.getModel().getSize() - 1) {
+                    selectedSong++;
+                } else {
+                    selectedSong = 0;
+                }
+
+                songsListJList.setSelectedIndex(selectedSong);
+                songsListJList.ensureIndexIsVisible(selectedSong);
+
+            }
+
+            // Event to up 20 songs in music list
+            if (e.getKeyCode() == upSongs) {
+                if (selectedSong < songsListJList.getModel().getSize() - 1) {
+                    selectedSong += 20;
+                    if (selectedSong > songsListJList.getModel().getSize() - 1) {
+                        selectedSong = songsListJList.getModel().getSize() - 1;
                     }
+                } else {
+                    selectedSong = 0;
                 }
 
-                // Event to open remove coin
-                if (e.getKeyCode() == removeCoin) {
-                    if (currentCredits > 0) {
+                songsListJList.setSelectedIndex(selectedSong);
+                songsListJList.ensureIndexIsVisible(selectedSong);
+
+            }
+
+            // Event to down 20 songs in music list
+            if (e.getKeyCode() == downSongs) {
+                if (selectedSong > 0) {
+                    selectedSong -= 20;
+                    if (selectedSong < 0) {
+                        selectedSong = 0;
+                    }
+                } else {
+                    selectedSong = songsListJList.getModel().getSize() - 1;
+                }
+
+                songsListJList.setSelectedIndex(selectedSong);
+                songsListJList.ensureIndexIsVisible(selectedSong);
+
+            }
+
+            // Event to play the next song in music queue
+            if (e.getKeyCode() == nextSong) {
+
+                timerRandomSong.start();
+
+                nextSong();
+
+            }
+
+            // Event to play or add a song to music queue with ENTER
+            if (e.getKeyCode() == 10) {
+
+                if (currentCredits > 0) {
+
+                    Song selectedSong = (Song) songsListJList.getSelectedValue();
+
+                    if (selectedSong != null) {
+
+                        if (promotionalVideoStatus) {
+                            videoMediaPlayer.mediaPlayer().controls().stop();
+                            promotionalVideoStatus = false;
+                        }
+
+                        if (!videoMediaPlayer.mediaPlayer().status().isPlaying() && !audioMediaPlayer.mediaPlayer().status().isPlaying()) {
+
+                            playSong(selectedSong);
+
+                        } else {
+
+                            musicQueue.add(selectedSong);
+
+                            setMusicQueue(musicQueue);
+
+                        }
+
                         currentCredits -= 1;
                         creditsValidate(currentCredits > 0);
-                    }
-                }
-
-                // Event to up gender in gender list
-                if (e.getKeyCode() == upGender) {
-                    if (selectedGender < genders.length - 1) {
-                        selectedGender++;
-                    } else {
-                        selectedGender = 0;
-                    }
-                    setMusicList(musicListByGenders.get(selectedGender), genders[selectedGender]);
-
-                    songsGenderLabel.setText("Gender: " + genders[selectedGender]);
-
-                    selectedSong = 0;
-                    songsListJList.setSelectedIndex(selectedSong);
-                    songsListJList.ensureIndexIsVisible(selectedSong);
-
-                }
-
-                // Event to down gender in gender list
-                if (e.getKeyCode() == downGender) {
-                    if (selectedGender > 0) {
-                        selectedGender--;
-                    } else {
-                        selectedGender = genders.length - 1;
-                    }
-                    setMusicList(musicListByGenders.get(selectedGender), genders[selectedGender]);
-
-                    songsGenderLabel.setText("Gender: " + genders[selectedGender]);
-
-                    selectedSong = 0;
-                    songsListJList.setSelectedIndex(selectedSong);
-                    songsListJList.ensureIndexIsVisible(selectedSong);
-
-                }
-
-                // Event to up a song in music list
-                if (e.getKeyCode() == upSong) {
-                    if (selectedSong > 0) {
-                        selectedSong--;
-                    } else {
-                        selectedSong = songsListJList.getModel().getSize() - 1;
-                    }
-
-                    songsListJList.setSelectedIndex(selectedSong);
-                    songsListJList.ensureIndexIsVisible(selectedSong);
-
-                }
-
-                // Event to down a song in music list
-                if (e.getKeyCode() == downSong) {
-                    if (selectedSong < songsListJList.getModel().getSize() - 1) {
-                        selectedSong++;
-                    } else {
-                        selectedSong = 0;
-                    }
-
-                    songsListJList.setSelectedIndex(selectedSong);
-                    songsListJList.ensureIndexIsVisible(selectedSong);
-
-                }
-
-                // Event to up 20 songs in music list
-                if (e.getKeyCode() == upSongs) {
-                    if (selectedSong < songsListJList.getModel().getSize() - 1) {
-                        selectedSong += 20;
-                        if (selectedSong > songsListJList.getModel().getSize() - 1) {
-                            selectedSong = songsListJList.getModel().getSize() - 1;
-                        }
-                    } else {
-                        selectedSong = 0;
-                    }
-
-                    songsListJList.setSelectedIndex(selectedSong);
-                    songsListJList.ensureIndexIsVisible(selectedSong);
-
-                }
-
-                // Event to down 20 songs in music list
-                if (e.getKeyCode() == downSongs) {
-                    if (selectedSong > 0) {
-                        selectedSong -= 20;
-                        if (selectedSong < 0) {
-                            selectedSong = 0;
-                        }
-                    } else {
-                        selectedSong = songsListJList.getModel().getSize() - 1;
-                    }
-
-                    songsListJList.setSelectedIndex(selectedSong);
-                    songsListJList.ensureIndexIsVisible(selectedSong);
-
-                }
-
-                // Event to play the next song in music queue
-                if (e.getKeyCode() == nextSong) {
-
-                    timerRandomSong.start();
-
-                    nextSong();
-
-                }
-
-                // Event to play or add a song to music queue with ENTER
-                if (e.getKeyCode() == 10) {
-
-                    if (currentCredits > 0) {
-
-                        Song selectedSong = (Song) songsListJList.getSelectedValue();
-
-                        if (selectedSong != null) {
-
-                            if (!videoMediaPlayer.mediaPlayer().status().isPlaying() && !audioMediaPlayer.mediaPlayer().status().isPlaying()) {
-
-                                playSong(selectedSong);
-
-                            } else {
-
-                                musicQueue.add(selectedSong);
-
-                                setMusicQueue(musicQueue);
-
-                            }
-
-                            currentCredits -= 1;
-                            creditsValidate(currentCredits > 0);
-
-                        }
-                    }
-
-                }
-
-                // Event to reload settings
-                if (e.getKeyCode() == 82) {
-
-                    selectedGender = 0;
-
-                    // Load values from JSON file
-                    loadedSettings = fileManager.openFile(new java.io.File("") + "config.json");
-                    loadSettings(loadedSettings);
-
-                    genders = gendersList();
-
-                    musicListByGenders = musicListByGenders(musicList(), genders);
-
-                    setMusicList(musicListByGenders.get(selectedGender), genders[selectedGender]);
-
-                    selectedSong = 0;
-                    songsListJList.setSelectedIndex(selectedSong);
-
-                    songsGenderLabel.setText("Gender: " + genders[selectedGender]);
-                    songsListJList.ensureIndexIsVisible(selectedSong);
-
-                }
-
-                // Event to set '0' value in String to select a song
-                if (e.getKeyCode() == 48 || e.getKeyCode() == 96) {
-                    setString("0");
-                }
-
-                // Event to set '1' value in String to select a song
-                if (e.getKeyCode() == 49 || e.getKeyCode() == 97) {
-                    setString("1");
-                }
-
-                // Event to set '2' value in String to select a song
-                if (e.getKeyCode() == 50 || e.getKeyCode() == 98) {
-                    setString("2");
-                }
-
-                // Event to set '3' value in String to select a song
-                if (e.getKeyCode() == 51 || e.getKeyCode() == 99) {
-                    setString("3");
-                }
-
-                // Event to set '4' value in String to select a song
-                if (e.getKeyCode() == 52 || e.getKeyCode() == 100) {
-                    setString("4");
-                }
-
-                // Event to set '5' value in String to select a song
-                if (e.getKeyCode() == 53 || e.getKeyCode() == 101) {
-                    setString("5");
-                }
-
-                // Event to set '6' value in String to select a song
-                if (e.getKeyCode() == 54 || e.getKeyCode() == 102) {
-                    setString("6");
-                }
-
-                // Event to set '7' value in String to select a song
-                if (e.getKeyCode() == 55 || e.getKeyCode() == 103) {
-                    setString("7");
-                }
-
-                // Event to set '8' value in String to select a song
-                if (e.getKeyCode() == 56 || e.getKeyCode() == 104) {
-                    setString("8");
-                }
-
-                // Event to set '9' value in String to select a song
-                if (e.getKeyCode() == 57 || e.getKeyCode() == 105) {
-                    setString("9");
-                }
-
-                // Event to set default value in String to select a song
-                if (e.getKeyCode() == 110) {
-                    setDefaultString();
-                }
-
-                // Event to power off computer
-                if (e.getKeyCode() == powerOff) {
-
-                    String s = JOptionPane.showInputDialog(null, "Password:", "Power off", JOptionPane.PLAIN_MESSAGE);
-
-                    if ("031217".equals(s)) {
-
-                        videoMediaPlayer.release();
-                        audioMediaPlayer.release();
-
-                        Runtime runtime = Runtime.getRuntime();
-                        try {
-                            Process proc = runtime.exec("shutdown -s -t 0");
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        }
-                        System.exit(0);
 
                     }
-
                 }
-            }
-        });
-        songsListJList.addListSelectionListener(new ListSelectionListener() {
-            /**
-             * Called whenever the value of the selection changes.
-             *
-             * @param e the event that characterizes the change.
-             */
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                selectedSong = songsListJList.getSelectedIndex();
-            }
-        });
-        searchSongsListTextField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                super.focusGained(e);
+
             }
 
-            @Override
-            public void focusLost(FocusEvent e) {
-                getContentPane().requestFocus();
-            }
-        });
+            // Event to reload settings
+            if (e.getKeyCode() == 82) {
 
-    }
+                selectedGender = 0;
+
+                // Load values from JSON file
+                loadSettings(Logic.loadSettings());
+
+                genders = gendersList();
+
+                musicListByGenders = musicListByGenders(musicList(), genders);
+
+                setMusicList(musicListByGenders.get(selectedGender), genders[selectedGender]);
+
+                selectedSong = 0;
+                songsListJList.setSelectedIndex(selectedSong);
+
+                songsGenderLabel.setText("Gender: " + genders[selectedGender]);
+                songsListJList.ensureIndexIsVisible(selectedSong);
+
+            }
+
+            // Event to set '0' value in String to select a song
+            if (e.getKeyCode() == 48 || e.getKeyCode() == 96) {
+                setString("0");
+            }
+
+            // Event to set '1' value in String to select a song
+            if (e.getKeyCode() == 49 || e.getKeyCode() == 97) {
+                setString("1");
+            }
+
+            // Event to set '2' value in String to select a song
+            if (e.getKeyCode() == 50 || e.getKeyCode() == 98) {
+                setString("2");
+            }
+
+            // Event to set '3' value in String to select a song
+            if (e.getKeyCode() == 51 || e.getKeyCode() == 99) {
+                setString("3");
+            }
+
+            // Event to set '4' value in String to select a song
+            if (e.getKeyCode() == 52 || e.getKeyCode() == 100) {
+                setString("4");
+            }
+
+            // Event to set '5' value in String to select a song
+            if (e.getKeyCode() == 53 || e.getKeyCode() == 101) {
+                setString("5");
+            }
+
+            // Event to set '6' value in String to select a song
+            if (e.getKeyCode() == 54 || e.getKeyCode() == 102) {
+                setString("6");
+            }
+
+            // Event to set '7' value in String to select a song
+            if (e.getKeyCode() == 55 || e.getKeyCode() == 103) {
+                setString("7");
+            }
+
+            // Event to set '8' value in String to select a song
+            if (e.getKeyCode() == 56 || e.getKeyCode() == 104) {
+                setString("8");
+            }
+
+            // Event to set '9' value in String to select a song
+            if (e.getKeyCode() == 57 || e.getKeyCode() == 105) {
+                setString("9");
+            }
+
+            // Event to set default value in String to select a song
+            if (e.getKeyCode() == 110) {
+                setDefaultString();
+            }
+
+            // Event to power off computer
+            if (e.getKeyCode() == powerOff) {
+
+                String s = JOptionPane.showInputDialog(null, "Password:", "Power off", JOptionPane.PLAIN_MESSAGE);
+
+                if ("031217".equals(s)) {
+
+                    videoMediaPlayer.release();
+                    audioMediaPlayer.release();
+
+                    Runtime runtime = Runtime.getRuntime();
+                    try {
+                        runtime.exec("shutdown -s -t 0");
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                    System.exit(0);
+
+                }
+
+            }
+
+        }
+
+        /**
+         * Invoked when a key has been released.
+         * See the class description for {@link KeyEvent} for a definition of
+         * a key released event.
+         *
+         * @param e
+         */
+        @Override
+        public void keyReleased(KeyEvent e) {
+            e.consume();
+        }
+    };
 
     public static void main(String[] args) {
 
@@ -432,17 +439,28 @@ public class MainWindow extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException | InstantiationException | UnsupportedLookAndFeelException | IllegalAccessException ex) {
+        } catch (ClassNotFoundException | InstantiationException | UnsupportedLookAndFeelException |
+                 IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
-        JFrame mainWindow = new MainWindow();
-        mainWindow.setVisible(true);
+        // Create and display the form
+        java.awt.EventQueue.invokeLater(() -> new MainWindow().setVisible(true));
+
     }
 
-    public void initComponents() {
+    public MainWindow() {
 
-        resolution = Toolkit.getDefaultToolkit().getScreenSize();
+        initComponents();
+
+    }
+
+
+    /**
+     * This method is called from within the constructor to
+     * initialize the form.
+     */
+    private void initComponents() {
 
         // Set default configuration to JFrame
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -453,17 +471,26 @@ public class MainWindow extends javax.swing.JFrame {
         setTitle("Namarie");
         setContentPane(containerPanel);
 
+        containerPanel.addKeyListener(mainWindowKeyListener);
+        songsListJList.addListSelectionListener(new ListSelectionListener() {
+            /**
+             * Called whenever the value of the selection changes.
+             *
+             * @param e the event that characterizes the change.
+             */
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                selectedSong = songsListJList.getSelectedIndex();
+            }
+        });
+
         // Regex to extensions
         pattern = Pattern.compile(PATTERN);
         patternVideo = Pattern.compile(PATTERN_VIDEO);
         patternAudio = Pattern.compile(PATTERN_AUDIO);
 
         // Load data from JSON file
-        File file = new File(new java.io.File("") + "config.json");
-        if (!file.exists()) fileManager.saveDefaultSettings();
-
-        loadedSettings = fileManager.openFile(new java.io.File("") + "config.json");
-        loadSettings(loadedSettings);
+        loadSettings(Logic.loadSettings());
 
         selectedGender = 0;
 
@@ -471,11 +498,13 @@ public class MainWindow extends javax.swing.JFrame {
         currentCredits = 0;
         creditsValidate(currentCredits > 0);
 
+        resolution = Toolkit.getDefaultToolkit().getScreenSize();
+
         // Reshape components to screen resolution
-        centerPanel.setPreferredSize(new Dimension((int) resolution.getWidth() / 2, (int) resolution.getHeight()));
-        videoPanel.setPreferredSize(new Dimension((int) resolution.getWidth() / 2, (int) resolution.getHeight() / 2));
-        musicListPanel.setPreferredSize(new Dimension((int) resolution.getWidth() / 4, (int) resolution.getHeight() / 2));
-        songsListPanel.setPreferredSize(new Dimension((int) resolution.getWidth() / 2, (int) resolution.getHeight()));
+//        centerPanel.setPreferredSize(new Dimension((int) resolution.getWidth() / 2, (int) resolution.getHeight()));
+//        videoPanel.setPreferredSize(new Dimension((int) resolution.getWidth() / 2, (int) resolution.getHeight() / 2));
+//        musicListPanel.setPreferredSize(new Dimension((int) resolution.getWidth() / 4, (int) resolution.getHeight() / 2));
+//        songsListPanel.setPreferredSize(new Dimension((int) resolution.getWidth() / 2, (int) resolution.getHeight()));
 
         try {
 
@@ -518,7 +547,7 @@ public class MainWindow extends javax.swing.JFrame {
 
                             int randVideo = rand.nextInt(videosQueue.size());
 
-                            Song video = videosQueue.get(randVideo);
+                            Media video = videosQueue.get(randVideo);
 
                             mediaPlayer.submit(() -> mediaPlayer.media().play(String.format("%s" + File.separator + "%s", videosPath, video.getName())));
                             audioMediaPlayer.mediaPlayer().media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, song.getGender(), song.getSinger(), song.getName()));
@@ -537,10 +566,12 @@ public class MainWindow extends javax.swing.JFrame {
 
                         int randVideo = rand.nextInt(videosQueue.size());
 
-                        Song video = videosQueue.get(randVideo);
+                        Media video = videosQueue.get(randVideo);
 
                         mediaPlayer.submit(() -> mediaPlayer().media().play(String.format("%s" + File.separator + "%s", videosPath, video.getName())));
 
+                    } else {
+                        timerRandomPromotionalVideo.start();
                     }
 
                 }
@@ -552,6 +583,7 @@ public class MainWindow extends javax.swing.JFrame {
 
             // Add to the player container our canvas
             videoPanel.add(videoMediaPlayer);
+            videoMediaPlayer.addKeyListener(mainWindowKeyListener);
 
             // Create AudioPlayerComponent instances
             audioMediaPlayer = new AudioPlayerComponent() {
@@ -594,7 +626,7 @@ public class MainWindow extends javax.swing.JFrame {
 
                             int randVideo = rand.nextInt(videosQueue.size());
 
-                            Song video = videosQueue.get(randVideo);
+                            Media video = videosQueue.get(randVideo);
 
                             videoMediaPlayer.mediaPlayer().media().play(String.format("%s" + File.separator + "%s", videosPath, video.getName()));
                             mediaPlayer.submit(() -> mediaPlayer.media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, song.getGender(), song.getSinger(), song.getName())));
@@ -605,9 +637,10 @@ public class MainWindow extends javax.swing.JFrame {
 
                         setMusicQueue(musicQueue);
 
+                    } else {
+
+                        timerRandomPromotionalVideo.start();
                     }
-
-
                 }
 
                 @Override
@@ -619,7 +652,8 @@ public class MainWindow extends javax.swing.JFrame {
             e.printStackTrace();
         }
 
-        videosQueue = videoQueue();
+        videosQueue = getVideos(videosPath);
+        promotionalVideos = getVideos(promotionalVideoPath);
 
         genders = gendersList();
 
@@ -635,14 +669,12 @@ public class MainWindow extends javax.swing.JFrame {
 
             songsListJList.setSelectedIndex(selectedSong);
 
-            songsGenderLabel.setText("Gender: " + genders[selectedGender]);
+            songsGenderLabel.setText(genders[selectedGender]);
         }
 
         stringLabel = new String[5];
 
         setDefaultString();
-
-        containerPanel.requestFocus();
 
         ActionListener playRandomSong = e -> {
 
@@ -650,15 +682,66 @@ public class MainWindow extends javax.swing.JFrame {
 
         };
 
-        timerRandomSong = new javax.swing.Timer(randomSong * 60000, playRandomSong);
+        ActionListener playRandomPromotionalVideo = e -> {
+
+            playRandomPromotionalVideo();
+
+        };
+
+        timerRandomSong = new Timer(randomSong * 60000, playRandomSong);
         timerRandomSong.setRepeats(false);
         timerRandomSong.start();
 
+        timerRandomPromotionalVideo = new Timer(0, playRandomPromotionalVideo);
+        timerRandomPromotionalVideo.setRepeats(false);
+        timerRandomPromotionalVideo.start();
+
+    }
+
+    private void creditsValidate(boolean state) {
+
+        musicListPanel.setVisible(state);
+        songsListPanel.setVisible(state);
+
+        currentCreditsLabel.setText(String.format("Credits: %s", currentCredits));
+
+    }
+
+    private String[] gendersList() {
+
+        String[] genders = null;
+
+        File directory = new File(songsPath);
+
+        if (directory.isDirectory()) genders = directory.list();
+
+        if (genders == null) return null;
+
+        for (String gender : genders) {
+
+            File genderDirectory = new File(String.format("%s" + File.separator + "%s", songsPath, gender));
+
+            if (!genderDirectory.isDirectory()) {
+                List<String> gendersList = new ArrayList<>(Arrays.asList(genders));
+                gendersList.remove(gender);
+                genders = gendersList.toArray(new String[0]);
+            }
+
+        }
+
+        return genders;
     }
 
     private void playRandomSong() {
 
-        getContentPane().requestFocus();
+        // getContentPane().requestFocus();
+
+        if (promotionalVideoStatus) {
+
+            videoMediaPlayer.mediaPlayer().controls().stop();
+            promotionalVideoStatus = false;
+
+        }
 
         if (!videoMediaPlayer.mediaPlayer().status().isPlaying() && !audioMediaPlayer.mediaPlayer().status().isPlaying() && musicQueue.isEmpty()) {
 
@@ -669,6 +752,24 @@ public class MainWindow extends javax.swing.JFrame {
             Song song = musicList().get(randSong);
 
             playSong(song);
+
+        }
+
+    }
+
+    private void playRandomPromotionalVideo() {
+
+        // getContentPane().requestFocus();
+
+        if (!videoMediaPlayer.mediaPlayer().status().isPlaying() && !audioMediaPlayer.mediaPlayer().status().isPlaying() && musicQueue.isEmpty()) {
+
+            Random rand = new Random();
+
+            int randSong = rand.nextInt(promotionalVideos.size());
+
+            Media promotionalVideo = promotionalVideos.get(randSong);
+
+            playPromotionalMedia(promotionalVideo);
 
         }
 
@@ -692,7 +793,7 @@ public class MainWindow extends javax.swing.JFrame {
 
             int randVideo = rand.nextInt(videosQueue.size());
 
-            Song video = videosQueue.get(randVideo);
+            Media video = videosQueue.get(randVideo);
 
             videoMediaPlayer.mediaPlayer().media().play(String.format("%s" + File.separator + "%s", videosPath, video.getName()));
             audioMediaPlayer.mediaPlayer().media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, song.getGender(), song.getSinger(), song.getName()));
@@ -704,6 +805,14 @@ public class MainWindow extends javax.swing.JFrame {
             timerRandomSong.stop();
 
         }
+
+    }
+
+    private void playPromotionalMedia(Media video) {
+
+        videoMediaPlayer.mediaPlayer().media().play(String.format("%s" + File.separator + "%s", promotionalVideoPath, video.getName()));
+
+        promotionalVideoStatus = true;
 
     }
 
@@ -723,6 +832,10 @@ public class MainWindow extends javax.swing.JFrame {
             musicQueue.remove(0);
 
             setMusicQueue(musicQueue);
+
+        } else {
+
+            timerRandomPromotionalVideo.start();
 
         }
 
@@ -799,11 +912,11 @@ public class MainWindow extends javax.swing.JFrame {
 
     }
 
-    private ArrayList<Song> videoQueue() {
+    private ArrayList<Media> getVideos(String videosPath) {
 
         String[] videos = null;
         int videoCounter = 0;
-        ArrayList<Song> videoList = new ArrayList<>();
+        ArrayList<Media> videoList = new ArrayList<>();
 
         File directory = new File(videosPath);
 
@@ -821,7 +934,7 @@ public class MainWindow extends javax.swing.JFrame {
 
                 if (matcher.find()) {
 
-                    videoList.add(new Song(videoCounter, video, "", ""));
+                    videoList.add(new Media(videoCounter, video));
                     videoCounter++;
 
                 }
@@ -832,31 +945,6 @@ public class MainWindow extends javax.swing.JFrame {
 
         return videoList;
 
-    }
-
-    private String[] gendersList() {
-
-        String[] genders = null;
-
-        File directory = new File(songsPath);
-
-        if (directory.isDirectory()) genders = directory.list();
-
-        if (genders == null) return null;
-
-        for (String gender : genders) {
-
-            File genderDirectory = new File(String.format("%s" + File.separator + "%s", songsPath, gender));
-
-            if (!genderDirectory.isDirectory()) {
-                List<String> gendersList = new ArrayList<>(Arrays.asList(genders));
-                gendersList.remove(gender);
-                genders = gendersList.toArray(new String[0]);
-            }
-
-        }
-
-        return genders;
     }
 
     private ArrayList<Song> musicList() {
@@ -969,22 +1057,13 @@ public class MainWindow extends javax.swing.JFrame {
 
     }
 
-    private void creditsValidate(boolean state) {
-
-        musicListPanel.setVisible(state);
-        songsListPanel.setVisible(state);
-
-        currentCreditsLabel.setText(String.format("Credits: %s", currentCredits));
-
-    }
-
     private void loadSettings(JSONObject values) {
 
         try {
             //Folders
             videosPath = (String) values.get(KEY_PATH_VIDEOS);
             songsPath = (String) values.get(KEY_PATH_SONGS);
-            promotionalVideo = (boolean) values.get(KEY_PROMOTIONAL_VIDEO);
+            promotionalVideoValidate = (boolean) values.get(KEY_PROMOTIONAL_VIDEO);
             promotionalVideoPath = (String) values.get(KEY_PATH_PROMOTIONAL_VIDEO);
 
             //Time
