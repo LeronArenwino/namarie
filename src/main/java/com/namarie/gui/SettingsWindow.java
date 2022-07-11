@@ -409,10 +409,6 @@ public class SettingsWindow extends JFrame {
         this.getContentPane().add(containerPanel);
         this.setVisible(true);
 
-        File file = new File(Logic.PATH);
-        if (!file.exists())
-            Logic.saveDefault();
-
         loadSettings(Logic.loadSettings());
 
     }
