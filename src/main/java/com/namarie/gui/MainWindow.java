@@ -128,7 +128,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.Timer timerRandomSong;
     private javax.swing.Timer timerRandomPromotionalVideo;
     private boolean promotionalVideoStatus;
-    private Pattern pattern;
+    private Pattern patternMedia;
     private Pattern patternVideo;
     private Pattern patternAudio;
 
@@ -493,7 +493,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
 
         // Regex to extensions
-        pattern = Pattern.compile(PATTERN);
+        patternMedia = Pattern.compile(PATTERN);
         patternVideo = Pattern.compile(PATTERN_VIDEO);
         patternAudio = Pattern.compile(PATTERN_AUDIO);
 
@@ -925,7 +925,7 @@ public class MainWindow extends javax.swing.JFrame {
 
             if (videoDirectory.isFile()) {
 
-                Matcher matcher = pattern.matcher(videoDirectory.getName());
+                Matcher matcher = patternMedia.matcher(videoDirectory.getName());
 
                 if (matcher.find()) {
 
@@ -978,7 +978,7 @@ public class MainWindow extends javax.swing.JFrame {
 
                             if (songFile.isFile()) {
 
-                                Matcher matcher = pattern.matcher(songFile.getName());
+                                Matcher matcher = patternMedia.matcher(songFile.getName());
 
                                 if (matcher.find()) {
 
