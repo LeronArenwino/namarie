@@ -1,13 +1,11 @@
 package com.namarie.gui;
 
-import com.namarie.dao.FileManager;
 import com.namarie.entity.Media;
 import com.namarie.entity.Song;
 import com.namarie.logic.Logic;
 import org.json.JSONException;
 import org.json.JSONObject;
 import uk.co.caprica.vlcj.player.base.MediaPlayer;
-import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter;
 import uk.co.caprica.vlcj.player.component.AudioPlayerComponent;
 import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent;
 
@@ -19,6 +17,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.*;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -134,6 +134,8 @@ public class MainWindow extends javax.swing.JFrame {
 
     private String[] stringLabel;
     private int currentCredits;
+
+    private Random rand = SecureRandom.getInstanceStrong();
 
     private final KeyListener mainWindowKeyListener = new KeyListener() {
         /**
@@ -445,11 +447,17 @@ public class MainWindow extends javax.swing.JFrame {
         }
 
         // Create and display the form
-        java.awt.EventQueue.invokeLater(() -> new MainWindow().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> {
+            try {
+                new MainWindow().setVisible(true);
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
     }
 
-    public MainWindow() {
+    public MainWindow() throws NoSuchAlgorithmException {
 
         initComponents();
 
@@ -543,8 +551,6 @@ public class MainWindow extends javax.swing.JFrame {
 
                         if (matcher.find()) {
 
-                            Random rand = new Random();
-
                             int randVideo = rand.nextInt(videosQueue.size());
 
                             Media video = videosQueue.get(randVideo);
@@ -561,8 +567,6 @@ public class MainWindow extends javax.swing.JFrame {
                     } else if (audioMediaPlayer.mediaPlayer().status().isPlaying()) {
 
                         timerRandomSong.stop();
-
-                        Random rand = new Random();
 
                         int randVideo = rand.nextInt(videosQueue.size());
 
@@ -621,8 +625,6 @@ public class MainWindow extends javax.swing.JFrame {
                         matcher = patternAudio.matcher(song.getName());
 
                         if (matcher.find()) {
-
-                            Random rand = new Random();
 
                             int randVideo = rand.nextInt(videosQueue.size());
 
@@ -745,8 +747,6 @@ public class MainWindow extends javax.swing.JFrame {
 
         if (!videoMediaPlayer.mediaPlayer().status().isPlaying() && !audioMediaPlayer.mediaPlayer().status().isPlaying() && musicQueue.isEmpty()) {
 
-            Random rand = new Random();
-
             int randSong = rand.nextInt(musicList().size());
 
             Song song = musicList().get(randSong);
@@ -762,8 +762,6 @@ public class MainWindow extends javax.swing.JFrame {
         // getContentPane().requestFocus();
 
         if (!videoMediaPlayer.mediaPlayer().status().isPlaying() && !audioMediaPlayer.mediaPlayer().status().isPlaying() && musicQueue.isEmpty()) {
-
-            Random rand = new Random();
 
             int randSong = rand.nextInt(promotionalVideos.size());
 
@@ -788,8 +786,6 @@ public class MainWindow extends javax.swing.JFrame {
         matcher = patternAudio.matcher(song.getName());
 
         if (matcher.find()) {
-
-            Random rand = new Random();
 
             int randVideo = rand.nextInt(videosQueue.size());
 
