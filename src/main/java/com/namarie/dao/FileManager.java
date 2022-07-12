@@ -51,7 +51,7 @@ public class FileManager {
                 try {
                     reader.close();
                 } catch (IOException e) {
-                    logger.log(Level.WARNING, "Reader close error: " + e);
+                    logger.log(Level.WARNING, "Reader close error!");
                 }
             }
         }
