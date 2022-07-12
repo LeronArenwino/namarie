@@ -119,14 +119,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 } else {
                     selectedGender = 0;
                 }
-                setMusicList(musicListByGenders.get(selectedGender), genders[selectedGender]);
-
-                songsGenderLabel.setText("Gender: " + genders[selectedGender]);
-
-                selectedSong = 0;
-                songsListJList.setSelectedIndex(selectedSong);
-                songsListJList.ensureIndexIsVisible(selectedSong);
-
+                loadSongsListJList();
             }
 
             // Event to down gender in gender list
@@ -136,14 +129,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 } else {
                     selectedGender = genders.length - 1;
                 }
-                setMusicList(musicListByGenders.get(selectedGender), genders[selectedGender]);
-
-                songsGenderLabel.setText("Gender: " + genders[selectedGender]);
-
-                selectedSong = 0;
-                songsListJList.setSelectedIndex(selectedSong);
-                songsListJList.ensureIndexIsVisible(selectedSong);
-
+                loadSongsListJList();
             }
 
             // Event to up a song in music list
@@ -153,10 +139,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 } else {
                     selectedSong = songsListJList.getModel().getSize() - 1;
                 }
-
-                songsListJList.setSelectedIndex(selectedSong);
-                songsListJList.ensureIndexIsVisible(selectedSong);
-
+                updateSelectedSongInSongsList();
             }
 
             // Event to down a song in music list
@@ -166,10 +149,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 } else {
                     selectedSong = 0;
                 }
-
-                songsListJList.setSelectedIndex(selectedSong);
-                songsListJList.ensureIndexIsVisible(selectedSong);
-
+                updateSelectedSongInSongsList();
             }
 
             // Event to up 20 songs in music list
@@ -182,10 +162,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 } else {
                     selectedSong = 0;
                 }
-
-                songsListJList.setSelectedIndex(selectedSong);
-                songsListJList.ensureIndexIsVisible(selectedSong);
-
+                updateSelectedSongInSongsList();
             }
 
             // Event to down 20 songs in music list
@@ -198,10 +175,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 } else {
                     selectedSong = songsListJList.getModel().getSize() - 1;
                 }
-
-                songsListJList.setSelectedIndex(selectedSong);
-                songsListJList.ensureIndexIsVisible(selectedSong);
-
+                updateSelectedSongInSongsList();
             }
 
             // Event to play the next song in music queue
@@ -258,14 +232,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 genders = MediaLogic.gendersList();
 
                 musicListByGenders = MediaLogic.musicListByGenders(MediaLogic.musicList(), genders);
-
-                setMusicList(musicListByGenders.get(selectedGender), genders[selectedGender]);
-
-                selectedSong = 0;
-                songsListJList.setSelectedIndex(selectedSong);
-
-                songsGenderLabel.setText("Gender: " + genders[selectedGender]);
-                songsListJList.ensureIndexIsVisible(selectedSong);
+                loadSongsListJList();
 
             }
 
@@ -586,14 +553,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         musicQueue = new ArrayList<>();
 
         if (musicListByGenders != null) {
-
-            setMusicList(musicListByGenders.get(selectedGender), genders[selectedGender]);
-
-            selectedSong = 0;
-
-            songsListJList.setSelectedIndex(selectedSong);
-
-            songsGenderLabel.setText(genders[selectedGender]);
+            loadSongsListJList();
         }
 
         stringLabel = new String[5];
