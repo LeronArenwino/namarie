@@ -97,19 +97,15 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
             }
 
             // Event to open add coin
-            if (e.getKeyCode() == MediaLogic.addCoin) {
-                if (currentCredits < 25) {
-                    currentCredits += 1;
-                    creditsValidate(currentCredits > 0);
-                }
+            if (e.getKeyCode() == MediaLogic.addCoin && currentCredits < 25) {
+                currentCredits += 1;
+                creditsValidate(currentCredits > 0);
             }
 
             // Event to open remove coin
-            if (e.getKeyCode() == MediaLogic.removeCoin) {
-                if (currentCredits > 0) {
-                    currentCredits -= 1;
-                    creditsValidate(currentCredits > 0);
-                }
+            if (e.getKeyCode() == MediaLogic.removeCoin && currentCredits > 0) {
+                currentCredits -= 1;
+                creditsValidate(currentCredits > 0);
             }
 
             // Event to up gender in gender list
@@ -180,57 +176,38 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
             // Event to play the next song in music queue
             if (e.getKeyCode() == MediaLogic.nextSong) {
-
                 timerRandomSong.start();
-
+                // TODO Promotional video
                 nextSong();
-
             }
 
             // Event to play or add a song to music queue with ENTER
-            if (e.getKeyCode() == 10) {
-
-                if (currentCredits > 0) {
-
-                    Song selectedSong = songsListJList.getSelectedValue();
-
-                    if (selectedSong != null) {
-
-                        if (promotionalVideoStatus) {
-                            videoMediaPlayer.mediaPlayer().controls().stop();
-                            promotionalVideoStatus = false;
-                        }
-
-                        if (!videoMediaPlayer.mediaPlayer().status().isPlaying() && !audioMediaPlayer.mediaPlayer().status().isPlaying()) {
-
-                            playSong(selectedSong);
-
-                        } else {
-
-                            musicQueue.add(selectedSong);
-
-                            setMusicQueue(musicQueue);
-
-                        }
-
-                        currentCredits -= 1;
-                        creditsValidate(currentCredits > 0);
-
+            if (e.getKeyCode() == 10 && currentCredits > 0) {
+                Song selectedValue = songsListJList.getSelectedValue();
+                if (selectedValue != null) {
+                    if (promotionalVideoStatus) {
+                        videoMediaPlayer.mediaPlayer().controls().stop();
+                        promotionalVideoStatus = false;
                     }
+                    if (!videoMediaPlayer.mediaPlayer().status().isPlaying() && !audioMediaPlayer.mediaPlayer().status().isPlaying()) {
+                        playSong(selectedValue);
+                    } else {
+                        musicQueue.add(selectedValue);
+                        setMusicQueue(musicQueue);
+                    }
+                    currentCredits -= 1;
+                    creditsValidate(currentCredits > 0);
                 }
-
             }
 
             // Event to reload settings
             if (e.getKeyCode() == 82) {
 
-                selectedGender = 0;
-
                 // Load values from JSON file
                 MediaLogic.loadSettingsValues(SettingsLogic.loadSettings());
 
+                selectedGender = 0;
                 genders = MediaLogic.gendersList();
-
                 musicListByGenders = MediaLogic.musicListByGenders(MediaLogic.musicList(), genders);
                 loadSongsListJList();
 
@@ -680,13 +657,9 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         if (!musicQueue.isEmpty()) {
 
             timerRandomSong.stop();
-
             Song song = musicQueue.get(0);
-
             playSong(song);
-
             musicQueue.remove(0);
-
             setMusicQueue(musicQueue);
 
         } else {
@@ -697,11 +670,9 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     }
 
-
     private void setDefaultString() {
 
         Arrays.fill(stringLabel, "-");
-
         numberSong.setText(String.format(" %s %s %s %s %s ", stringLabel[0], stringLabel[1], stringLabel[2], stringLabel[3], stringLabel[4]));
 
     }
@@ -709,14 +680,12 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     private void setString(String value) {
 
         if (currentCredits > 0) {
-
             for (int i = 0; i < stringLabel.length; i++) {
                 if ("-".equals(stringLabel[i])) {
                     stringLabel[i] = value;
                     break;
                 }
             }
-
             if (Arrays.stream(stringLabel).noneMatch("-"::equals)) {
 
                 selectedSong = Integer.parseInt(String.format("%s%s%s%s%s", stringLabel[0], stringLabel[1], stringLabel[2], stringLabel[3], stringLabel[4]));
@@ -772,7 +741,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     }
 
     private void setMusicList(ArrayList<Song> musicList, String selectedGender) {
-
 
         if (musicList != null) {
 
