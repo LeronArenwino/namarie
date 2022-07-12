@@ -16,6 +16,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.*;
@@ -23,7 +24,7 @@ import java.util.regex.Matcher;
 
 import static com.namarie.logic.SettingsLogic.*;
 
-public class MainWindow extends javax.swing.JFrame {
+public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     // General components
     private JPanel containerPanel;
@@ -493,7 +494,9 @@ public class MainWindow extends javax.swing.JFrame {
                         mediaPlayer.submit(() -> mediaPlayer().media().play(String.format("%s" + File.separator + "%s", MediaLogic.videosPath, video.getName())));
 
                     } else {
+
                         timerRandomPromotionalVideo.start();
+
                     }
 
                 }
@@ -654,6 +657,8 @@ public class MainWindow extends javax.swing.JFrame {
 
             playPromotionalMedia(promotionalVideo);
 
+            promotionalVideoStatus = true;
+
         }
 
     }
@@ -750,7 +755,7 @@ public class MainWindow extends javax.swing.JFrame {
 
                     Song song = Objects.requireNonNull(MediaLogic.musicList()).get(selectedSong);
 
-                    if (videoMediaPlayer.mediaPlayer().status().isPlaying()) {
+                    if (videoMediaPlayer.mediaPlayer().status().isPlaying() && !promotionalVideoStatus) {
 
                         musicQueue.add(song);
                         setMusicQueue(musicQueue);
@@ -759,7 +764,8 @@ public class MainWindow extends javax.swing.JFrame {
 
                     if (musicQueue.isEmpty()) {
 
-                        videoMediaPlayer.mediaPlayer().media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", MediaLogic.songsPath, song.getGender(), song.getSinger(), song.getName()));
+                        playSong(song);
+                        promotionalVideoStatus = false;
 
                     }
 
