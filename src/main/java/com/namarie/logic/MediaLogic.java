@@ -87,6 +87,8 @@ public class MediaLogic {
 
         if (genders == null) return null;
 
+        Arrays.sort(genders, String::compareToIgnoreCase);
+
         for (String gender : genders) {
 
             File genderDirectory = new File(String.format("%s" + File.separator + "%s", songsPath, gender));
@@ -119,6 +121,8 @@ public class MediaLogic {
         if (directory.isDirectory()) videos = directory.list();
 
         if (videos == null) return null;
+
+        Arrays.sort(videos, String::compareToIgnoreCase);
 
         for (String video : videos) {
 
@@ -198,6 +202,8 @@ public class MediaLogic {
 
         if (genders == null) return null;
 
+        Arrays.sort(genders, String::compareToIgnoreCase);
+
         for (String gender : genders) {
 
             File genderDirectory = new File(String.format("%s" + File.separator + "%s", songsPath, gender));
@@ -208,6 +214,8 @@ public class MediaLogic {
 
                 if (singers == null) return null;
 
+                Arrays.sort(singers, String::compareToIgnoreCase);
+
                 for (String singer : singers) {
 
                     File singerDirectory = new File(String.format("%s" + File.separator + "%s" + File.separator + "%s", songsPath, gender, singer));
@@ -217,6 +225,8 @@ public class MediaLogic {
                         songs = singerDirectory.list();
 
                         if (songs == null) return null;
+
+                        Arrays.sort(songs, String::compareToIgnoreCase);
 
                         for (String song : songs) {
 
@@ -248,6 +258,8 @@ public class MediaLogic {
         ArrayList<ArrayList<Song>> musicListByGenders = new ArrayList<>();
 
         if (gendersList == null) return null;
+
+        Arrays.sort(gendersList, String::compareToIgnoreCase);
 
         for (String gender : gendersList) {
             ArrayList<Song> musicListByGender = new ArrayList<>();
