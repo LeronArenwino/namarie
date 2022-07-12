@@ -703,6 +703,15 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     }
 
+    private void loadSongsListJList() {
+
+        selectedSong = 0;
+        songsGenderLabel.setText(genders[selectedGender]);
+        setMusicList(musicListByGenders.get(selectedGender), genders[selectedGender]);
+        updateSelectedSongInSongsList();
+
+    }
+
     private void nextSong() {
 
         videoMediaPlayer.mediaPlayer().controls().stop();
