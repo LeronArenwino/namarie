@@ -97,27 +97,23 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
          */
         @Override
         public void keyPressed(KeyEvent e) {
-
             // Event to open a settings window (Key 'Q')
             if (e.getKeyCode() == 81) {
                 SettingsWindow settingsWindow = new SettingsWindow();
                 settingsWindow.setVisible(true);
             }
-
             // Event to open add coin
-            if (e.getKeyCode() == MediaLogic.addCoin && currentCredits < 25) {
+            else if (e.getKeyCode() == MediaLogic.addCoin && currentCredits < 25) {
                 currentCredits += 1;
                 creditsValidate(currentCredits > 0);
             }
-
             // Event to open remove coin
-            if (e.getKeyCode() == MediaLogic.removeCoin && currentCredits > 0) {
+            else if (e.getKeyCode() == MediaLogic.removeCoin && currentCredits > 0) {
                 currentCredits -= 1;
                 creditsValidate(currentCredits > 0);
             }
-
             // Event to up gender in gender list
-            if (e.getKeyCode() == MediaLogic.upGender) {
+            else if (e.getKeyCode() == MediaLogic.upGender) {
                 if (selectedGender < genders.length - 1) {
                     selectedGender++;
                 } else {
@@ -125,9 +121,8 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 }
                 loadSongsListJList();
             }
-
             // Event to down gender in gender list
-            if (e.getKeyCode() == MediaLogic.downGender) {
+            else if (e.getKeyCode() == MediaLogic.downGender) {
                 if (selectedGender > 0) {
                     selectedGender--;
                 } else {
@@ -135,9 +130,8 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 }
                 loadSongsListJList();
             }
-
             // Event to up a song in music list
-            if (e.getKeyCode() == MediaLogic.upSong) {
+            else if (e.getKeyCode() == MediaLogic.upSong) {
                 if (selectedSong > 0) {
                     selectedSong--;
                 } else {
@@ -145,9 +139,8 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 }
                 updateSelectedSongInSongsList();
             }
-
             // Event to down a song in music list
-            if (e.getKeyCode() == MediaLogic.downSong) {
+            else if (e.getKeyCode() == MediaLogic.downSong) {
                 if (selectedSong < songsListJList.getModel().getSize() - 1) {
                     selectedSong++;
                 } else {
@@ -155,9 +148,8 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 }
                 updateSelectedSongInSongsList();
             }
-
             // Event to up 20 songs in music list
-            if (e.getKeyCode() == MediaLogic.upSongs) {
+            else if (e.getKeyCode() == MediaLogic.upSongs) {
                 if (selectedSong < songsListJList.getModel().getSize() - 1) {
                     selectedSong += 20;
                     if (selectedSong > songsListJList.getModel().getSize() - 1) {
@@ -168,9 +160,8 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 }
                 updateSelectedSongInSongsList();
             }
-
             // Event to down 20 songs in music list
-            if (e.getKeyCode() == MediaLogic.downSongs) {
+            else if (e.getKeyCode() == MediaLogic.downSongs) {
                 if (selectedSong > 0) {
                     selectedSong -= 20;
                     if (selectedSong < 0) {
@@ -181,16 +172,14 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 }
                 updateSelectedSongInSongsList();
             }
-
             // Event to play the next song in music queue
-            if (e.getKeyCode() == MediaLogic.nextSong) {
+            else if (e.getKeyCode() == MediaLogic.nextSong) {
                 timerRandomSong.start();
                 // TODO Promotional video
                 nextSong();
             }
-
             // Event to play or add a song to music queue with ENTER
-            if (e.getKeyCode() == 10 && currentCredits > 0) {
+            else if (e.getKeyCode() == 10 && currentCredits > 0) {
                 Song selectedValue = songsListJList.getSelectedValue();
                 if (selectedValue != null) {
                     if (promotionalVideoStatus) {
@@ -207,10 +196,8 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                     creditsValidate(currentCredits > 0);
                 }
             }
-
             // Event to reload settings
             if (e.getKeyCode() == 82) {
-
                 // Load values from JSON file
                 MediaLogic.loadSettingsValues(SettingsLogic.loadSettings());
 
@@ -218,67 +205,54 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 genders = MediaLogic.gendersList();
                 musicListByGenders = MediaLogic.musicListByGenders(MediaLogic.musicList(), genders);
                 loadSongsListJList();
-
             }
-
             // Event to set '0' value in String to select a song
-            if (e.getKeyCode() == 48 || e.getKeyCode() == 96) {
+            else if (e.getKeyCode() == 48 || e.getKeyCode() == 96) {
                 setString("0");
             }
-
             // Event to set '1' value in String to select a song
-            if (e.getKeyCode() == 49 || e.getKeyCode() == 97) {
+            else if (e.getKeyCode() == 49 || e.getKeyCode() == 97) {
                 setString("1");
             }
-
             // Event to set '2' value in String to select a song
-            if (e.getKeyCode() == 50 || e.getKeyCode() == 98) {
+            else if (e.getKeyCode() == 50 || e.getKeyCode() == 98) {
                 setString("2");
             }
-
             // Event to set '3' value in String to select a song
-            if (e.getKeyCode() == 51 || e.getKeyCode() == 99) {
+            else if (e.getKeyCode() == 51 || e.getKeyCode() == 99) {
                 setString("3");
             }
-
             // Event to set '4' value in String to select a song
-            if (e.getKeyCode() == 52 || e.getKeyCode() == 100) {
+            else if (e.getKeyCode() == 52 || e.getKeyCode() == 100) {
                 setString("4");
             }
-
             // Event to set '5' value in String to select a song
-            if (e.getKeyCode() == 53 || e.getKeyCode() == 101) {
+            else if (e.getKeyCode() == 53 || e.getKeyCode() == 101) {
                 setString("5");
             }
-
             // Event to set '6' value in String to select a song
-            if (e.getKeyCode() == 54 || e.getKeyCode() == 102) {
+            else if (e.getKeyCode() == 54 || e.getKeyCode() == 102) {
                 setString("6");
             }
-
             // Event to set '7' value in String to select a song
-            if (e.getKeyCode() == 55 || e.getKeyCode() == 103) {
+            else if (e.getKeyCode() == 55 || e.getKeyCode() == 103) {
                 setString("7");
             }
-
             // Event to set '8' value in String to select a song
-            if (e.getKeyCode() == 56 || e.getKeyCode() == 104) {
+            else if (e.getKeyCode() == 56 || e.getKeyCode() == 104) {
                 setString("8");
             }
-
             // Event to set '9' value in String to select a song
-            if (e.getKeyCode() == 57 || e.getKeyCode() == 105) {
+            else if (e.getKeyCode() == 57 || e.getKeyCode() == 105) {
                 setString("9");
             }
 
             // Event to set default value in String to select a song
-            if (e.getKeyCode() == 110) {
+            else if (e.getKeyCode() == 110) {
                 setDefaultString();
             }
-
             // Event to power off computer
-            if (e.getKeyCode() == MediaLogic.powerOff) {
-
+            else if (e.getKeyCode() == MediaLogic.powerOff) {
                 String s = JOptionPane.showInputDialog(null, "Password:", "Power off", JOptionPane.PLAIN_MESSAGE);
 
                 if ("031217".equals(s)) {
@@ -294,9 +268,9 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                     System.exit(0);
 
                 }
-
+            }else {
+                e.consume();
             }
-
         }
 
         /**
@@ -664,10 +638,10 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     }
 
-    private void movingTextLabel(){
+    private void movingTextLabel() {
 
         String oldText = videoJLabel.getText();
-        String newText= oldText.substring(1)+ oldText.charAt(0);
+        String newText = oldText.substring(1) + oldText.charAt(0);
         videoJLabel.setText(newText);
 
     }
