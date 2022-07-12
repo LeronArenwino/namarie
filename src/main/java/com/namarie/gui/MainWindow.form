@@ -60,7 +60,7 @@
               <opaque value="true"/>
               <preferredSize width="85" height="40"/>
               <requestFocusEnabled value="false"/>
-              <text value="Gender"/>
+              <text value=""/>
               <verticalAlignment value="0"/>
             </properties>
           </component>
@@ -161,7 +161,7 @@
                   <opaque value="true"/>
                   <preferredSize width="140" height="40"/>
                   <requestFocusEnabled value="false"/>
-                  <text value="Credits: 0"/>
+                  <text value=""/>
                 </properties>
               </component>
             </children>
@@ -177,7 +177,16 @@
             <border type="empty">
               <color color="-1"/>
             </border>
-            <children/>
+            <children>
+              <component id="7fc1d" class="javax.swing.JLabel" binding="videoJLabel">
+                <constraints border-constraint="South"/>
+                <properties>
+                  <horizontalAlignment value="0"/>
+                  <horizontalTextPosition value="0"/>
+                  <text value=""/>
+                </properties>
+              </component>
+            </children>
           </grid>
         </children>
       </grid>

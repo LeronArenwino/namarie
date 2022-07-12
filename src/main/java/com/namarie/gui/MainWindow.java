@@ -48,6 +48,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     private JScrollPane musicListScrollPanel;
     private JPanel searchSongsListPanel;
     private JTextField searchSongsListTextField;
+    private JLabel videoJLabel;
     private JButton searchSongsListButton;
 
     // Video and audio components
@@ -458,7 +459,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
             };
 
             // Add to the player container our canvas
-            videoPanel.add(videoMediaPlayer);
+            videoPanel.add(videoMediaPlayer, BorderLayout.CENTER);
             videoMediaPlayer.addKeyListener(mainWindowKeyListener);
 
             // Create AudioPlayerComponent instances
@@ -547,6 +548,8 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         ActionListener playRandomPromotionalVideo = e -> playRandomPromotionalVideo();
 
+        ActionListener movingTextLabel = e -> movingTextLabel();
+
         timerRandomSong = new Timer(MediaLogic.randomSong * 60000, playRandomSong);
         timerRandomSong.setRepeats(false);
         timerRandomSong.start();
@@ -554,6 +557,10 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         timerRandomPromotionalVideo = new Timer(0, playRandomPromotionalVideo);
         timerRandomPromotionalVideo.setRepeats(false);
         timerRandomPromotionalVideo.start();
+
+        Timer timerMovingTextLabel = new Timer(600, movingTextLabel);
+        timerMovingTextLabel.setRepeats(true);
+        timerMovingTextLabel.start();
 
     }
 
@@ -614,6 +621,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         if (matcher.find()) {
 
             videoMediaPlayer.mediaPlayer().media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", MediaLogic.songsPath, song.getGender(), song.getSinger(), song.getName()));
+            videoJLabel.setText(song.toString());
 
         }
 
@@ -627,6 +635,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
             videoMediaPlayer.mediaPlayer().media().play(String.format("%s" + File.separator + "%s", MediaLogic.videosPath, video.getName()));
             audioMediaPlayer.mediaPlayer().media().play(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", MediaLogic.songsPath, song.getGender(), song.getSinger(), song.getName()));
+            videoJLabel.setText(song.toString());
 
         }
 
@@ -652,6 +661,14 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         songsGenderLabel.setText(genders[selectedGender]);
         setMusicList(musicListByGenders.get(selectedGender), genders[selectedGender]);
         updateSelectedSongInSongsList();
+
+    }
+
+    private void movingTextLabel(){
+
+        String oldText = videoJLabel.getText();
+        String newText= oldText.substring(1)+ oldText.charAt(0);
+        videoJLabel.setText(newText);
 
     }
 
