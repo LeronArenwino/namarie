@@ -818,4 +818,11 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     }
 
+    private void updateSelectedSongInSongsList() {
+
+        songsListJList.setSelectedIndex(selectedSong);
+        songsListJList.ensureIndexIsVisible(selectedSong);
+
+    }
+
 }
