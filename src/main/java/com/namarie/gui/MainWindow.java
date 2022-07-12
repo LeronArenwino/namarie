@@ -207,46 +207,27 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 loadSongsListJList();
             }
             // Event to set '0' value in String to select a song
-            else if (e.getKeyCode() == 48 || e.getKeyCode() == 96) {
-                setString("0");
+            else if (e.getKeyCode() == 48 || e.getKeyCode() == 96 ||
+                    // Event to set '1' value in String to select a song
+                    e.getKeyCode() == 49 || e.getKeyCode() == 97 ||
+                    // Event to set '2' value in String to select a song
+                    e.getKeyCode() == 50 || e.getKeyCode() == 98 ||
+                    // Event to set '3' value in String to select a song
+                    e.getKeyCode() == 51 || e.getKeyCode() == 99 ||
+                    // Event to set '4' value in String to select a song
+                    e.getKeyCode() == 52 || e.getKeyCode() == 100 ||
+                    // Event to set '5' value in String to select a song
+                    e.getKeyCode() == 53 || e.getKeyCode() == 101 ||
+                    // Event to set '6' value in String to select a song
+                    e.getKeyCode() == 54 || e.getKeyCode() == 102 ||
+                    // Event to set '7' value in String to select a
+                    e.getKeyCode() == 55 || e.getKeyCode() == 103 ||
+                    // Event to set '8' value in String to select a
+                    e.getKeyCode() == 56 || e.getKeyCode() == 104 ||
+                    // Event to set '9' value in String to select a
+                    e.getKeyCode() == 57 || e.getKeyCode() == 105) {
+                setString(e.getKeyChar());
             }
-            // Event to set '1' value in String to select a song
-            else if (e.getKeyCode() == 49 || e.getKeyCode() == 97) {
-                setString("1");
-            }
-            // Event to set '2' value in String to select a song
-            else if (e.getKeyCode() == 50 || e.getKeyCode() == 98) {
-                setString("2");
-            }
-            // Event to set '3' value in String to select a song
-            else if (e.getKeyCode() == 51 || e.getKeyCode() == 99) {
-                setString("3");
-            }
-            // Event to set '4' value in String to select a song
-            else if (e.getKeyCode() == 52 || e.getKeyCode() == 100) {
-                setString("4");
-            }
-            // Event to set '5' value in String to select a song
-            else if (e.getKeyCode() == 53 || e.getKeyCode() == 101) {
-                setString("5");
-            }
-            // Event to set '6' value in String to select a song
-            else if (e.getKeyCode() == 54 || e.getKeyCode() == 102) {
-                setString("6");
-            }
-            // Event to set '7' value in String to select a song
-            else if (e.getKeyCode() == 55 || e.getKeyCode() == 103) {
-                setString("7");
-            }
-            // Event to set '8' value in String to select a song
-            else if (e.getKeyCode() == 56 || e.getKeyCode() == 104) {
-                setString("8");
-            }
-            // Event to set '9' value in String to select a song
-            else if (e.getKeyCode() == 57 || e.getKeyCode() == 105) {
-                setString("9");
-            }
-
             // Event to set default value in String to select a song
             else if (e.getKeyCode() == 110) {
                 setDefaultString();
@@ -268,7 +249,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                     System.exit(0);
 
                 }
-            }else {
+            } else {
                 e.consume();
             }
         }
@@ -674,12 +655,12 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     }
 
-    private void setString(String value) {
+    private void setString(char value) {
 
         if (currentCredits > 0) {
             for (int i = 0; i < stringLabel.length; i++) {
                 if ("-".equals(stringLabel[i])) {
-                    stringLabel[i] = value;
+                    stringLabel[i] = String.valueOf(value);
                     break;
                 }
             }
