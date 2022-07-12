@@ -285,9 +285,8 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                     videoMediaPlayer.release();
                     audioMediaPlayer.release();
 
-                    Runtime runtime = Runtime.getRuntime();
                     try {
-                        runtime.exec("shutdown -s -t 0");
+                        MediaLogic.shutdown();
                     } catch (IOException ex) {
                         logger.log(Level.WARNING, "Runtime exec error! " + ex);
                     }
