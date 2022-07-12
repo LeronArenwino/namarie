@@ -20,11 +20,18 @@ import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 
 import static com.namarie.logic.SettingsLogic.*;
 
 public class MainWindow extends javax.swing.JFrame implements Serializable {
+
+    // Create a Logger
+    private final Logger logger
+            = Logger.getLogger(
+            MainWindow.class.getName());
 
     // General components
     private JPanel containerPanel;
@@ -282,7 +289,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                     try {
                         runtime.exec("shutdown -s -t 0");
                     } catch (IOException ex) {
-                        ex.printStackTrace();
+                        logger.log(Level.WARNING, "Runtime exec error! " + ex);
                     }
                     System.exit(0);
 
@@ -517,7 +524,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
             };
 
         } catch (UnsatisfiedLinkError e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "Create EmbeddedMediaPlayerComponent error! " + e);
         }
 
         videosQueue = MediaLogic.getVideos(MediaLogic.videosPath);
