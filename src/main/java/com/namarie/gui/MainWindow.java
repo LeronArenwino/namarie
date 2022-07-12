@@ -360,6 +360,17 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
             e.consume();
         }
     };
+    private final ListSelectionListener songsListListSelection = new ListSelectionListener() {
+        /**
+         * Called whenever the value of the selection changes.
+         *
+         * @param e the event that characterizes the change.
+         */
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+            selectedSong = songsListJList.getSelectedIndex();
+        }
+    };
 
     public static void main(String[] args) {
 
@@ -409,17 +420,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         this.setContentPane(containerPanel);
 
         containerPanel.addKeyListener(mainWindowKeyListener);
-        songsListJList.addListSelectionListener(new ListSelectionListener() {
-            /**
-             * Called whenever the value of the selection changes.
-             *
-             * @param e the event that characterizes the change.
-             */
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                selectedSong = songsListJList.getSelectedIndex();
-            }
-        });
+        songsListJList.addListSelectionListener(songsListListSelection);
 
         selectedGender = 0;
 
