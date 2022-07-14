@@ -318,8 +318,8 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         // Set default configuration to JFrame
         this.setTitle("Namarie");
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setUndecorated(true);
