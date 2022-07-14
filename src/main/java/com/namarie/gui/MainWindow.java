@@ -53,13 +53,13 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     // Video and audio components
     private EmbeddedMediaPlayerComponent videoMediaPlayer;
-    private AudioPlayerComponent audioMediaPlayer;
+    private transient  AudioPlayerComponent audioMediaPlayer;
 
     //
-    private ArrayList<Song> musicQueue;
-    private ArrayList<Media> videosQueue;
-    private ArrayList<Media> promotionalVideos;
-    private ArrayList<ArrayList<Song>> musicListByGenders;
+    private transient ArrayList<Song> musicQueue;
+    private transient ArrayList<Media> videosQueue;
+    private transient ArrayList<Media> promotionalVideos;
+    private transient ArrayList<ArrayList<Song>> musicListByGenders;
     private String[] genders;
     private int selectedGender;
     private int selectedSong;
@@ -75,7 +75,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     private final Random rand = SecureRandom.getInstanceStrong();
 
     // KeyListener to KeyPressed event
-    private final KeyListener mainWindowKeyListener = new KeyListener() {
+    private final transient KeyListener mainWindowKeyListener = new KeyListener() {
         /**
          * Invoked when a key has been typed.
          * See the class description for {@link KeyEvent} for a definition of
