@@ -29,7 +29,7 @@ import static com.namarie.logic.SettingsLogic.*;
 public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     // Create a Logger
-    private final Logger logger
+    private final transient Logger logger
             = Logger.getLogger(
             MainWindow.class.getName());
 
