@@ -266,7 +266,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
             e.consume();
         }
     };
-    private final ListSelectionListener songsListListSelection = new ListSelectionListener() {
+    private final transient ListSelectionListener songsListListSelection = new ListSelectionListener() {
         /**
          * Called whenever the value of the selection changes.
          *
