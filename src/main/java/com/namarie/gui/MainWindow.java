@@ -53,7 +53,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     // Video and audio components
     private EmbeddedMediaPlayerComponent videoMediaPlayer;
-    private transient  AudioPlayerComponent audioMediaPlayer;
+    private transient AudioPlayerComponent audioMediaPlayer;
 
     //
     private transient ArrayList<Song> musicQueue;
@@ -244,7 +244,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                     try {
                         MediaLogic.shutdown();
                     } catch (IOException ex) {
-                        logger.log(Level.WARNING, "Runtime exec error! " + ex);
+                        logger.log(Level.WARNING, () -> "Runtime exec error! " + ex);
                     }
                     System.exit(0);
 
