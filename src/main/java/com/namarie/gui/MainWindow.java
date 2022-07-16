@@ -51,6 +51,10 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     private JLabel videoJLabel;
     private JButton searchSongsListButton;
 
+
+    private final JPanel advertisingPanel = new JPanel();
+    private final String advertisingMessage = "Error media-player!";
+
     // Video and audio components
     private EmbeddedMediaPlayerComponent videoMediaPlayer;
     private transient AudioPlayerComponent audioMediaPlayer;
@@ -410,6 +414,8 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                 @Override
                 public void error(MediaPlayer mediaPlayer) {
+                    JOptionPane.showMessageDialog(advertisingPanel, advertisingMessage, "Warning",
+                            JOptionPane.WARNING_MESSAGE);
                 }
             };
 
@@ -468,13 +474,14 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                         setMusicQueue(musicQueue);
 
                     } else {
-
                         timerRandomPromotionalVideo.start();
                     }
                 }
 
                 @Override
                 public void error(MediaPlayer mediaPlayer) {
+                    JOptionPane.showMessageDialog(advertisingPanel, advertisingMessage, "Warning",
+                            JOptionPane.WARNING_MESSAGE);
                 }
             };
 
