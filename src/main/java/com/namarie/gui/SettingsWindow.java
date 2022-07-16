@@ -454,10 +454,6 @@ public class SettingsWindow extends JFrame {
             powerOffButton.setText(Integer.toString((int) values.get(KEY_POWER_OFF)));
             nextSongSymbolLabel.setText(KeyEvent.getKeyText((int) values.get(KEY_NEXT_SONG)));
             nextSongButton.setText(Integer.toString((int) values.get(KEY_NEXT_SONG)));
-
-            //View
-//            color1ViewLabel.setBackground((Color)values.get(KEY_COLOR1));
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
