@@ -249,37 +249,23 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                     }
                 }
                 if (Arrays.stream(stringLabel).noneMatch("-"::equals)) {
-
                     selectedSong = Integer.parseInt(String.format("%s%s%s%s%s", stringLabel[0], stringLabel[1], stringLabel[2], stringLabel[3], stringLabel[4]));
-
                     if (selectedSong <= Objects.requireNonNull(MediaLogic.musicList()).size() - 1) {
-
                         Song song = Objects.requireNonNull(MediaLogic.musicList()).get(selectedSong);
-
                         if (videoMediaPlayer.mediaPlayer().status().isPlaying() && !promotionalVideoStatus) {
-
                             musicQueue.add(song);
                             setMusicQueue(musicQueue);
-
                         }
-
                         if (musicQueue.isEmpty()) {
-
                             playSong(song);
                             promotionalVideoStatus = false;
-
                         }
-
                         currentCredits -= 1;
                         creditsValidate(currentCredits > 0);
-
                     }
-
                     setDefaultString();
                 }
-
                 numberSong.setText(String.format(" %s %s %s %s %s ", stringLabel[0], stringLabel[1], stringLabel[2], stringLabel[3], stringLabel[4]));
-
             }
             // Event to set default value in String to select a song
             else if (e.getKeyCode() == 110) {
