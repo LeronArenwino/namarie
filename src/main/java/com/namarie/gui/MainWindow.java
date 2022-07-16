@@ -486,7 +486,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
             };
 
         } catch (UnsatisfiedLinkError e) {
-            logger.log(Level.WARNING, "Create EmbeddedMediaPlayerComponent error! " + e);
+            logger.log(Level.WARNING, () -> "Create EmbeddedMediaPlayerComponent error! " + e);
         }
 
         videosQueue = MediaLogic.getVideos(MediaLogic.videosPath);
