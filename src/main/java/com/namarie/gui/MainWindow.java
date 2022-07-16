@@ -81,9 +81,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     private javax.swing.Timer timerRandomSong;
     private javax.swing.Timer timerRandomPromotionalVideo;
 
-    // Random secure generator
-    private final Random rand = SecureRandom.getInstanceStrong();
-
     // KeyListener to KeyPressed event
     private final transient KeyListener mainWindowKeyListener = new KeyListener() {
         /**
