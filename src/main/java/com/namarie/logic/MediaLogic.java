@@ -35,7 +35,6 @@ public class MediaLogic {
 
     // Time TODO
     private static int randomSong;
-//    private int repeatSong;
 
     // Credits TODO
 
