@@ -397,7 +397,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     private void playRandomSong() {
 
-        // getContentPane().requestFocus();
+        getContentPane().requestFocus();
 
         if (promotionalVideoStatus) {
 
@@ -420,7 +420,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     private void playRandomPromotionalVideo() {
 
-        // getContentPane().requestFocus();
+        getContentPane().requestFocus();
 
         if (!videoMediaPlayer.mediaPlayer().status().isPlaying() && !audioMediaPlayer.mediaPlayer().status().isPlaying() && musicQueue.isEmpty()) {
 
