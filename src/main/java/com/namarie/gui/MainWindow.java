@@ -30,7 +30,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     // Constants
     private final JPanel advertisementPanel = new JPanel();
-    private static final String advertisementMessage = "Error media-player!";
+    private static final String ADVERTISEMENT_MESSAGE = "Error media-player!";
 
     private static final String ACTION_SONG = "%s%s%s%s%s%s%s";
     private static final String ACTION_MEDIA = "%s%s%s";
@@ -417,7 +417,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                 @Override
                 public void error(MediaPlayer mediaPlayer) {
-                    JOptionPane.showMessageDialog(advertisementPanel, advertisementMessage, "Warning",
+                    JOptionPane.showMessageDialog(advertisementPanel, ADVERTISEMENT_MESSAGE, "Warning",
                             JOptionPane.WARNING_MESSAGE);
                 }
             };
@@ -483,7 +483,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                 @Override
                 public void error(MediaPlayer mediaPlayer) {
-                    JOptionPane.showMessageDialog(advertisementPanel, advertisementMessage, "Warning",
+                    JOptionPane.showMessageDialog(advertisementPanel, ADVERTISEMENT_MESSAGE, "Warning",
                             JOptionPane.WARNING_MESSAGE);
                 }
             };
