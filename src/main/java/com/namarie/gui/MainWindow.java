@@ -61,10 +61,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     private JLabel videoJLabel;
     private JButton searchSongsListButton;
 
-
-    private final JPanel advertisingPanel = new JPanel();
-    private final String advertisingMessage = "Error media-player!";
-
     // Video and audio components
     private EmbeddedMediaPlayerComponent videoMediaPlayer;
     private transient AudioPlayerComponent audioMediaPlayer;
