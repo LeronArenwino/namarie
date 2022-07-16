@@ -28,32 +28,32 @@ public class MediaLogic {
     private static final String PATTERN_AUDIO = "(\\S+(\\.(?i)(mp3|wav|wma|mpeg))$)";
 
     // Folders
-    public static String videosPath;
-    public static String songsPath;
-    public static boolean promotionalVideoValidate;
-    public static String promotionalVideoPath;
+    private static String videosPath;
+    private static String songsPath;
+    private static boolean promotionalVideoValidate;
+    private static String promotionalVideoPath;
 
     // Time TODO
-    public static int randomSong;
-//    private static int repeatSong;
+    private static int randomSong;
+//    private int repeatSong;
 
     // Credits TODO
 
     // Keys
-    public static int upSong;
-    public static int downSong;
-    public static int upSongs;
-    public static int downSongs;
-    public static int upGender;
-    public static int downGender;
-    public static int addCoin;
-    public static int removeCoin;
-    public static int powerOff;
-    public static int nextSong;
+    private static int upSong;
+    private static int downSong;
+    private static int upSongs;
+    private static int downSongs;
+    private static int upGender;
+    private static int downGender;
+    private static int addCoin;
+    private static int removeCoin;
+    private static int powerOff;
+    private static int nextSong;
 
-    public static Pattern patternMedia;
-    public static Pattern patternVideo;
-    public static Pattern patternAudio;
+    private static final Pattern patternMedia;
+    private static final Pattern patternVideo;
+    private static final Pattern patternAudio;
 
     static {
 
@@ -69,6 +69,78 @@ public class MediaLogic {
 
     private MediaLogic() {
         throw new IllegalStateException("Utility class");
+    }
+
+    public static String getVideosPath() {
+        return videosPath;
+    }
+
+    public static String getSongsPath() {
+        return songsPath;
+    }
+
+    public static boolean isPromotionalVideoValidate() {
+        return promotionalVideoValidate;
+    }
+
+    public static String getPromotionalVideoPath() {
+        return promotionalVideoPath;
+    }
+
+    public static int getRandomSong() {
+        return randomSong;
+    }
+
+    public static int getUpSong() {
+        return upSong;
+    }
+
+    public static int getDownSong() {
+        return downSong;
+    }
+
+    public static int getUpSongs() {
+        return upSongs;
+    }
+
+    public static int getDownSongs() {
+        return downSongs;
+    }
+
+    public static int getUpGender() {
+        return upGender;
+    }
+
+    public static int getDownGender() {
+        return downGender;
+    }
+
+    public static int getAddCoin() {
+        return addCoin;
+    }
+
+    public static int getRemoveCoin() {
+        return removeCoin;
+    }
+
+    public static int getPowerOff() {
+        return powerOff;
+    }
+
+    public static int getNextSong() {
+        return nextSong;
+    }
+
+    public static Pattern getPatternMedia() {
+        return patternMedia;
+    }
+
+    public static Pattern getPatternVideo() {
+        return patternVideo;
+    }
+
+    public static Pattern getPatternAudio() {
+        return patternAudio;
     }
 
     /**
@@ -281,11 +353,9 @@ public class MediaLogic {
 
         if ("Linux".equals(operatingSystem) || "Mac OS X".equals(operatingSystem)) {
             shutdownCommand = "shutdown -h now";
-        }
-        else if ("Windows".equals(operatingSystem)) {
+        } else if ("Windows".equals(operatingSystem)) {
             shutdownCommand = "shutdown.exe -s -t 0";
-        }
-        else {
+        } else {
             throw new RuntimeException("Unsupported operating system.");
         }
 
