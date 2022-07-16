@@ -347,150 +347,13 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         musicListPanel.setPreferredSize(new Dimension(RESOLUTION_WIDTH / 4, RESOLUTION_HEIGHT / 2));
         songsListPanel.setPreferredSize(new Dimension(RESOLUTION_WIDTH / 2, RESOLUTION_HEIGHT));
 
-        try {
+        setVideoMediaPlayer();
 
-            // Create EmbeddedMediaPlayerComponent instances and add to the video panel
-            videoMediaPlayer = new EmbeddedMediaPlayerComponent() {
+        // Add to the player container our canvas
+        videoPanel.add(videoMediaPlayer, BorderLayout.CENTER);
+        videoMediaPlayer.addKeyListener(mainWindowKeyListener);
 
-                @Override
-                public void playing(MediaPlayer mediaPlayer) {
-
-                    getContentPane().requestFocus();
-
-                }
-
-                @Override
-                public void finished(MediaPlayer mediaPlayer) {
-
-                    getContentPane().requestFocus();
-
-                    timerRandomSong.start();
-
-                    if (!audioMediaPlayer.mediaPlayer().status().isPlaying() && !mediaPlayer.status().isPlaying() && !musicQueue.isEmpty()) {
-
-                        timerRandomSong.stop();
-
-                        Song song = musicQueue.get(0);
-
-                        Matcher matcher = MediaLogic.patternVideo.matcher(song.getName());
-
-                        if (matcher.find()) {
-
-                            mediaPlayer.submit(() -> mediaPlayer.media().play(String.format("%s%s%s%s%s%s%s", MediaLogic.songsPath, File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName())));
-
-                        }
-
-                        matcher = MediaLogic.patternAudio.matcher(song.getName());
-
-                        if (matcher.find()) {
-
-                            int randVideo = rand.nextInt(videosQueue.size());
-
-                            Media video = videosQueue.get(randVideo);
-
-                            mediaPlayer.submit(() -> mediaPlayer.media().play(String.format(ACTION_MEDIA, MediaLogic.videosPath, File.separator, video.getName())));
-                            audioMediaPlayer.mediaPlayer().media().play(String.format(ACTION_SONG, MediaLogic.songsPath, File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName()));
-
-                        }
-
-                        musicQueue.remove(0);
-
-                        setMusicQueue(musicQueue);
-
-                    } else if (audioMediaPlayer.mediaPlayer().status().isPlaying()) {
-
-                        timerRandomSong.stop();
-
-                        int randVideo = rand.nextInt(videosQueue.size());
-
-                        Media video = videosQueue.get(randVideo);
-
-                        mediaPlayer.submit(() -> mediaPlayer().media().play(String.format(ACTION_MEDIA, MediaLogic.videosPath, File.separator, video.getName())));
-
-                    } else {
-
-                        timerRandomPromotionalVideo.start();
-
-                    }
-
-                }
-
-                @Override
-                public void error(MediaPlayer mediaPlayer) {
-                    JOptionPane.showMessageDialog(advertisementPanel, ADVERTISEMENT_MESSAGE, "Warning",
-                            JOptionPane.WARNING_MESSAGE);
-                }
-            };
-
-            // Add to the player container our canvas
-            videoPanel.add(videoMediaPlayer, BorderLayout.CENTER);
-            videoMediaPlayer.addKeyListener(mainWindowKeyListener);
-
-            // Create AudioPlayerComponent instances
-            audioMediaPlayer = new AudioPlayerComponent() {
-
-                @Override
-                public void playing(MediaPlayer mediaPlayer) {
-
-                    getContentPane().requestFocus();
-
-                }
-
-                @Override
-                public void finished(MediaPlayer mediaPlayer) {
-
-                    getContentPane().requestFocus();
-
-                    videoMediaPlayer.mediaPlayer().controls().stop();
-
-                    timerRandomSong.start();
-
-                    if (!mediaPlayer.status().isPlaying() && !musicQueue.isEmpty()) {
-
-                        timerRandomSong.stop();
-
-                        Song song = musicQueue.get(0);
-
-                        Matcher matcher = MediaLogic.patternVideo.matcher(song.getName());
-
-                        if (matcher.find()) {
-
-                            videoMediaPlayer.mediaPlayer().media().play(String.format(ACTION_SONG, MediaLogic.songsPath, File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName()));
-
-                        }
-
-                        matcher = MediaLogic.patternAudio.matcher(song.getName());
-
-                        if (matcher.find()) {
-
-                            int randVideo = rand.nextInt(videosQueue.size());
-
-                            Media video = videosQueue.get(randVideo);
-
-                            videoMediaPlayer.mediaPlayer().media().play(String.format(ACTION_MEDIA, MediaLogic.videosPath, File.separator, video.getName()));
-                            mediaPlayer.submit(() -> mediaPlayer.media().play(String.format(ACTION_SONG, MediaLogic.songsPath, File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName())));
-
-                        }
-
-                        musicQueue.remove(0);
-
-                        setMusicQueue(musicQueue);
-
-                    } else {
-                        timerRandomPromotionalVideo.start();
-                    }
-                }
-
-                @Override
-                public void error(MediaPlayer mediaPlayer) {
-                    JOptionPane.showMessageDialog(advertisementPanel, ADVERTISEMENT_MESSAGE, "Warning",
-                            JOptionPane.WARNING_MESSAGE);
-                }
-            };
-
-        } catch (UnsatisfiedLinkError e) {
-            logger.log(Level.WARNING, () -> "Create EmbeddedMediaPlayerComponent error! " + e);
-        }
+        setMusicMediaPlayer();
 
         videosQueue = MediaLogic.getVideos(MediaLogic.videosPath);
         promotionalVideos = MediaLogic.getVideos(MediaLogic.promotionalVideoPath);
@@ -740,6 +603,149 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
             songsListJList.setModel(model);
         }
+
+    }
+
+    private void setMusicMediaPlayer() {
+
+        // Create AudioPlayerComponent instances
+        audioMediaPlayer = new AudioPlayerComponent() {
+
+            @Override
+            public void playing(MediaPlayer mediaPlayer) {
+
+                getContentPane().requestFocus();
+
+            }
+
+            @Override
+            public void finished(MediaPlayer mediaPlayer) {
+
+                getContentPane().requestFocus();
+
+                videoMediaPlayer.mediaPlayer().controls().stop();
+
+                timerRandomSong.start();
+
+                if (!mediaPlayer.status().isPlaying() && !musicQueue.isEmpty()) {
+
+                    timerRandomSong.stop();
+
+                    Song song = musicQueue.get(0);
+
+                    Matcher matcher = MediaLogic.patternVideo.matcher(song.getName());
+
+                    if (matcher.find()) {
+
+                        videoMediaPlayer.mediaPlayer().media().play(String.format(ACTION_SONG, MediaLogic.songsPath, File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName()));
+
+                    }
+
+                    matcher = MediaLogic.patternAudio.matcher(song.getName());
+
+                    if (matcher.find()) {
+
+                        int randVideo = rand.nextInt(videosQueue.size());
+
+                        Media video = videosQueue.get(randVideo);
+
+                        videoMediaPlayer.mediaPlayer().media().play(String.format(ACTION_MEDIA, MediaLogic.videosPath, File.separator, video.getName()));
+                        mediaPlayer.submit(() -> mediaPlayer.media().play(String.format(ACTION_SONG, MediaLogic.songsPath, File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName())));
+
+                    }
+
+                    musicQueue.remove(0);
+
+                    setMusicQueue(musicQueue);
+
+                } else {
+                    timerRandomPromotionalVideo.start();
+                }
+            }
+
+            @Override
+            public void error(MediaPlayer mediaPlayer) {
+                JOptionPane.showMessageDialog(advertisementPanel, ADVERTISEMENT_MESSAGE, "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+        };
+
+    }
+
+    private void setVideoMediaPlayer() {
+
+        // Create EmbeddedMediaPlayerComponent instances and add to the video panel
+        videoMediaPlayer = new EmbeddedMediaPlayerComponent() {
+
+            @Override
+            public void playing(MediaPlayer mediaPlayer) {
+
+                getContentPane().requestFocus();
+
+            }
+
+            @Override
+            public void finished(MediaPlayer mediaPlayer) {
+
+                getContentPane().requestFocus();
+
+                timerRandomSong.start();
+
+                if (!audioMediaPlayer.mediaPlayer().status().isPlaying() && !mediaPlayer.status().isPlaying() && !musicQueue.isEmpty()) {
+
+                    timerRandomSong.stop();
+
+                    Song song = musicQueue.get(0);
+
+                    Matcher matcher = MediaLogic.patternVideo.matcher(song.getName());
+
+                    if (matcher.find()) {
+
+                        mediaPlayer.submit(() -> mediaPlayer.media().play(String.format(ACTION_SONG, MediaLogic.songsPath, File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName())));
+
+                    }
+
+                    matcher = MediaLogic.patternAudio.matcher(song.getName());
+
+                    if (matcher.find()) {
+
+                        int randVideo = rand.nextInt(videosQueue.size());
+
+                        Media video = videosQueue.get(randVideo);
+
+                        mediaPlayer.submit(() -> mediaPlayer.media().play(String.format(ACTION_MEDIA, MediaLogic.videosPath, File.separator, video.getName())));
+                        audioMediaPlayer.mediaPlayer().media().play(String.format(ACTION_SONG, MediaLogic.songsPath, File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName()));
+
+                    }
+
+                    musicQueue.remove(0);
+
+                    setMusicQueue(musicQueue);
+
+                } else if (audioMediaPlayer.mediaPlayer().status().isPlaying()) {
+
+                    timerRandomSong.stop();
+
+                    int randVideo = rand.nextInt(videosQueue.size());
+
+                    Media video = videosQueue.get(randVideo);
+
+                    mediaPlayer.submit(() -> mediaPlayer().media().play(String.format(ACTION_MEDIA, MediaLogic.videosPath, File.separator, video.getName())));
+
+                } else {
+
+                    timerRandomPromotionalVideo.start();
+
+                }
+
+            }
+
+            @Override
+            public void error(MediaPlayer mediaPlayer) {
+                JOptionPane.showMessageDialog(advertisementPanel, ADVERTISEMENT_MESSAGE, "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+        };
 
     }
 
