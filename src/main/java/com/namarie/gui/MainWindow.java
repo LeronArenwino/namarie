@@ -223,7 +223,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 loadSongsListJList();
             }
             // Event to set '0' value in String to select a song
-            else if (e.getKeyCode() == 48 || e.getKeyCode() == 96 ||
+            else if ((e.getKeyCode() == 48 || e.getKeyCode() == 96 ||
                     // Event to set '1' value in String to select a song
                     e.getKeyCode() == 49 || e.getKeyCode() == 97 ||
                     // Event to set '2' value in String to select a song
@@ -241,8 +241,45 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                     // Event to set '8' value in String to select a
                     e.getKeyCode() == 56 || e.getKeyCode() == 104 ||
                     // Event to set '9' value in String to select a
-                    e.getKeyCode() == 57 || e.getKeyCode() == 105) {
-                setString(e.getKeyChar());
+                    e.getKeyCode() == 57 || e.getKeyCode() == 105) && currentCredits > 0) {
+                for (int i = 0; i < stringLabel.length; i++) {
+                    if ("-".equals(stringLabel[i])) {
+                        stringLabel[i] = String.valueOf(e.getKeyChar());
+                        break;
+                    }
+                }
+                if (Arrays.stream(stringLabel).noneMatch("-"::equals)) {
+
+                    selectedSong = Integer.parseInt(String.format("%s%s%s%s%s", stringLabel[0], stringLabel[1], stringLabel[2], stringLabel[3], stringLabel[4]));
+
+                    if (selectedSong <= Objects.requireNonNull(MediaLogic.musicList()).size() - 1) {
+
+                        Song song = Objects.requireNonNull(MediaLogic.musicList()).get(selectedSong);
+
+                        if (videoMediaPlayer.mediaPlayer().status().isPlaying() && !promotionalVideoStatus) {
+
+                            musicQueue.add(song);
+                            setMusicQueue(musicQueue);
+
+                        }
+
+                        if (musicQueue.isEmpty()) {
+
+                            playSong(song);
+                            promotionalVideoStatus = false;
+
+                        }
+
+                        currentCredits -= 1;
+                        creditsValidate(currentCredits > 0);
+
+                    }
+
+                    setDefaultString();
+                }
+
+                numberSong.setText(String.format(" %s %s %s %s %s ", stringLabel[0], stringLabel[1], stringLabel[2], stringLabel[3], stringLabel[4]));
+
             }
             // Event to set default value in String to select a song
             else if (e.getKeyCode() == 110) {
@@ -499,51 +536,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         Arrays.fill(stringLabel, "-");
         numberSong.setText(String.format(" %s %s %s %s %s ", stringLabel[0], stringLabel[1], stringLabel[2], stringLabel[3], stringLabel[4]));
-
-    }
-
-    private void setString(char value) {
-
-        if (currentCredits > 0) {
-            for (int i = 0; i < stringLabel.length; i++) {
-                if ("-".equals(stringLabel[i])) {
-                    stringLabel[i] = String.valueOf(value);
-                    break;
-                }
-            }
-            if (Arrays.stream(stringLabel).noneMatch("-"::equals)) {
-
-                selectedSong = Integer.parseInt(String.format("%s%s%s%s%s", stringLabel[0], stringLabel[1], stringLabel[2], stringLabel[3], stringLabel[4]));
-
-                if (selectedSong <= Objects.requireNonNull(MediaLogic.musicList()).size() - 1) {
-
-                    Song song = Objects.requireNonNull(MediaLogic.musicList()).get(selectedSong);
-
-                    if (videoMediaPlayer.mediaPlayer().status().isPlaying() && !promotionalVideoStatus) {
-
-                        musicQueue.add(song);
-                        setMusicQueue(musicQueue);
-
-                    }
-
-                    if (musicQueue.isEmpty()) {
-
-                        playSong(song);
-                        promotionalVideoStatus = false;
-
-                    }
-
-                    currentCredits -= 1;
-                    creditsValidate(currentCredits > 0);
-
-                }
-
-                setDefaultString();
-            }
-
-            numberSong.setText(String.format(" %s %s %s %s %s ", stringLabel[0], stringLabel[1], stringLabel[2], stringLabel[3], stringLabel[4]));
-
-        }
 
     }
 
