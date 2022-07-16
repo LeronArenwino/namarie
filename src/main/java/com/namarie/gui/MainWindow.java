@@ -376,8 +376,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         ActionListener playRandomPromotionalVideo = e -> playRandomPromotionalVideo();
 
-        ActionListener movingTextLabel = e -> movingTextLabel();
-
         timerRandomSong = new Timer(MediaLogic.randomSong * 60000, playRandomSong);
         timerRandomSong.setRepeats(false);
         timerRandomSong.start();
@@ -385,10 +383,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         timerRandomPromotionalVideo = new Timer(0, playRandomPromotionalVideo);
         timerRandomPromotionalVideo.setRepeats(false);
         timerRandomPromotionalVideo.start();
-
-        Timer timerMovingTextLabel = new Timer(600, movingTextLabel);
-        timerMovingTextLabel.setRepeats(true);
-        timerMovingTextLabel.start();
 
     }
 
@@ -489,14 +483,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         songsGenderLabel.setText(genders[selectedGender]);
         setMusicList(musicListByGenders.get(selectedGender), genders[selectedGender]);
         updateSelectedSongInSongsList();
-
-    }
-
-    private void movingTextLabel() {
-
-        String oldText = videoJLabel.getText();
-        String newText = oldText.substring(1) + oldText.charAt(0);
-        videoJLabel.setText(newText);
 
     }
 
