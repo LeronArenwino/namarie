@@ -182,8 +182,17 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
             // Event to play the next song in music queue
             else if (e.getKeyCode() == MediaLogic.nextSong) {
                 timerRandomSong.start();
-                // TODO Promotional video
-                nextSong();
+                videoMediaPlayer.mediaPlayer().controls().stop();
+                audioMediaPlayer.mediaPlayer().controls().stop();
+                if (!musicQueue.isEmpty()) {
+                    timerRandomSong.stop();
+                    Song song = musicQueue.get(0);
+                    playSong(song);
+                    musicQueue.remove(0);
+                    setMusicQueue(musicQueue);
+                } else {
+                    timerRandomPromotionalVideo.start();
+                }
             }
             // Event to play or add a song to music queue with ENTER
             else if (e.getKeyCode() == 10 && currentCredits > 0) {
@@ -483,27 +492,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         songsGenderLabel.setText(genders[selectedGender]);
         setMusicList(musicListByGenders.get(selectedGender), genders[selectedGender]);
         updateSelectedSongInSongsList();
-
-    }
-
-    private void nextSong() {
-
-        videoMediaPlayer.mediaPlayer().controls().stop();
-        audioMediaPlayer.mediaPlayer().controls().stop();
-
-        if (!musicQueue.isEmpty()) {
-
-            timerRandomSong.stop();
-            Song song = musicQueue.get(0);
-            playSong(song);
-            musicQueue.remove(0);
-            setMusicQueue(musicQueue);
-
-        } else {
-
-            timerRandomPromotionalVideo.start();
-
-        }
 
     }
 
