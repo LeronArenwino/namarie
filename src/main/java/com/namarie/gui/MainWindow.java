@@ -110,17 +110,17 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 settingsWindow.setVisible(true);
             }
             // Event to open add coin
-            else if (e.getKeyCode() == MediaLogic.addCoin && currentCredits < 25) {
+            else if (e.getKeyCode() == MediaLogic.getAddCoin() && currentCredits < 25) {
                 currentCredits += 1;
                 creditsValidate(currentCredits > 0);
             }
             // Event to open remove coin
-            else if (e.getKeyCode() == MediaLogic.removeCoin && currentCredits > 0) {
+            else if (e.getKeyCode() == MediaLogic.getRemoveCoin() && currentCredits > 0) {
                 currentCredits -= 1;
                 creditsValidate(currentCredits > 0);
             }
             // Event to up gender in gender list
-            else if (e.getKeyCode() == MediaLogic.upGender) {
+            else if (e.getKeyCode() == MediaLogic.getUpGender()) {
                 if (selectedGender < genders.length - 1) {
                     selectedGender++;
                 } else {
@@ -129,7 +129,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 loadSongsListJList();
             }
             // Event to down gender in gender list
-            else if (e.getKeyCode() == MediaLogic.downGender) {
+            else if (e.getKeyCode() == MediaLogic.getDownGender()) {
                 if (selectedGender > 0) {
                     selectedGender--;
                 } else {
@@ -138,7 +138,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 loadSongsListJList();
             }
             // Event to up a song in music list
-            else if (e.getKeyCode() == MediaLogic.upSong) {
+            else if (e.getKeyCode() == MediaLogic.getUpSong()) {
                 if (selectedSong > 0) {
                     selectedSong--;
                 } else {
@@ -147,7 +147,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 updateSelectedSongInSongsList();
             }
             // Event to down a song in music list
-            else if (e.getKeyCode() == MediaLogic.downSong) {
+            else if (e.getKeyCode() == MediaLogic.getDownSong()) {
                 if (selectedSong < songsListJList.getModel().getSize() - 1) {
                     selectedSong++;
                 } else {
@@ -156,7 +156,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 updateSelectedSongInSongsList();
             }
             // Event to up 20 songs in music list
-            else if (e.getKeyCode() == MediaLogic.upSongs) {
+            else if (e.getKeyCode() == MediaLogic.getUpSongs()) {
                 if (selectedSong < songsListJList.getModel().getSize() - 1) {
                     selectedSong += 20;
                     if (selectedSong > songsListJList.getModel().getSize() - 1) {
@@ -168,7 +168,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 updateSelectedSongInSongsList();
             }
             // Event to down 20 songs in music list
-            else if (e.getKeyCode() == MediaLogic.downSongs) {
+            else if (e.getKeyCode() == MediaLogic.getDownSongs()) {
                 if (selectedSong > 0) {
                     selectedSong -= 20;
                     if (selectedSong < 0) {
@@ -180,7 +180,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 updateSelectedSongInSongsList();
             }
             // Event to play the next song in music queue
-            else if (e.getKeyCode() == MediaLogic.nextSong) {
+            else if (e.getKeyCode() == MediaLogic.getNextSong()) {
                 timerRandomSong.start();
                 videoMediaPlayer.mediaPlayer().controls().stop();
                 audioMediaPlayer.mediaPlayer().controls().stop();
@@ -272,7 +272,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 setDefaultString();
             }
             // Event to power off computer
-            else if (e.getKeyCode() == MediaLogic.powerOff) {
+            else if (e.getKeyCode() == MediaLogic.getPowerOff()) {
                 String s = JOptionPane.showInputDialog(null, "Password:", "Power off", JOptionPane.PLAIN_MESSAGE);
 
                 if ("031217".equals(s)) {
@@ -387,8 +387,8 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         setMusicMediaPlayer();
 
-        videosQueue = MediaLogic.getVideos(MediaLogic.videosPath);
-        promotionalVideos = MediaLogic.getVideos(MediaLogic.promotionalVideoPath);
+        videosQueue = MediaLogic.getVideos(MediaLogic.getVideosPath());
+        promotionalVideos = MediaLogic.getVideos(MediaLogic.getPromotionalVideoPath());
 
         genders = MediaLogic.gendersList();
 
@@ -408,7 +408,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         ActionListener playRandomPromotionalVideo = e -> playRandomPromotionalVideo();
 
-        timerRandomSong = new Timer(MediaLogic.randomSong * 60000, playRandomSong);
+        timerRandomSong = new Timer(MediaLogic.getRandomSong() * 60000, playRandomSong);
         timerRandomSong.setRepeats(false);
         timerRandomSong.start();
 
@@ -470,16 +470,16 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     private void playSong(Song song) {
 
-        Matcher matcher = MediaLogic.patternVideo.matcher(song.getName());
+        Matcher matcher = MediaLogic.getPatternVideo().matcher(song.getName());
 
         if (matcher.find()) {
 
-            videoMediaPlayer.mediaPlayer().media().play(String.format(ACTION_SONG, MediaLogic.songsPath, File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName()));
+            videoMediaPlayer.mediaPlayer().media().play(String.format(ACTION_SONG, MediaLogic.getSongsPath(), File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName()));
             videoJLabel.setText(song.toString());
 
         }
 
-        matcher = MediaLogic.patternAudio.matcher(song.getName());
+        matcher = MediaLogic.getPatternAudio().matcher(song.getName());
 
         if (matcher.find()) {
 
@@ -487,8 +487,8 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
             Media video = videosQueue.get(randVideo);
 
-            videoMediaPlayer.mediaPlayer().media().play(String.format(ACTION_MEDIA, MediaLogic.videosPath, File.separator, video.getName()));
-            audioMediaPlayer.mediaPlayer().media().play(String.format(ACTION_SONG, MediaLogic.songsPath, File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName()));
+            videoMediaPlayer.mediaPlayer().media().play(String.format(ACTION_MEDIA, MediaLogic.getVideosPath(), File.separator, video.getName()));
+            audioMediaPlayer.mediaPlayer().media().play(String.format(ACTION_SONG, MediaLogic.getSongsPath(), File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName()));
             videoJLabel.setText(song.toString());
 
         }
@@ -503,7 +503,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     private void playPromotionalMedia(Media video) {
 
-        videoMediaPlayer.mediaPlayer().media().play(String.format(ACTION_MEDIA, MediaLogic.promotionalVideoPath, File.separator, video.getName()));
+        videoMediaPlayer.mediaPlayer().media().play(String.format(ACTION_MEDIA, MediaLogic.getPromotionalVideoPath(), File.separator, video.getName()));
 
         promotionalVideoStatus = true;
 
@@ -585,15 +585,15 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                     Song song = musicQueue.get(0);
 
-                    Matcher matcher = MediaLogic.patternVideo.matcher(song.getName());
+                    Matcher matcher = MediaLogic.getPatternVideo().matcher(song.getName());
 
                     if (matcher.find()) {
 
-                        videoMediaPlayer.mediaPlayer().media().play(String.format(ACTION_SONG, MediaLogic.songsPath, File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName()));
+                        videoMediaPlayer.mediaPlayer().media().play(String.format(ACTION_SONG, MediaLogic.getSongsPath(), File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName()));
 
                     }
 
-                    matcher = MediaLogic.patternAudio.matcher(song.getName());
+                    matcher = MediaLogic.getPatternAudio().matcher(song.getName());
 
                     if (matcher.find()) {
 
@@ -601,8 +601,8 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                         Media video = videosQueue.get(randVideo);
 
-                        videoMediaPlayer.mediaPlayer().media().play(String.format(ACTION_MEDIA, MediaLogic.videosPath, File.separator, video.getName()));
-                        mediaPlayer.submit(() -> mediaPlayer.media().play(String.format(ACTION_SONG, MediaLogic.songsPath, File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName())));
+                        videoMediaPlayer.mediaPlayer().media().play(String.format(ACTION_MEDIA, MediaLogic.getVideosPath(), File.separator, video.getName()));
+                        mediaPlayer.submit(() -> mediaPlayer.media().play(String.format(ACTION_SONG, MediaLogic.getSongsPath(), File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName())));
 
                     }
 
@@ -649,15 +649,15 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                     Song song = musicQueue.get(0);
 
-                    Matcher matcher = MediaLogic.patternVideo.matcher(song.getName());
+                    Matcher matcher = MediaLogic.getPatternVideo().matcher(song.getName());
 
                     if (matcher.find()) {
 
-                        mediaPlayer.submit(() -> mediaPlayer.media().play(String.format(ACTION_SONG, MediaLogic.songsPath, File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName())));
+                        mediaPlayer.submit(() -> mediaPlayer.media().play(String.format(ACTION_SONG, MediaLogic.getSongsPath(), File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName())));
 
                     }
 
-                    matcher = MediaLogic.patternAudio.matcher(song.getName());
+                    matcher = MediaLogic.getPatternAudio().matcher(song.getName());
 
                     if (matcher.find()) {
 
@@ -665,8 +665,8 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                         Media video = videosQueue.get(randVideo);
 
-                        mediaPlayer.submit(() -> mediaPlayer.media().play(String.format(ACTION_MEDIA, MediaLogic.videosPath, File.separator, video.getName())));
-                        audioMediaPlayer.mediaPlayer().media().play(String.format(ACTION_SONG, MediaLogic.songsPath, File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName()));
+                        mediaPlayer.submit(() -> mediaPlayer.media().play(String.format(ACTION_MEDIA, MediaLogic.getVideosPath(), File.separator, video.getName())));
+                        audioMediaPlayer.mediaPlayer().media().play(String.format(ACTION_SONG, MediaLogic.getSongsPath(), File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName()));
 
                     }
 
@@ -682,7 +682,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                     Media video = videosQueue.get(randVideo);
 
-                    mediaPlayer.submit(() -> mediaPlayer().media().play(String.format(ACTION_MEDIA, MediaLogic.videosPath, File.separator, video.getName())));
+                    mediaPlayer.submit(() -> mediaPlayer().media().play(String.format(ACTION_MEDIA, MediaLogic.getVideosPath(), File.separator, video.getName())));
 
                 } else {
 
