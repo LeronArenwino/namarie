@@ -317,6 +317,28 @@ public class MediaLogic {
         return musicListByGenders;
     }
 
+    public static List<Song> getSongs(String[] songs, String singer, String gender) {
+
+        List<Song> musicList = new ArrayList<>();
+
+        if (songs == null) return Collections.emptyList();
+        Arrays.sort(songs, String::compareToIgnoreCase);
+
+        for (String song : songs) {
+
+            File songFile = new File(String.format(ACTION_SONG, songsPath, File.separator, gender, File.separator, singer, File.separator, song));
+
+            if (songFile.isFile()) {
+                Matcher matcher = patternMedia.matcher(songFile.getName());
+                if (matcher.find()) {
+                    musicList.add(new Song(songCounter, song, singer, gender));
+                    songCounter++;
+                }
+            }
+        }
+        return musicList;
+    }
+
     public static List<Song> getSongsBySinger(String[] singers, String gender) {
 
         List<Song> musicList = new ArrayList<>();
@@ -331,22 +353,9 @@ public class MediaLogic {
 
             if (singerDirectory.isDirectory()) {
                 songs = singerDirectory.list();
-
-                if (songs == null) return Collections.emptyList();
-                Arrays.sort(songs, String::compareToIgnoreCase);
-
-                for (String song : songs) {
-
-                    File songFile = new File(String.format(ACTION_SONG, songsPath, File.separator, gender, File.separator, singer, File.separator, song));
-
-                    if (songFile.isFile()) {
-                        Matcher matcher = patternMedia.matcher(songFile.getName());
-                        if (matcher.find()) {
-                            musicList.add(new Song(songCounter, song, singer, gender));
-                            songCounter++;
-                        }
-                    }
-                }
+                musicList = Stream.of(musicList, getSongs(songs, singer, gender))
+                        .flatMap(Collection::stream)
+                        .collect(Collectors.toList());
             }
         }
         return musicList;
