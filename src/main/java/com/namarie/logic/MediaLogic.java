@@ -156,7 +156,7 @@ public class MediaLogic {
 
         if (directory.isDirectory()) genders = directory.list();
 
-        if (genders == null) return null;
+        if (genders == null) return new String[0];
 
         Arrays.sort(genders, String::compareToIgnoreCase);
 
