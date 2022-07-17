@@ -163,7 +163,7 @@ public class MediaLogic {
 
         for (String gender : genders) {
 
-            File genderDirectory = new File(String.format("%s" + File.separator + "%s", songsPath, gender));
+            File genderDirectory = new File(String.format("%s%s%s", songsPath, File.separator, gender));
 
             if (!genderDirectory.isDirectory()) {
                 List<String> gendersList = new ArrayList<>(Arrays.asList(genders));
@@ -198,7 +198,7 @@ public class MediaLogic {
 
         for (String video : videos) {
 
-            File videoDirectory = new File(String.format("%s" + File.separator + "%s", videosPath, video));
+            File videoDirectory = new File(String.format("%s%s%s", videosPath, File.separator, video));
 
             if (videoDirectory.isFile()) {
 
@@ -278,7 +278,7 @@ public class MediaLogic {
 
         for (String gender : genders) {
 
-            File genderDirectory = new File(String.format("%s" + File.separator + "%s", songsPath, gender));
+            File genderDirectory = new File(String.format("%s%s%s", songsPath, File.separator, gender));
 
             if (genderDirectory.isDirectory()) {
 
@@ -290,7 +290,7 @@ public class MediaLogic {
 
                 for (String singer : singers) {
 
-                    File singerDirectory = new File(String.format("%s" + File.separator + "%s" + File.separator + "%s", songsPath, gender, singer));
+                    File singerDirectory = new File(String.format("%s%s%s%s%s", songsPath, File.separator, gender, File.separator, singer));
 
                     if (singerDirectory.isDirectory()) {
 
@@ -302,7 +302,7 @@ public class MediaLogic {
 
                         for (String song : songs) {
 
-                            File songFile = new File(String.format("%s" + File.separator + "%s" + File.separator + "%s" + File.separator + "%s", songsPath, gender, singer, song));
+                            File songFile = new File(String.format("%s%s%s%s%s%s%s", songsPath, File.separator, gender, File.separator, singer, File.separator, song));
 
                             if (songFile.isFile()) {
 
