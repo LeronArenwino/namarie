@@ -181,11 +181,11 @@ public class MediaLogic {
      * @param videosPath Path where is videos.
      * @return the ArrayList<Media> with the videos name or null if this doesn't contain videos.
      */
-    public static ArrayList<Media> getVideos(String videosPath) {
+    public static List<Media> getVideos(String videosPath) {
 
         String[] videos = null;
         int videoCounter = 0;
-        ArrayList<Media> videoList = new ArrayList<>();
+        List<Media> videoList = new ArrayList<>();
 
         File directory = new File(videosPath);
 
@@ -259,13 +259,13 @@ public class MediaLogic {
 
     }
 
-    public static ArrayList<Song> musicList() {
+    public static List<Song> musicList() {
 
         String[] genders = null;
         String[] singers;
         String[] songs;
         int songCounter = 0;
-        ArrayList<Song> musicList = new ArrayList<>();
+        List<Song> musicList = new ArrayList<>();
 
         File directory = new File(songsPath);
 
@@ -324,16 +324,16 @@ public class MediaLogic {
 
     }
 
-    public static ArrayList<ArrayList<Song>> musicListByGenders(ArrayList<Song> musicList, String[] gendersList) {
+    public static List<List<Song>> musicListByGenders(List<Song> musicList, String[] gendersList) {
 
-        ArrayList<ArrayList<Song>> musicListByGenders = new ArrayList<>();
+        List<List<Song>> musicListByGenders = new ArrayList<>();
 
         if (gendersList == null) return null;
 
         Arrays.sort(gendersList, String::compareToIgnoreCase);
 
         for (String gender : gendersList) {
-            ArrayList<Song> musicListByGender = new ArrayList<>();
+            List<Song> musicListByGender = new ArrayList<>();
             for (Song song : musicList) {
                 if (gender.equals(song.getGender())) {
                     musicListByGender.add(song);
