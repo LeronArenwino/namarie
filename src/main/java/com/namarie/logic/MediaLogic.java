@@ -7,12 +7,11 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.namarie.logic.SettingsLogic.*;
 
@@ -58,6 +57,8 @@ public class MediaLogic {
     private static final Pattern patternMedia;
     private static final Pattern patternVideo;
     private static final Pattern patternAudio;
+
+    private static int songCounter = 0;
 
     static {
 
@@ -268,8 +269,7 @@ public class MediaLogic {
 
         String[] genders = null;
         String[] singers;
-        String[] songs;
-        int songCounter = 0;
+
         List<Song> musicList = new ArrayList<>();
 
         File directory = new File(songsPath);
@@ -277,7 +277,6 @@ public class MediaLogic {
         if (directory.isDirectory()) genders = directory.list();
 
         if (genders == null) return Collections.emptyList();
-
         Arrays.sort(genders, String::compareToIgnoreCase);
 
         for (String gender : genders) {
@@ -285,43 +284,10 @@ public class MediaLogic {
             File genderDirectory = new File(String.format(ACTION_MEDIA, songsPath, File.separator, gender));
 
             if (genderDirectory.isDirectory()) {
-
                 singers = genderDirectory.list();
-
-                if (singers == null) return Collections.emptyList();
-
-                Arrays.sort(singers, String::compareToIgnoreCase);
-
-                for (String singer : singers) {
-
-                    File singerDirectory = new File(String.format(ACTION_LIST, songsPath, File.separator, gender, File.separator, singer));
-
-                    if (singerDirectory.isDirectory()) {
-
-                        songs = singerDirectory.list();
-
-                        if (songs == null) return Collections.emptyList();
-
-                        Arrays.sort(songs, String::compareToIgnoreCase);
-
-                        for (String song : songs) {
-
-                            File songFile = new File(String.format(ACTION_SONG, songsPath, File.separator, gender, File.separator, singer, File.separator, song));
-
-                            if (songFile.isFile()) {
-
-                                Matcher matcher = patternMedia.matcher(songFile.getName());
-
-                                if (matcher.find()) {
-
-                                    musicList.add(new Song(songCounter, song, singer, gender));
-                                    songCounter++;
-
-                                }
-                            }
-                        }
-                    }
-                }
+                musicList = Stream.of(musicList, getSongsBySinger(singers, gender))
+                        .flatMap(Collection::stream)
+                        .collect(Collectors.toList());
             }
         }
 
@@ -349,6 +315,41 @@ public class MediaLogic {
         }
 
         return musicListByGenders;
+    }
+
+    public static List<Song> getSongsBySinger(String[] singers, String gender) {
+
+        List<Song> musicList = new ArrayList<>();
+        String[] songs;
+
+        if (singers == null) return Collections.emptyList();
+        Arrays.sort(singers, String::compareToIgnoreCase);
+
+        for (String singer : singers) {
+
+            File singerDirectory = new File(String.format(ACTION_LIST, songsPath, File.separator, gender, File.separator, singer));
+
+            if (singerDirectory.isDirectory()) {
+                songs = singerDirectory.list();
+
+                if (songs == null) return Collections.emptyList();
+                Arrays.sort(songs, String::compareToIgnoreCase);
+
+                for (String song : songs) {
+
+                    File songFile = new File(String.format(ACTION_SONG, songsPath, File.separator, gender, File.separator, singer, File.separator, song));
+
+                    if (songFile.isFile()) {
+                        Matcher matcher = patternMedia.matcher(songFile.getName());
+                        if (matcher.find()) {
+                            musicList.add(new Song(songCounter, song, singer, gender));
+                            songCounter++;
+                        }
+                    }
+                }
+            }
+        }
+        return musicList;
     }
 
     public static void shutdown() throws IllegalArgumentException, IOException {
