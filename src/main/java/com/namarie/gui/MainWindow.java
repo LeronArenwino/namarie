@@ -34,9 +34,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     private static final String ADVERTISEMENT_MESSAGE = "Error media-player!";
 
     // Create a Logger
-    private final transient Logger logger
-            = Logger.getLogger(
-            MainWindow.class.getName());
+    private final transient Logger logger = Logger.getLogger(MainWindow.class.getName());
 
     // Random secure generator
     private final Random rand = SecureRandom.getInstanceStrong();
@@ -335,7 +333,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
             try {
                 new MainWindow().setVisible(true);
             } catch (NoSuchAlgorithmException e) {
-                throw new RuntimeException(e);
+                throw new IllegalArgumentException(e);
             }
         });
 
@@ -615,8 +613,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
             @Override
             public void error(MediaPlayer mediaPlayer) {
-                JOptionPane.showMessageDialog(advertisementPanel, ADVERTISEMENT_MESSAGE, "Warning",
-                        JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(advertisementPanel, ADVERTISEMENT_MESSAGE, "Warning", JOptionPane.WARNING_MESSAGE);
             }
         };
 
@@ -692,8 +689,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
             @Override
             public void error(MediaPlayer mediaPlayer) {
-                JOptionPane.showMessageDialog(advertisementPanel, ADVERTISEMENT_MESSAGE, "Warning",
-                        JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(advertisementPanel, ADVERTISEMENT_MESSAGE, "Warning", JOptionPane.WARNING_MESSAGE);
             }
         };
 
