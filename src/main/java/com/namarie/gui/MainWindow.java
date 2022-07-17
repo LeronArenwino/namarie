@@ -396,7 +396,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         musicQueue = new ArrayList<>();
 
-        if (musicListByGenders != null) {
+        if (!musicListByGenders.isEmpty()) {
             loadSongsListJList();
         }
 
