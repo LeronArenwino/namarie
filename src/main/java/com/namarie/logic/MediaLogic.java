@@ -23,6 +23,8 @@ import static com.namarie.logic.SettingsLogic.*;
  */
 public class MediaLogic {
 
+    public static final String ACTION_MEDIA = "%s%s%s";
+
     // Regex
     private static final String PATTERN = "(\\S+(\\.(?i)(mp3|mp4|wav|wma|mov|wmv|avi|flv|mkv|mpg|mpeg))$)";
     private static final String PATTERN_VIDEO = "(\\S+(\\.(?i)(mp4|mov|wmv|avi|flv|mkv|mpg))$)";
