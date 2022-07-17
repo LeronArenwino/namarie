@@ -37,10 +37,8 @@ public class MediaLogic {
     private static boolean promotionalVideoValidate;
     private static String promotionalVideoPath;
 
-    // Time TODO
+    // Time
     private static int randomSong;
-
-    // Credits TODO
 
     // Keys
     private static int upSong;
@@ -238,14 +236,8 @@ public class MediaLogic {
             promotionalVideoValidate = (boolean) values.get(KEY_PROMOTIONAL_VIDEO);
             promotionalVideoPath = (String) values.get(KEY_PATH_PROMOTIONAL_VIDEO);
 
-            // Time TODO
+            // Time
             randomSong = (int) values.get(KEY_RANDOM_SONG);
-//            repeatSong = (int) values.get(KEY_REPEAT_SONGS);
-
-            // Credits TODO
-//            creditsAmount = (int) values.get(KEY_AMOUNT_CREDITS);
-//            lockScreen = (boolean) values.get(KEY_LOCK_SCREEN);
-//            saveSongs = (boolean) values.get(KEY_SAVE_SONGS);
 
             //Keys
             upSong = (int) values.get(KEY_UP_SONG);
