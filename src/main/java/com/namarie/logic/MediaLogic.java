@@ -351,7 +351,7 @@ public class MediaLogic {
         return musicListByGenders;
     }
 
-    public static void shutdown() throws RuntimeException, IOException {
+    public static void shutdown() throws IllegalArgumentException, IOException {
         String shutdownCommand;
         String operatingSystem = System.getProperty("os.name");
 
@@ -360,7 +360,7 @@ public class MediaLogic {
         } else if ("Windows".equals(operatingSystem)) {
             shutdownCommand = "shutdown.exe -s -t 0";
         } else {
-            throw new RuntimeException("Unsupported operating system.");
+            throw new IllegalArgumentException("Unsupported operating system.");
         }
 
         Runtime.getRuntime().exec(shutdownCommand);
