@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -191,7 +192,7 @@ public class MediaLogic {
 
         if (directory.isDirectory()) videos = directory.list();
 
-        if (videos == null) return null;
+        if (videos == null) return Collections.emptyList();
 
         Arrays.sort(videos, String::compareToIgnoreCase);
 
@@ -271,7 +272,7 @@ public class MediaLogic {
 
         if (directory.isDirectory()) genders = directory.list();
 
-        if (genders == null) return null;
+        if (genders == null) return Collections.emptyList();
 
         Arrays.sort(genders, String::compareToIgnoreCase);
 
@@ -283,7 +284,7 @@ public class MediaLogic {
 
                 singers = genderDirectory.list();
 
-                if (singers == null) return null;
+                if (singers == null) return Collections.emptyList();
 
                 Arrays.sort(singers, String::compareToIgnoreCase);
 
@@ -295,7 +296,7 @@ public class MediaLogic {
 
                         songs = singerDirectory.list();
 
-                        if (songs == null) return null;
+                        if (songs == null) return Collections.emptyList();
 
                         Arrays.sort(songs, String::compareToIgnoreCase);
 
@@ -328,7 +329,7 @@ public class MediaLogic {
 
         List<List<Song>> musicListByGenders = new ArrayList<>();
 
-        if (gendersList == null) return null;
+        if (gendersList == null) return Collections.emptyList();
 
         Arrays.sort(gendersList, String::compareToIgnoreCase);
 
