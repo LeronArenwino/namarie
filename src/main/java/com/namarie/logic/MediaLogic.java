@@ -24,6 +24,8 @@ import static com.namarie.logic.SettingsLogic.*;
 public class MediaLogic {
 
     public static final String ACTION_MEDIA = "%s%s%s";
+    public static final String ACTION_LIST = "%s%s%s%s%s";
+    public static final String ACTION_SONG = "%s%s%s%s%s%s%s";
 
     // Regex
     private static final String PATTERN = "(\\S+(\\.(?i)(mp3|mp4|wav|wma|mov|wmv|avi|flv|mkv|mpg|mpeg))$)";
@@ -292,7 +294,7 @@ public class MediaLogic {
 
                 for (String singer : singers) {
 
-                    File singerDirectory = new File(String.format("%s%s%s%s%s", songsPath, File.separator, gender, File.separator, singer));
+                    File singerDirectory = new File(String.format(ACTION_LIST, songsPath, File.separator, gender, File.separator, singer));
 
                     if (singerDirectory.isDirectory()) {
 
@@ -304,7 +306,7 @@ public class MediaLogic {
 
                         for (String song : songs) {
 
-                            File songFile = new File(String.format("%s%s%s%s%s%s%s", songsPath, File.separator, gender, File.separator, singer, File.separator, song));
+                            File songFile = new File(String.format(ACTION_SONG, songsPath, File.separator, gender, File.separator, singer, File.separator, song));
 
                             if (songFile.isFile()) {
 
