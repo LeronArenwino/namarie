@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.*;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -67,9 +68,9 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     //
     private transient ArrayList<Song> musicQueue;
-    private transient ArrayList<Media> videosQueue;
-    private transient ArrayList<Media> promotionalVideos;
-    private transient ArrayList<ArrayList<Song>> musicListByGenders;
+    private transient List<Media> videosQueue;
+    private transient List<Media> promotionalVideos;
+    private transient List<List<Song>> musicListByGenders;
     private String[] genders;
     private int selectedGender;
     private int selectedSong;
@@ -543,7 +544,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     }
 
-    private void setMusicList(ArrayList<Song> musicList, String selectedGender) {
+    private void setMusicList(List<Song> musicList, String selectedGender) {
 
         if (musicList != null) {
 
