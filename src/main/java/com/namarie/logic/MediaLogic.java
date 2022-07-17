@@ -165,7 +165,7 @@ public class MediaLogic {
 
         for (String gender : genders) {
 
-            File genderDirectory = new File(String.format("%s%s%s", songsPath, File.separator, gender));
+            File genderDirectory = new File(String.format(ACTION_MEDIA, songsPath, File.separator, gender));
 
             if (!genderDirectory.isDirectory()) {
                 List<String> gendersList = new ArrayList<>(Arrays.asList(genders));
@@ -200,7 +200,7 @@ public class MediaLogic {
 
         for (String video : videos) {
 
-            File videoDirectory = new File(String.format("%s%s%s", videosPath, File.separator, video));
+            File videoDirectory = new File(String.format(ACTION_MEDIA, videosPath, File.separator, video));
 
             if (videoDirectory.isFile()) {
 
@@ -280,7 +280,7 @@ public class MediaLogic {
 
         for (String gender : genders) {
 
-            File genderDirectory = new File(String.format("%s%s%s", songsPath, File.separator, gender));
+            File genderDirectory = new File(String.format(ACTION_MEDIA, songsPath, File.separator, gender));
 
             if (genderDirectory.isDirectory()) {
 
