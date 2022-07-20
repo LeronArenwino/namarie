@@ -218,7 +218,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 musicListByGenders = MediaLogic.musicListByGenders(MediaLogic.musicList(), genders);
                 loadSongsListJList();
             }
-            // Event to set '0' value in String to select a song
+            // Event to set a values in String to select a song
             else if ((e.getKeyCode() == 48 || e.getKeyCode() == 96 ||
                     // Event to set '1' value in String to select a song
                     e.getKeyCode() == 49 || e.getKeyCode() == 97 ||
@@ -270,19 +270,15 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
             // Event to power off computer
             else if (e.getKeyCode() == MediaLogic.getPowerOff()) {
                 String s = JOptionPane.showInputDialog(null, "Password:", "Power off", JOptionPane.PLAIN_MESSAGE);
-
                 if ("031217".equals(s)) {
-
                     videoMediaPlayer.release();
                     audioMediaPlayer.release();
-
                     try {
                         MediaLogic.shutdown();
                     } catch (IOException ex) {
                         logger.log(Level.WARNING, () -> "Runtime exec error! " + ex);
                     }
                     System.exit(0);
-
                 }
             } else {
                 e.consume();
@@ -360,20 +356,15 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         this.setUndecorated(true);
         this.setContentPane(containerPanel);
 
-        containerPanel.addKeyListener(mainWindowKeyListener);
-        songsListJList.addListSelectionListener(songsListListSelection);
-
-        selectedGender = 0;
-
-        // Validate credits
-        currentCredits = 0;
-        creditsValidate(false);
-
         // Reshape components to screen resolution
         centerPanel.setPreferredSize(new Dimension(RESOLUTION_WIDTH / 2, RESOLUTION_HEIGHT));
         videoPanel.setPreferredSize(new Dimension(RESOLUTION_WIDTH / 2, RESOLUTION_HEIGHT / 2));
         musicListPanel.setPreferredSize(new Dimension(RESOLUTION_WIDTH / 4, RESOLUTION_HEIGHT / 2));
         songsListPanel.setPreferredSize(new Dimension(RESOLUTION_WIDTH / 2, RESOLUTION_HEIGHT));
+
+        // Adding listeners
+        containerPanel.addKeyListener(mainWindowKeyListener);
+        songsListJList.addListSelectionListener(songsListListSelection);
 
         setVideoMediaPlayer();
 
@@ -381,7 +372,12 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         videoPanel.add(videoMediaPlayer, BorderLayout.CENTER);
         videoMediaPlayer.addKeyListener(mainWindowKeyListener);
 
-        setMusicMediaPlayer();
+        setAudioMediaPlayer();
+
+        // Validate credits
+        selectedGender = 0;
+        currentCredits = 0;
+        creditsValidate(false);
 
         videosQueue = MediaLogic.getVideos(MediaLogic.getVideosPath());
         promotionalVideos = MediaLogic.getVideos(MediaLogic.getPromotionalVideoPath());
@@ -423,6 +419,40 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     }
 
+    private void loadSongsListJList() {
+
+        selectedSong = 0;
+        songsGenderLabel.setText(genders[selectedGender]);
+        setMusicList(musicListByGenders.get(selectedGender), genders[selectedGender]);
+        updateSelectedSongInSongsList();
+
+    }
+
+    private void playPromotionalMedia(Media video) {
+
+        videoMediaPlayer.mediaPlayer().media().play(String.format(MediaLogic.ACTION_MEDIA, MediaLogic.getPromotionalVideoPath(), File.separator, video.getName()));
+
+        promotionalVideoStatus = true;
+
+    }
+    private void playRandomPromotionalVideo() {
+
+        getContentPane().requestFocus();
+
+        if (!videoMediaPlayer.mediaPlayer().status().isPlaying() && !audioMediaPlayer.mediaPlayer().status().isPlaying() && musicQueue.isEmpty()) {
+
+            int randSong = rand.nextInt(promotionalVideos.size());
+
+            Media promotionalVideo = promotionalVideos.get(randSong);
+
+            playPromotionalMedia(promotionalVideo);
+
+            promotionalVideoStatus = true;
+
+        }
+
+    }
+
     private void playRandomSong() {
 
         getContentPane().requestFocus();
@@ -441,24 +471,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
             Song song = Objects.requireNonNull(MediaLogic.musicList()).get(randSong);
 
             playSong(song);
-
-        }
-
-    }
-
-    private void playRandomPromotionalVideo() {
-
-        getContentPane().requestFocus();
-
-        if (!videoMediaPlayer.mediaPlayer().status().isPlaying() && !audioMediaPlayer.mediaPlayer().status().isPlaying() && musicQueue.isEmpty()) {
-
-            int randSong = rand.nextInt(promotionalVideos.size());
-
-            Media promotionalVideo = promotionalVideos.get(randSong);
-
-            playPromotionalMedia(promotionalVideo);
-
-            promotionalVideoStatus = true;
 
         }
 
@@ -497,23 +509,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     }
 
-    private void playPromotionalMedia(Media video) {
-
-        videoMediaPlayer.mediaPlayer().media().play(String.format(MediaLogic.ACTION_MEDIA, MediaLogic.getPromotionalVideoPath(), File.separator, video.getName()));
-
-        promotionalVideoStatus = true;
-
-    }
-
-    private void loadSongsListJList() {
-
-        selectedSong = 0;
-        songsGenderLabel.setText(genders[selectedGender]);
-        setMusicList(musicListByGenders.get(selectedGender), genders[selectedGender]);
-        updateSelectedSongInSongsList();
-
-    }
-
     private void setDefaultString() {
 
         Arrays.fill(stringLabel, "-");
@@ -521,40 +516,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     }
 
-    private void setMusicQueue(ArrayList<Song> musicQueue) {
-
-        if (musicQueue != null) {
-
-            DefaultListModel<Song> model = new DefaultListModel<>();
-
-            for (Song song : musicQueue) {
-
-                model.addElement(song);
-
-            }
-
-            musicQueueJList.setModel(model);
-
-        }
-
-    }
-
-    private void setMusicList(List<Song> musicList, String selectedGender) {
-
-        if (musicList != null) {
-
-            DefaultListModel<Song> model = new DefaultListModel<>();
-
-            for (Song song : musicList) {
-                if (selectedGender.equals(song.getGender())) model.addElement(song);
-            }
-
-            songsListJList.setModel(model);
-        }
-
-    }
-
-    private void setMusicMediaPlayer() {
+    private void setAudioMediaPlayer() {
 
         // Create AudioPlayerComponent instances
         audioMediaPlayer = new AudioPlayerComponent() {
@@ -616,6 +578,39 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 JOptionPane.showMessageDialog(advertisementPanel, ADVERTISEMENT_MESSAGE, "Warning", JOptionPane.WARNING_MESSAGE);
             }
         };
+
+    }
+
+    private void setMusicList(List<Song> musicList, String selectedGender) {
+
+        if (musicList != null) {
+
+            DefaultListModel<Song> model = new DefaultListModel<>();
+
+            for (Song song : musicList) {
+                if (selectedGender.equals(song.getGender())) model.addElement(song);
+            }
+
+            songsListJList.setModel(model);
+        }
+
+    }
+
+    private void setMusicQueue(ArrayList<Song> musicQueue) {
+
+        if (musicQueue != null) {
+
+            DefaultListModel<Song> model = new DefaultListModel<>();
+
+            for (Song song : musicQueue) {
+
+                model.addElement(song);
+
+            }
+
+            musicQueueJList.setModel(model);
+
+        }
 
     }
 
