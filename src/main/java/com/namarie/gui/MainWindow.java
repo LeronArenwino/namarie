@@ -278,7 +278,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                     } catch (IOException ex) {
                         logger.log(Level.WARNING, () -> "Runtime exec error! " + ex);
                     }
-                    System.exit(0);
                 }
             } else {
                 e.consume();
