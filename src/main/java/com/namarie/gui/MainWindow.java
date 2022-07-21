@@ -428,12 +428,12 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     }
 
     private void playPromotionalMedia(Media video) {
-
-        videoMediaPlayer.mediaPlayer().media().play(String.format(MediaLogic.ACTION_MEDIA, MediaLogic.getPromotionalVideoPath(), File.separator, video.getName()));
-
-        promotionalVideoStatus = true;
-
+        if (MediaLogic.isPromotionalVideoValidate()) {
+            videoMediaPlayer.mediaPlayer().media().play(String.format(MediaLogic.ACTION_MEDIA, MediaLogic.getPromotionalVideoPath(), File.separator, video.getName()));
+            promotionalVideoStatus = true;
+        }
     }
+
     private void playRandomPromotionalVideo() {
 
         getContentPane().requestFocus();
