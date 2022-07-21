@@ -359,12 +359,11 @@ public class MediaLogic {
 
         if ("Linux".equals(operatingSystem) || "Mac OS X".equals(operatingSystem)) {
             shutdownCommand = "shutdown -h now";
-        } else if ("Windows".equals(operatingSystem)) {
+        } else if ("Windows 10".equals(operatingSystem)) {
             shutdownCommand = "shutdown.exe -s -t 0";
         } else {
             throw new IllegalArgumentException("Unsupported operating system.");
         }
-
         Runtime.getRuntime().exec(shutdownCommand);
         System.exit(0);
     }
