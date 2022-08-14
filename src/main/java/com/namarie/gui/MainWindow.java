@@ -49,12 +49,9 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     private JScrollPane songsListScrollPanel;
     private JList<Song> songsListJList;
     private JList<Song> musicQueueJList;
-    private JPanel centerPanel;
-    private JLabel songsGenderLabel;
     private JLabel numberSong;
     private JLabel currentCreditsLabel;
     private JScrollPane musicListScrollPanel;
-    private JPanel searchSongsListPanel;
     private JTextField searchSongsListTextField;
     private JLabel videoJLabel;
     private JButton searchSongsListButton;
@@ -283,8 +280,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                         logger.log(Level.WARNING, () -> "Runtime exec error! " + ex);
                     }
                 }
-            } else {
-                e.consume();
             }
         }
 
@@ -360,10 +355,11 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         this.setContentPane(containerPanel);
 
         // Reshape components to screen resolution
-        centerPanel.setPreferredSize(new Dimension(RESOLUTION_WIDTH / 2, RESOLUTION_HEIGHT));
         videoPanel.setPreferredSize(new Dimension(RESOLUTION_WIDTH / 2, RESOLUTION_HEIGHT / 2));
         musicListPanel.setPreferredSize(new Dimension(RESOLUTION_WIDTH / 4, RESOLUTION_HEIGHT / 2));
         songsListPanel.setPreferredSize(new Dimension(RESOLUTION_WIDTH / 2, RESOLUTION_HEIGHT));
+
+        paintComponents();
 
         // Adding listeners
         containerPanel.addKeyListener(mainWindowKeyListener);
@@ -413,6 +409,55 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     }
 
+    private void paintComponents(){
+
+        Border blackLine = BorderFactory.createLineBorder(Color.decode("#0D0D0D"),8);
+
+        TitledBorder musicQueueTitledBorder = BorderFactory.createTitledBorder(
+                blackLine, "");
+        musicQueueTitledBorder.setTitleJustification(TitledBorder.CENTER);
+        musicQueueTitledBorder.setTitleColor(Color.decode("#D9D9D9"));
+        musicQueueTitledBorder.setTitleFont(new Font("Aria Narrow", Font.PLAIN, 36));
+
+        songsListTitledBorder = BorderFactory.createTitledBorder(
+                blackLine, "");
+        songsListTitledBorder.setTitleJustification(TitledBorder.CENTER);
+        songsListTitledBorder.setTitleColor(Color.decode("#D9D9D9"));
+        songsListTitledBorder.setTitleFont(new Font("Aria Narrow", Font.PLAIN, 36));
+
+        musicListPanel.setBorder(musicQueueTitledBorder);
+        songsListPanel.setBorder(songsListTitledBorder);
+
+        videoJLabel.setBackground(Color.decode("#0D0D0D"));
+        videoJLabel.setForeground(Color.decode("#D9D9D9"));
+
+        numberSong.setBackground(Color.decode("#0D0D0D"));
+        numberSong.setForeground(Color.decode("#D9D9D9"));
+
+        currentCreditsLabel.setBackground(Color.decode("#0D0D0D"));
+        currentCreditsLabel.setForeground(Color.decode("#D9D9D9"));
+
+        musicQueueJList.setBackground(Color.decode("#262626"));
+        musicQueueJList.setForeground(Color.decode("#D9D9D9"));
+
+        musicListPanel.setBackground(Color.decode("#0D0D0D"));
+        musicListScrollPanel.setBackground(Color.decode("#0D0D0D"));
+
+        songsListPanel.setBackground(Color.decode("#0D0D0D"));
+        songsListScrollPanel.setBackground(Color.decode("#0D0D0D"));
+
+        songsListJList.setBackground(Color.decode("#262626"));
+        songsListJList.setForeground(Color.decode("#D9D9D9"));
+
+        searchSongsListTextField.setVisible(false);
+
+        searchSongsListButton.setBackground(Color.decode("#D9D9D9"));
+        searchSongsListButton.setForeground(Color.decode("#262626"));
+        searchSongsListButton.setText("Search song");
+        searchSongsListButton.setVisible(false);
+
+    }
+
     private void creditsValidate(boolean state) {
 
         musicListPanel.setVisible(state);
@@ -425,7 +470,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     private void loadSongsListJList() {
 
         selectedSong = 0;
-        songsGenderLabel.setText(genders[selectedGender]);
+        songsListTitledBorder.setTitle(genders[selectedGender]);
         setMusicList(musicListByGenders.get(selectedGender), genders[selectedGender]);
         updateSelectedSongInSongsList();
 
