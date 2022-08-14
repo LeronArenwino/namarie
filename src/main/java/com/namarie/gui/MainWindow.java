@@ -411,48 +411,52 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     private void paintComponents(){
 
-        Border blackLine = BorderFactory.createLineBorder(Color.decode("#0D0D0D"),8);
+        String dark = "#0D0D0D";
+        String darkLight = "#262626";
+        String light = "#D9D9D9";
+
+        Border blackLine = BorderFactory.createLineBorder(Color.decode(dark),8);
 
         TitledBorder musicQueueTitledBorder = BorderFactory.createTitledBorder(
                 blackLine, "");
         musicQueueTitledBorder.setTitleJustification(TitledBorder.CENTER);
-        musicQueueTitledBorder.setTitleColor(Color.decode("#D9D9D9"));
+        musicQueueTitledBorder.setTitleColor(Color.decode(light));
         musicQueueTitledBorder.setTitleFont(new Font("Aria Narrow", Font.PLAIN, 36));
 
         songsListTitledBorder = BorderFactory.createTitledBorder(
                 blackLine, "");
         songsListTitledBorder.setTitleJustification(TitledBorder.CENTER);
-        songsListTitledBorder.setTitleColor(Color.decode("#D9D9D9"));
+        songsListTitledBorder.setTitleColor(Color.decode(light));
         songsListTitledBorder.setTitleFont(new Font("Aria Narrow", Font.PLAIN, 36));
 
         musicListPanel.setBorder(musicQueueTitledBorder);
         songsListPanel.setBorder(songsListTitledBorder);
 
-        videoJLabel.setBackground(Color.decode("#0D0D0D"));
-        videoJLabel.setForeground(Color.decode("#D9D9D9"));
+        videoJLabel.setBackground(Color.decode(dark));
+        videoJLabel.setForeground(Color.decode(light));
 
-        numberSong.setBackground(Color.decode("#0D0D0D"));
-        numberSong.setForeground(Color.decode("#D9D9D9"));
+        numberSong.setBackground(Color.decode(dark));
+        numberSong.setForeground(Color.decode(light));
 
-        currentCreditsLabel.setBackground(Color.decode("#0D0D0D"));
-        currentCreditsLabel.setForeground(Color.decode("#D9D9D9"));
+        currentCreditsLabel.setBackground(Color.decode(dark));
+        currentCreditsLabel.setForeground(Color.decode(light));
 
-        musicQueueJList.setBackground(Color.decode("#262626"));
-        musicQueueJList.setForeground(Color.decode("#D9D9D9"));
+        musicQueueJList.setBackground(Color.decode(darkLight));
+        musicQueueJList.setForeground(Color.decode(light));
 
-        musicListPanel.setBackground(Color.decode("#0D0D0D"));
-        musicListScrollPanel.setBackground(Color.decode("#0D0D0D"));
+        musicListPanel.setBackground(Color.decode(dark));
+        musicListScrollPanel.setBackground(Color.decode(dark));
 
-        songsListPanel.setBackground(Color.decode("#0D0D0D"));
-        songsListScrollPanel.setBackground(Color.decode("#0D0D0D"));
+        songsListPanel.setBackground(Color.decode(dark));
+        songsListScrollPanel.setBackground(Color.decode(dark));
 
-        songsListJList.setBackground(Color.decode("#262626"));
-        songsListJList.setForeground(Color.decode("#D9D9D9"));
+        songsListJList.setBackground(Color.decode(darkLight));
+        songsListJList.setForeground(Color.decode(light));
 
         searchSongsListTextField.setVisible(false);
 
-        searchSongsListButton.setBackground(Color.decode("#D9D9D9"));
-        searchSongsListButton.setForeground(Color.decode("#262626"));
+        searchSongsListButton.setBackground(Color.decode(light));
+        searchSongsListButton.setForeground(Color.decode(darkLight));
         searchSongsListButton.setText("Search song");
         searchSongsListButton.setVisible(false);
 
