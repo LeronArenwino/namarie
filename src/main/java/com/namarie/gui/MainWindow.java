@@ -10,6 +10,8 @@ import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent;
 
 import javax.swing.*;
 import javax.swing.Timer;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
@@ -72,6 +74,8 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     private boolean promotionalVideoStatus;
     private String[] stringLabel;
     private int currentCredits;
+
+    private TitledBorder songsListTitledBorder;
 
     // Timers
     private javax.swing.Timer timerRandomSong;
