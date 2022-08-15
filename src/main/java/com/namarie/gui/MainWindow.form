@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.namarie.gui.MainWindow">
-  <grid id="27dc6" binding="containerPanel" layout-manager="GridBagLayout">
+  <grid id="27dc6" binding="containerPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
       <xy x="20" y="20" width="836" height="583"/>
     </constraints>
@@ -11,136 +11,98 @@
     </properties>
     <border type="empty"/>
     <children>
-      <grid id="589b" binding="videoPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
-        <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="1.0" weighty="1.0"/>
-        </constraints>
+      <grid id="81fdd" binding="songsListPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="East"/>
         <properties/>
-        <border type="empty"/>
+        <border type="none"/>
         <children>
-          <component id="36402" class="javax.swing.JLabel" binding="videoJLabel">
-            <constraints border-constraint="South"/>
-            <properties>
-              <font name="Arial Narrow" size="16" style="0"/>
-              <horizontalAlignment value="0"/>
-              <horizontalTextPosition value="0"/>
-              <labelFor value="ce0f3"/>
-              <opaque value="true"/>
-              <text value=""/>
-            </properties>
-          </component>
-        </children>
-      </grid>
-      <grid id="985a1" binding="songsListPanel" layout-manager="GridBagLayout">
-        <constraints>
-          <grid row="0" column="1" row-span="2" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="1.0" weighty="1.0"/>
-        </constraints>
-        <properties/>
-        <border type="empty"/>
-        <children>
-          <scrollpane id="9001f" binding="songsListScrollPanel">
-            <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-              <gridbag weightx="1.0" weighty="1.0"/>
-            </constraints>
-            <properties>
-              <focusable value="true"/>
-              <horizontalScrollBarPolicy value="31"/>
-              <verticalScrollBarPolicy value="21"/>
-            </properties>
-            <border type="empty">
-              <font/>
-              <title-color color="-4473925"/>
-              <color color="-4473925"/>
-            </border>
-            <children>
-              <component id="a051f" class="javax.swing.JList" binding="songsListJList">
-                <constraints/>
-                <properties>
-                  <font name="Arial Narrow" size="36" style="0"/>
-                </properties>
-              </component>
-            </children>
-          </scrollpane>
-          <component id="ce0f3" class="javax.swing.JTextField" binding="searchSongsListTextField">
-            <constraints>
-              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-              <gridbag weightx="0.0" weighty="0.0"/>
-            </constraints>
-            <properties>
-              <font name="Arial Narrow" size="26" style="0"/>
-              <text value=""/>
-            </properties>
-          </component>
-          <component id="979f0" class="javax.swing.JButton" binding="searchSongsListButton">
-            <constraints>
-              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-              <gridbag weightx="0.0" weighty="0.0"/>
-            </constraints>
-            <properties>
-              <font name="Arial Narrow" size="24" style="1"/>
-              <text value=""/>
-            </properties>
-          </component>
-        </children>
-      </grid>
-      <grid id="a91a0" binding="musicListPanel" layout-manager="GridBagLayout">
-        <constraints>
-          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="1.0" weighty="1.0"/>
-        </constraints>
-        <properties/>
-        <border type="empty"/>
-        <children>
-          <scrollpane id="1368d" binding="musicListScrollPanel">
-            <constraints>
-              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-              <gridbag weightx="1.0" weighty="1.0"/>
-            </constraints>
+          <scrollpane id="3741f" binding="songsListScrollPanel">
+            <constraints border-constraint="Center"/>
             <properties>
               <horizontalScrollBarPolicy value="31"/>
               <verticalScrollBarPolicy value="21"/>
             </properties>
             <border type="empty"/>
             <children>
-              <component id="78d25" class="javax.swing.JList" binding="musicQueueJList">
+              <component id="980b6" class="javax.swing.JList" binding="songsListJList">
                 <constraints/>
-                <properties>
-                  <font name="Arial Narrow" size="36" style="0"/>
-                </properties>
+                <properties/>
               </component>
             </children>
           </scrollpane>
-          <component id="8905e" class="javax.swing.JLabel" binding="numberSong">
-            <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-              <gridbag weightx="0.0" weighty="0.0"/>
-            </constraints>
-            <properties>
-              <font name="Arial Narrow" size="28" style="1"/>
-              <horizontalAlignment value="0"/>
-              <horizontalTextPosition value="0"/>
-              <opaque value="true"/>
-              <text value=""/>
-            </properties>
-          </component>
-          <component id="58e07" class="javax.swing.JLabel" binding="currentCreditsLabel">
-            <constraints>
-              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-              <gridbag weightx="1.0" weighty="0.0"/>
-            </constraints>
-            <properties>
-              <font name="Arial Narrow" size="28" style="1"/>
-              <horizontalAlignment value="0"/>
-              <horizontalTextPosition value="0"/>
-              <opaque value="true"/>
-              <text value=""/>
-            </properties>
-          </component>
+          <grid id="93057" binding="searchSongPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints border-constraint="South"/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="c775f" class="javax.swing.JTextField" binding="searchSongsListTextField">
+                <constraints border-constraint="North"/>
+                <properties/>
+              </component>
+              <component id="5837f" class="javax.swing.JButton" binding="searchSongsListButton">
+                <constraints border-constraint="South"/>
+                <properties>
+                  <text value=""/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </grid>
+      <grid id="51c91" binding="centerPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="Center"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="efcba" binding="musicListPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints border-constraint="South"/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <scrollpane id="f105a" binding="musicListScrollPanel">
+                <constraints border-constraint="Center"/>
+                <properties>
+                  <horizontalScrollBarPolicy value="31"/>
+                  <verticalScrollBarPolicy value="21"/>
+                </properties>
+                <border type="empty"/>
+                <children>
+                  <component id="b0d93" class="javax.swing.JList" binding="musicQueueJList">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
+              <component id="7c2c7" class="javax.swing.JLabel" binding="numberSong">
+                <constraints border-constraint="North"/>
+                <properties>
+                  <opaque value="true"/>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="21d4a" class="javax.swing.JLabel" binding="currentCreditsLabel">
+                <constraints border-constraint="South"/>
+                <properties>
+                  <opaque value="true"/>
+                  <text value=""/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="8e99" binding="videoPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints border-constraint="Center"/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="ec116" class="javax.swing.JLabel" binding="videoJLabel">
+                <constraints border-constraint="South"/>
+                <properties>
+                  <opaque value="true"/>
+                  <text value=""/>
+                </properties>
+              </component>
+            </children>
+          </grid>
         </children>
       </grid>
     </children>
