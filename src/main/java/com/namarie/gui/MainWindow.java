@@ -43,6 +43,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     // General components
     private JPanel containerPanel;
+    private JPanel centerPanel;
     private JPanel videoPanel;
     private JPanel musicListPanel;
     private JPanel songsListPanel;
@@ -55,6 +56,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     private JTextField searchSongsListTextField;
     private JLabel videoJLabel;
     private JButton searchSongsListButton;
+    private JPanel searchSongPanel;
 
     // Video and audio components
     private EmbeddedMediaPlayerComponent videoMediaPlayer;
@@ -415,34 +417,45 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         String darkLight = "#262626";
         String light = "#D9D9D9";
 
+        Font defaultFont = new Font("Aria Narrow", Font.PLAIN, 36);
+
         Border blackLine = BorderFactory.createLineBorder(Color.decode(dark),8);
 
         TitledBorder musicQueueTitledBorder = BorderFactory.createTitledBorder(
                 blackLine, "");
         musicQueueTitledBorder.setTitleJustification(TitledBorder.CENTER);
         musicQueueTitledBorder.setTitleColor(Color.decode(light));
-        musicQueueTitledBorder.setTitleFont(new Font("Aria Narrow", Font.PLAIN, 36));
+        musicQueueTitledBorder.setTitleFont(defaultFont);
 
         songsListTitledBorder = BorderFactory.createTitledBorder(
                 blackLine, "");
         songsListTitledBorder.setTitleJustification(TitledBorder.CENTER);
         songsListTitledBorder.setTitleColor(Color.decode(light));
-        songsListTitledBorder.setTitleFont(new Font("Aria Narrow", Font.PLAIN, 36));
+        songsListTitledBorder.setTitleFont(defaultFont);
+
+        centerPanel.setBackground(Color.decode(dark));
+        searchSongPanel.setBackground(Color.decode(dark));
 
         musicListPanel.setBorder(musicQueueTitledBorder);
         songsListPanel.setBorder(songsListTitledBorder);
 
         videoJLabel.setBackground(Color.decode(dark));
         videoJLabel.setForeground(Color.decode(light));
+        videoJLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         numberSong.setBackground(Color.decode(dark));
         numberSong.setForeground(Color.decode(light));
+        numberSong.setFont(defaultFont);
+        numberSong.setHorizontalAlignment(SwingConstants.CENTER);
 
         currentCreditsLabel.setBackground(Color.decode(dark));
         currentCreditsLabel.setForeground(Color.decode(light));
+        currentCreditsLabel.setFont(defaultFont);
+        currentCreditsLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         musicQueueJList.setBackground(Color.decode(darkLight));
         musicQueueJList.setForeground(Color.decode(light));
+        musicQueueJList.setFont(defaultFont);
 
         musicListPanel.setBackground(Color.decode(dark));
         musicListScrollPanel.setBackground(Color.decode(dark));
@@ -452,6 +465,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         songsListJList.setBackground(Color.decode(darkLight));
         songsListJList.setForeground(Color.decode(light));
+        songsListJList.setFont(defaultFont);
 
         searchSongsListTextField.setVisible(false);
 
