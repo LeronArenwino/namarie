@@ -94,7 +94,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="ec116" class="javax.swing.JLabel" binding="videoJLabel">
+              <component id="ec116" class="javax.swing.JLabel" binding="videoLabel">
                 <constraints border-constraint="South"/>
                 <properties>
                   <opaque value="true"/>

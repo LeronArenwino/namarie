@@ -54,7 +54,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     private JLabel currentCreditsLabel;
     private JScrollPane musicListScrollPanel;
     private JTextField searchSongsListTextField;
-    private JLabel videoJLabel;
+    private JLabel videoLabel;
     private JButton searchSongsListButton;
     private JPanel searchSongPanel;
 
@@ -439,9 +439,10 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         musicListPanel.setBorder(musicQueueTitledBorder);
         songsListPanel.setBorder(songsListTitledBorder);
 
-        videoJLabel.setBackground(Color.decode(dark));
-        videoJLabel.setForeground(Color.decode(light));
-        videoJLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        videoLabel.setBackground(Color.decode(dark));
+        videoLabel.setForeground(Color.decode(light));
+        videoLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        videoLabel.setText("Namarie Rockcola");
 
         numberSong.setBackground(Color.decode(dark));
         numberSong.setForeground(Color.decode(light));
@@ -480,6 +481,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         musicListPanel.setVisible(state);
         songsListPanel.setVisible(state);
+        videoLabel.setVisible(!state);
 
         currentCreditsLabel.setText(String.format("Credits: %s", currentCredits));
 
@@ -549,7 +551,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         if (matcher.find()) {
 
             videoMediaPlayer.mediaPlayer().media().play(String.format(MediaLogic.ACTION_SONG, MediaLogic.getSongsPath(), File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName()));
-            videoJLabel.setText(song.toString());
+            videoLabel.setText(song.toString());
 
         }
 
@@ -563,7 +565,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
             videoMediaPlayer.mediaPlayer().media().play(String.format(MediaLogic.ACTION_MEDIA, MediaLogic.getVideosPath(), File.separator, video.getName()));
             audioMediaPlayer.mediaPlayer().media().play(String.format(MediaLogic.ACTION_SONG, MediaLogic.getSongsPath(), File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName()));
-            videoJLabel.setText(song.toString());
+            videoLabel.setText(song.toString());
 
         }
 
