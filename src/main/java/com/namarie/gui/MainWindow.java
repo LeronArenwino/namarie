@@ -77,6 +77,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     private TitledBorder songsListTitledBorder;
 
     // Timers
+    public static javax.swing.Timer timerFocusMainPanel;
     private javax.swing.Timer timerRandomSong;
     private javax.swing.Timer timerRandomPromotionalVideo;
 
@@ -107,6 +108,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
             if (e.getKeyCode() == 81) {
                 SettingsWindow settingsWindow = new SettingsWindow();
                 settingsWindow.setVisible(true);
+                timerFocusMainPanel.stop();
             }
             // Event to open add coin
             else if (e.getKeyCode() == MediaLogic.getAddCoin() && currentCredits < 25) {
@@ -397,9 +399,15 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         setDefaultString();
 
+        ActionListener focusMainPanel = e -> getContentPane().requestFocus();
+
         ActionListener playRandomSong = e -> playRandomSong();
 
         ActionListener playRandomPromotionalVideo = e -> playRandomPromotionalVideo();
+
+        timerFocusMainPanel = new Timer(250, focusMainPanel);
+        timerFocusMainPanel.setRepeats(true);
+        timerFocusMainPanel.start();
 
         timerRandomSong = new Timer(MediaLogic.getRandomSong() * 60000, playRandomSong);
         timerRandomSong.setRepeats(false);
@@ -411,7 +419,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     }
 
-    private void paintComponents(){
+    private void paintComponents() {
 
         String dark = "#0D0D0D";
         String darkLight = "#262626";
@@ -419,7 +427,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         Font defaultFont = new Font("Aria Narrow", Font.PLAIN, 36);
 
-        Border blackLine = BorderFactory.createLineBorder(Color.decode(dark),8);
+        Border blackLine = BorderFactory.createLineBorder(Color.decode(dark), 8);
 
         TitledBorder musicQueueTitledBorder = BorderFactory.createTitledBorder(
                 blackLine, "");
@@ -505,8 +513,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     private void playRandomPromotionalVideo() {
 
-        getContentPane().requestFocus();
-
         if (!videoMediaPlayer.mediaPlayer().status().isPlaying() && !audioMediaPlayer.mediaPlayer().status().isPlaying() && musicQueue.isEmpty()) {
 
             int randSong = rand.nextInt(promotionalVideos.size());
@@ -522,8 +528,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     }
 
     private void playRandomSong() {
-
-        getContentPane().requestFocus();
 
         if (promotionalVideoStatus) {
 
@@ -591,15 +595,10 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
             @Override
             public void playing(MediaPlayer mediaPlayer) {
-
-                getContentPane().requestFocus();
-
             }
 
             @Override
             public void finished(MediaPlayer mediaPlayer) {
-
-                getContentPane().requestFocus();
 
                 videoMediaPlayer.mediaPlayer().controls().stop();
 
@@ -689,15 +688,10 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
             @Override
             public void playing(MediaPlayer mediaPlayer) {
-
-                getContentPane().requestFocus();
-
             }
 
             @Override
             public void finished(MediaPlayer mediaPlayer) {
-
-                getContentPane().requestFocus();
 
                 timerRandomSong.start();
 
