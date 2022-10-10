@@ -450,7 +450,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         videoLabel.setBackground(Color.decode(dark));
         videoLabel.setForeground(Color.decode(light));
         videoLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        videoLabel.setText("Namarie Rockcola");
+        videoLabel.setText("Namarie jukebox");
 
         numberSong.setBackground(Color.decode(dark));
         numberSong.setForeground(Color.decode(light));
