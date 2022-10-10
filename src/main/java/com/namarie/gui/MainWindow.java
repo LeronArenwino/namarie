@@ -513,7 +513,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     private void playRandomPromotionalVideo() {
 
-        if (!videoMediaPlayer.mediaPlayer().status().isPlaying() && !audioMediaPlayer.mediaPlayer().status().isPlaying() && musicQueue.isEmpty()) {
+        if (!videoMediaPlayer.mediaPlayer().status().isPlaying() && !audioMediaPlayer.mediaPlayer().status().isPlaying() && musicQueue.isEmpty() && !promotionalVideos.isEmpty()) {
 
             int randSong = rand.nextInt(promotionalVideos.size());
 
@@ -536,7 +536,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         }
 
-        if (!videoMediaPlayer.mediaPlayer().status().isPlaying() && !audioMediaPlayer.mediaPlayer().status().isPlaying() && musicQueue.isEmpty()) {
+        if (!videoMediaPlayer.mediaPlayer().status().isPlaying() && !audioMediaPlayer.mediaPlayer().status().isPlaying() && musicQueue.isEmpty() && !MediaLogic.musicList().isEmpty()) {
 
             int randSong = rand.nextInt(Objects.requireNonNull(MediaLogic.musicList()).size());
 
