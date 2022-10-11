@@ -57,6 +57,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     private JLabel videoLabel;
     private JButton searchSongsListButton;
     private JPanel searchSongPanel;
+    private JLabel songsListLabel;
 
     // Video and audio components
     private EmbeddedMediaPlayerComponent videoMediaPlayer;
@@ -463,6 +464,11 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         songsListPanel.setBackground(Color.decode(dark));
         songsListScrollPanel.setBackground(Color.decode(dark));
 
+        songsListLabel.setBackground(Color.decode(dark));
+        songsListLabel.setForeground(Color.decode(light));
+        songsListLabel.setFont(defaultFont);
+        songsListLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
         songsListJList.setBackground(Color.decode(darkLight));
         songsListJList.setForeground(Color.decode(light));
         songsListJList.setFont(defaultFont);
@@ -488,7 +494,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     private void loadSongsListJList() {
 
-        selectedSong = 0;
+        songsListLabel.setText(genders[selectedGender]);
         setMusicList(musicListByGenders.get(selectedGender), genders[selectedGender]);
         updateSelectedSongInSongsList();
 
@@ -744,6 +750,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     private void updateSelectedSongInSongsList() {
 
+        selectedSong = 0;
         songsListJList.setSelectedIndex(selectedSong);
         songsListJList.ensureIndexIsVisible(selectedSong);
 
