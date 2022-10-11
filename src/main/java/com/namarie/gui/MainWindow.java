@@ -34,6 +34,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     // Constants
     private final JPanel advertisementPanel = new JPanel();
     private static final String ADVERTISEMENT_MESSAGE = "Error media-player!";
+    private static final String NAMARIE_TITLE = "Namarie jukebox";
 
     // Create a Logger
     private final transient Logger logger = Logger.getLogger(MainWindow.class.getName());
@@ -192,6 +193,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                     setMusicQueue(musicQueue);
                 } else {
                     timerRandomPromotionalVideo.start();
+                    videoLabel.setText(NAMARIE_TITLE);
                 }
             }
             // Event to play or add a song to music queue with ENTER
@@ -250,6 +252,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 }
                 if (Arrays.stream(stringLabel).noneMatch("-"::equals)) {
                     selectedSong = Integer.parseInt(String.format(MediaLogic.ACTION_LIST, stringLabel[0], stringLabel[1], stringLabel[2], stringLabel[3], stringLabel[4]));
+                    System.out.println(selectedSong);
                     if (selectedSong <= Objects.requireNonNull(MediaLogic.musicList()).size() - 1) {
                         Song song = Objects.requireNonNull(MediaLogic.musicList()).get(selectedSong);
                         if (videoMediaPlayer.mediaPlayer().status().isPlaying() && !promotionalVideoStatus) {
@@ -442,7 +445,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         videoLabel.setBackground(Color.decode(dark));
         videoLabel.setForeground(Color.decode(light));
         videoLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        videoLabel.setText("Namarie jukebox");
+        videoLabel.setText(NAMARIE_TITLE);
 
         numberSong.setBackground(Color.decode(dark));
         numberSong.setForeground(Color.decode(light));
@@ -552,7 +555,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
             videoMediaPlayer.mediaPlayer().media().play(String.format(MediaLogic.ACTION_SONG, MediaLogic.getSongsPath(), File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName()));
             videoLabel.setText(song.toString());
-
+            System.out.println(song);
         }
 
         matcher = MediaLogic.getPatternAudio().matcher(song.getName());
@@ -633,6 +636,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                 } else {
                     timerRandomPromotionalVideo.start();
+                    videoLabel.setText(NAMARIE_TITLE);
                 }
             }
 
@@ -735,6 +739,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 } else {
 
                     timerRandomPromotionalVideo.start();
+                    videoLabel.setText(NAMARIE_TITLE);
 
                 }
 
