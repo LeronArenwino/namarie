@@ -77,7 +77,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     private int currentCredits;
 
     // Timers
-    public static javax.swing.Timer timerFocusMainPanel;
+    static javax.swing.Timer timerFocusMainPanel;
     private javax.swing.Timer timerRandomSong;
     private javax.swing.Timer timerRandomPromotionalVideo;
 
@@ -252,7 +252,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 }
                 if (Arrays.stream(stringLabel).noneMatch("-"::equals)) {
                     selectedSong = Integer.parseInt(String.format(MediaLogic.ACTION_LIST, stringLabel[0], stringLabel[1], stringLabel[2], stringLabel[3], stringLabel[4]));
-                    System.out.println(selectedSong);
                     if (selectedSong <= Objects.requireNonNull(MediaLogic.musicList()).size() - 1) {
                         Song song = Objects.requireNonNull(MediaLogic.musicList()).get(selectedSong);
                         if (videoMediaPlayer.mediaPlayer().status().isPlaying() && !promotionalVideoStatus) {
@@ -499,6 +498,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         songsListLabel.setText(genders[selectedGender]);
         setMusicList(musicListByGenders.get(selectedGender), genders[selectedGender]);
+        selectedSong = 0;
         updateSelectedSongInSongsList();
 
     }
@@ -555,7 +555,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
             videoMediaPlayer.mediaPlayer().media().play(String.format(MediaLogic.ACTION_SONG, MediaLogic.getSongsPath(), File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName()));
             videoLabel.setText(song.toString());
-            System.out.println(song);
         }
 
         matcher = MediaLogic.getPatternAudio().matcher(song.getName());
@@ -755,7 +754,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     private void updateSelectedSongInSongsList() {
 
-        selectedSong = 0;
         songsListJList.setSelectedIndex(selectedSong);
         songsListJList.ensureIndexIsVisible(selectedSong);
 
