@@ -404,7 +404,6 @@ public class SettingsWindow extends JFrame {
         this.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         this.getContentPane().setLayout(new BorderLayout(0, 0));
         this.getContentPane().add(containerPanel);
-        this.setAlwaysOnTop(true);
         this.setVisible(false);
 
         loadSettings(SettingsLogic.loadSettings());
