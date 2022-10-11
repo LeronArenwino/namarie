@@ -611,10 +611,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         audioMediaPlayer = new AudioPlayerComponent() {
 
             @Override
-            public void playing(MediaPlayer mediaPlayer) {
-            }
-
-            @Override
             public void finished(MediaPlayer mediaPlayer) {
 
                 videoMediaPlayer.mediaPlayer().controls().stop();
@@ -703,10 +699,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         // Create EmbeddedMediaPlayerComponent instances and add to the video panel
         videoMediaPlayer = new EmbeddedMediaPlayerComponent() {
-
-            @Override
-            public void playing(MediaPlayer mediaPlayer) {
-            }
 
             @Override
             public void finished(MediaPlayer mediaPlayer) {
