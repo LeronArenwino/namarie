@@ -16,20 +16,6 @@
         <properties/>
         <border type="none"/>
         <children>
-          <scrollpane id="3741f" binding="songsListScrollPanel">
-            <constraints border-constraint="Center"/>
-            <properties>
-              <horizontalScrollBarPolicy value="31"/>
-              <verticalScrollBarPolicy value="21"/>
-            </properties>
-            <border type="empty"/>
-            <children>
-              <component id="980b6" class="javax.swing.JList" binding="songsListJList">
-                <constraints/>
-                <properties/>
-              </component>
-            </children>
-          </scrollpane>
           <grid id="93057" binding="searchSongPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints border-constraint="South"/>
             <properties/>
@@ -47,6 +33,25 @@
               </component>
             </children>
           </grid>
+          <component id="d8a00" class="javax.swing.JLabel" binding="songsListLabel">
+            <constraints border-constraint="North"/>
+            <properties>
+              <horizontalAlignment value="0"/>
+              <horizontalTextPosition value="0"/>
+              <text value=""/>
+            </properties>
+          </component>
+          <scrollpane id="1de9c" binding="songsListScrollPanel">
+            <constraints border-constraint="Center"/>
+            <properties/>
+            <border type="empty"/>
+            <children>
+              <component id="34e1e" class="javax.swing.JList" binding="songsListJList">
+                <constraints/>
+                <properties/>
+              </component>
+            </children>
+          </scrollpane>
         </children>
       </grid>
       <grid id="51c91" binding="centerPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
