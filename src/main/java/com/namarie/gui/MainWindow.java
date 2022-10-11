@@ -35,6 +35,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     private final JPanel advertisementPanel = new JPanel();
     private static final String ADVERTISEMENT_MESSAGE = "Error media-player!";
     private static final String NAMARIE_TITLE = "Namarie jukebox";
+    SettingsWindow settingsWindow = new SettingsWindow();
 
     // Create a Logger
     private final transient Logger logger = Logger.getLogger(MainWindow.class.getName());
@@ -77,7 +78,8 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     private int currentCredits;
 
     // Timers
-    static javax.swing.Timer timerFocusMainPanel;
+    private javax.swing.Timer timerFocusMainPanel;
+    private javax.swing.Timer timerCheckFocus;
     private javax.swing.Timer timerRandomSong;
     private javax.swing.Timer timerRandomPromotionalVideo;
 
@@ -106,9 +108,8 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         public void keyPressed(KeyEvent e) {
             // Event to open a settings window (Key 'Q')
             if (e.getKeyCode() == 81) {
-                SettingsWindow settingsWindow = new SettingsWindow();
                 settingsWindow.setVisible(true);
-                timerFocusMainPanel.stop();
+                timerCheckFocus.start();
             }
             // Event to open add coin
             else if (e.getKeyCode() == MediaLogic.getAddCoin() && currentCredits < 25) {
@@ -402,6 +403,8 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         ActionListener focusMainPanel = e -> getContentPane().requestFocus();
 
+        ActionListener checkFocus = e -> checkSettingsFrame();
+
         ActionListener playRandomSong = e -> playRandomSong();
 
         ActionListener playRandomPromotionalVideo = e -> playRandomPromotionalVideo();
@@ -409,6 +412,10 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         timerFocusMainPanel = new Timer(250, focusMainPanel);
         timerFocusMainPanel.setRepeats(true);
         timerFocusMainPanel.start();
+
+        timerCheckFocus = new Timer(200, checkFocus);
+        timerCheckFocus.setRepeats(true);
+        timerCheckFocus.stop();
 
         timerRandomSong = new Timer(MediaLogic.getRandomSong() * 60000, playRandomSong);
         timerRandomSong.setRepeats(false);
@@ -481,6 +488,18 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         searchSongsListButton.setForeground(Color.decode(darkLight));
         searchSongsListButton.setText("Search song");
         searchSongsListButton.setVisible(false);
+
+    }
+
+    private void checkSettingsFrame() {
+
+        if (!settingsWindow.isVisible()) {
+            timerFocusMainPanel.start();
+            timerCheckFocus.stop();
+        } else if (timerFocusMainPanel.isRunning()) {
+            timerFocusMainPanel.stop();
+            settingsWindow.requestFocus();
+        }
 
     }
 
