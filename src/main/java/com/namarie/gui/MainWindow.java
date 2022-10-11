@@ -74,8 +74,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     private String[] stringLabel;
     private int currentCredits;
 
-    private TitledBorder songsListTitledBorder;
-
     // Timers
     public static javax.swing.Timer timerFocusMainPanel;
     private javax.swing.Timer timerRandomSong;
@@ -435,17 +433,10 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         musicQueueTitledBorder.setTitleColor(Color.decode(light));
         musicQueueTitledBorder.setTitleFont(defaultFont);
 
-        songsListTitledBorder = BorderFactory.createTitledBorder(
-                blackLine, "");
-        songsListTitledBorder.setTitleJustification(TitledBorder.CENTER);
-        songsListTitledBorder.setTitleColor(Color.decode(light));
-        songsListTitledBorder.setTitleFont(defaultFont);
-
         centerPanel.setBackground(Color.decode(dark));
         searchSongPanel.setBackground(Color.decode(dark));
 
         musicListPanel.setBorder(musicQueueTitledBorder);
-        songsListPanel.setBorder(songsListTitledBorder);
 
         videoLabel.setBackground(Color.decode(dark));
         videoLabel.setForeground(Color.decode(light));
@@ -498,7 +489,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     private void loadSongsListJList() {
 
         selectedSong = 0;
-        songsListTitledBorder.setTitle(genders[selectedGender]);
         setMusicList(musicListByGenders.get(selectedGender), genders[selectedGender]);
         updateSelectedSongInSongsList();
 
