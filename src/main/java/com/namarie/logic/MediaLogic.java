@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -56,6 +57,9 @@ public class MediaLogic {
     private static final Pattern patternVideo;
     private static final Pattern patternAudio;
 
+    private static String[] genders;
+    private static List<Song> musicList;
+
     private static int songCounter = 0;
 
     static {
@@ -67,6 +71,10 @@ public class MediaLogic {
         patternMedia = Pattern.compile(PATTERN);
         patternVideo = Pattern.compile(PATTERN_VIDEO);
         patternAudio = Pattern.compile(PATTERN_AUDIO);
+
+        // Music
+        gendersList();
+        musicList();
 
     }
 
@@ -146,21 +154,26 @@ public class MediaLogic {
         return patternAudio;
     }
 
+    public static List<Song> getMusicList() {
+        return musicList;
+    }
+
+    public static String[] getGenders() {
+        return genders;
+    }
+
     /**
      * This method generates a genders list with directories name relative to path given.
-     *
-     * @return A String[] with the directories name list (genders list). If directory don't contain
-     * directories or have a bad structure, this return null.
      */
-    public static String[] gendersList() {
+    public static void gendersList() {
 
-        String[] genders = null;
+        genders = null;
 
         File directory = new File(songsPath);
 
         if (directory.isDirectory()) genders = directory.list();
 
-        if (genders == null) return new String[0];
+        if (genders == null) genders = new String[0];
 
         Arrays.sort(genders, String::compareToIgnoreCase);
 
@@ -176,7 +189,6 @@ public class MediaLogic {
 
         }
 
-        return genders;
     }
 
     /**
@@ -257,18 +269,18 @@ public class MediaLogic {
 
     }
 
-    public static List<Song> musicList() {
+    public static void musicList() {
 
         String[] genders = null;
         String[] singers;
 
-        List<Song> musicList = new ArrayList<>();
+        musicList = new ArrayList<>();
 
         File directory = new File(songsPath);
 
         if (directory.isDirectory()) genders = directory.list();
 
-        if (genders == null) return Collections.emptyList();
+        if (genders == null) return;
         Arrays.sort(genders, String::compareToIgnoreCase);
 
         for (String gender : genders) {
@@ -282,8 +294,6 @@ public class MediaLogic {
                         .collect(Collectors.toList());
             }
         }
-
-        return musicList;
 
     }
 

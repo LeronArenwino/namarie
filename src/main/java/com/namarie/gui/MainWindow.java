@@ -221,8 +221,8 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 MediaLogic.loadSettingsValues(SettingsLogic.loadSettings());
 
                 selectedGender = 0;
-                genders = MediaLogic.gendersList();
-                musicListByGenders = MediaLogic.musicListByGenders(MediaLogic.musicList(), genders);
+                genders = MediaLogic.getGenders();
+                musicListByGenders = MediaLogic.musicListByGenders(MediaLogic.getMusicList(), genders);
                 loadSongsListJList();
             }
             // Event to set a values in String to select a song
@@ -253,8 +253,8 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 }
                 if (Arrays.stream(stringLabel).noneMatch("-"::equals)) {
                     selectedSong = Integer.parseInt(String.format(MediaLogic.ACTION_LIST, stringLabel[0], stringLabel[1], stringLabel[2], stringLabel[3], stringLabel[4]));
-                    if (selectedSong <= Objects.requireNonNull(MediaLogic.musicList()).size() - 1) {
-                        Song song = Objects.requireNonNull(MediaLogic.musicList()).get(selectedSong);
+                    if (selectedSong <= Objects.requireNonNull(MediaLogic.getMusicList()).size() - 1) {
+                        Song song = Objects.requireNonNull(MediaLogic.getMusicList()).get(selectedSong);
                         if (videoMediaPlayer.mediaPlayer().status().isPlaying() && !promotionalVideoStatus) {
                             musicQueue.add(song);
                             setMusicQueue(musicQueue);
@@ -387,9 +387,9 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         videosQueue = MediaLogic.getVideos(MediaLogic.getVideosPath());
         promotionalVideos = MediaLogic.getVideos(MediaLogic.getPromotionalVideoPath());
 
-        genders = MediaLogic.gendersList();
+        genders = MediaLogic.getGenders();
 
-        musicListByGenders = MediaLogic.musicListByGenders(MediaLogic.musicList(), genders);
+        musicListByGenders = MediaLogic.musicListByGenders(MediaLogic.getMusicList(), genders);
 
         musicQueue = new ArrayList<>();
 
@@ -554,11 +554,11 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         }
 
-        if (!videoMediaPlayer.mediaPlayer().status().isPlaying() && !audioMediaPlayer.mediaPlayer().status().isPlaying() && musicQueue.isEmpty() && !MediaLogic.musicList().isEmpty()) {
+        if (!videoMediaPlayer.mediaPlayer().status().isPlaying() && !audioMediaPlayer.mediaPlayer().status().isPlaying() && musicQueue.isEmpty() && !MediaLogic.getMusicList().isEmpty()) {
 
-            int randSong = rand.nextInt(Objects.requireNonNull(MediaLogic.musicList()).size());
+            int randSong = rand.nextInt(Objects.requireNonNull(MediaLogic.getMusicList()).size());
 
-            Song song = Objects.requireNonNull(MediaLogic.musicList()).get(randSong);
+            Song song = Objects.requireNonNull(MediaLogic.getMusicList()).get(randSong);
 
             playSong(song);
 
