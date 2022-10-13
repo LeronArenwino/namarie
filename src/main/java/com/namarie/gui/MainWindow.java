@@ -79,6 +79,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     // Timers
     public static javax.swing.Timer timerFocusMainPanel;
+    private javax.swing.Timer timerReturnFocus;
     private javax.swing.Timer timerRandomSong;
     private javax.swing.Timer timerRandomPromotionalVideo;
 
@@ -342,6 +343,22 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         initComponents();
 
+        searchSongsListTextField.addFocusListener(new FocusAdapter() {
+
+            @Override
+            public void focusGained(FocusEvent focusEvent) {
+                returnFocusMainPanel();
+            }
+
+            @Override
+            public void focusLost(FocusEvent focusEvent) {
+                returnFocusMainPanel();
+            }
+        });
+        searchSongsListTextField.addCaretListener(caretEvent -> {
+            timerReturnFocus.stop();
+            timerReturnFocus.start();
+        });
     }
 
     /**
@@ -402,6 +419,8 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         ActionListener focusMainPanel = e -> getContentPane().requestFocus();
 
+        ActionListener returnFocusMainPanel = e -> returnFocusMainPanel();
+
         ActionListener playRandomSong = e -> playRandomSong();
 
         ActionListener playRandomPromotionalVideo = e -> playRandomPromotionalVideo();
@@ -409,6 +428,10 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         timerFocusMainPanel = new Timer(250, focusMainPanel);
         timerFocusMainPanel.setRepeats(true);
         timerFocusMainPanel.start();
+
+        timerReturnFocus = new Timer(10000, returnFocusMainPanel);
+        timerReturnFocus.setRepeats(true);
+        timerReturnFocus.stop();
 
         timerRandomSong = new Timer(MediaLogic.getRandomSong() * 60000, playRandomSong);
         timerRandomSong.setRepeats(false);
@@ -577,6 +600,22 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         if (timerRandomSong.isRunning()) {
 
             timerRandomSong.stop();
+
+        }
+
+    }
+
+    private void returnFocusMainPanel() {
+
+        if (!timerFocusMainPanel.isRunning()) {
+
+            timerFocusMainPanel.start();
+            timerReturnFocus.stop();
+
+        } else {
+
+            timerFocusMainPanel.stop();
+            timerReturnFocus.start();
 
         }
 
