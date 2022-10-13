@@ -347,6 +347,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
             @Override
             public void focusGained(FocusEvent focusEvent) {
+                setMusicList(MediaLogic.getMusicList());
                 returnFocusMainPanel();
             }
 
@@ -357,6 +358,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         });
         searchSongsListTextField.addCaretListener(caretEvent -> {
             timerReturnFocus.stop();
+            filterModel(searchSongsListTextField.getText());
             timerReturnFocus.start();
         });
     }
@@ -517,6 +519,20 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         videoLabel.setVisible(!state);
 
         currentCreditsLabel.setText(String.format("Credits: %s", currentCredits));
+
+    }
+
+    private void filterModel(String filter) {
+
+        DefaultListModel<Song> model = new DefaultListModel<>();
+
+        for (Song song : MediaLogic.getMusicList()) {
+            if (song.toString().contains(filter)) {
+                model.addElement(song);
+            }
+        }
+
+        songsListJList.setModel(model);
 
     }
 
@@ -682,6 +698,21 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 JOptionPane.showMessageDialog(advertisementPanel, ADVERTISEMENT_MESSAGE, "Warning", JOptionPane.WARNING_MESSAGE);
             }
         };
+
+    }
+
+    private void setMusicList(List<Song> musicList) {
+
+        if (musicList != null) {
+
+            DefaultListModel<Song> model = new DefaultListModel<>();
+
+            for (Song song : musicList) {
+                model.addElement(song);
+            }
+
+            songsListJList.setModel(model);
+        }
 
     }
 
