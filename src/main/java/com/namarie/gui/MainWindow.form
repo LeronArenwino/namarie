@@ -11,22 +11,24 @@
     </properties>
     <border type="empty"/>
     <children>
-      <grid id="81fdd" binding="songsListPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+      <grid id="81fdd" binding="songsListPanel" layout-manager="BorderLayout" hgap="0" vgap="4">
         <constraints border-constraint="East"/>
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="93057" binding="searchSongPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+          <grid id="93057" binding="searchSongPanel" layout-manager="BorderLayout" hgap="4" vgap="4">
             <constraints border-constraint="South"/>
             <properties/>
-            <border type="none"/>
+            <border type="empty"/>
             <children>
               <component id="c775f" class="javax.swing.JTextField" binding="searchSongsListTextField">
-                <constraints border-constraint="North"/>
-                <properties/>
+                <constraints border-constraint="Center"/>
+                <properties>
+                  <visible value="true"/>
+                </properties>
               </component>
               <component id="5837f" class="javax.swing.JButton" binding="searchSongsListButton">
-                <constraints border-constraint="South"/>
+                <constraints border-constraint="East"/>
                 <properties>
                   <text value=""/>
                 </properties>
@@ -43,7 +45,10 @@
           </component>
           <scrollpane id="1de9c" binding="songsListScrollPanel">
             <constraints border-constraint="Center"/>
-            <properties/>
+            <properties>
+              <horizontalScrollBarPolicy value="31"/>
+              <verticalScrollBarPolicy value="21"/>
+            </properties>
             <border type="empty"/>
             <children>
               <component id="34e1e" class="javax.swing.JList" binding="songsListJList">

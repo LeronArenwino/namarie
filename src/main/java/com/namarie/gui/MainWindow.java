@@ -475,7 +475,11 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         songsListJList.setForeground(Color.decode(light));
         songsListJList.setFont(defaultFont);
 
-        searchSongsListTextField.setVisible(false);
+        searchSongPanel.setBackground(Color.decode(dark));
+
+        searchSongsListTextField.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, Color.decode(light)));
+        searchSongsListTextField.setBackground(Color.decode(dark));
+        searchSongsListTextField.setFont(defaultFont);
 
         searchSongsListButton.setBackground(Color.decode(light));
         searchSongsListButton.setForeground(Color.decode(darkLight));
