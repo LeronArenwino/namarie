@@ -4,6 +4,7 @@ import com.namarie.entity.Media;
 import com.namarie.entity.Song;
 import com.namarie.logic.MediaLogic;
 import com.namarie.logic.SettingsLogic;
+import org.apache.commons.lang3.StringUtils;
 import uk.co.caprica.vlcj.player.base.MediaPlayer;
 import uk.co.caprica.vlcj.player.component.AudioPlayerComponent;
 import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent;
@@ -347,13 +348,17 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
             @Override
             public void focusGained(FocusEvent focusEvent) {
+                songsListLabel.setText("Toda la música");
                 setMusicList(MediaLogic.getMusicList());
-                returnFocusMainPanel();
+                timerFocusMainPanel.stop();
+                timerReturnFocus.start();
             }
 
             @Override
             public void focusLost(FocusEvent focusEvent) {
-                returnFocusMainPanel();
+                loadSongsListJList();
+                timerFocusMainPanel.start();
+                timerReturnFocus.stop();
             }
         });
         searchSongsListTextField.addCaretListener(caretEvent -> {
@@ -421,13 +426,13 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         ActionListener focusMainPanel = e -> getContentPane().requestFocus();
 
-        ActionListener returnFocusMainPanel = e -> returnFocusMainPanel();
+        ActionListener returnFocusMainPanel = e -> timerFocusMainPanel.start();
 
         ActionListener playRandomSong = e -> playRandomSong();
 
         ActionListener playRandomPromotionalVideo = e -> playRandomPromotionalVideo();
 
-        timerFocusMainPanel = new Timer(250, focusMainPanel);
+        timerFocusMainPanel = new Timer(1000, focusMainPanel);
         timerFocusMainPanel.setRepeats(true);
         timerFocusMainPanel.start();
 
@@ -527,7 +532,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         DefaultListModel<Song> model = new DefaultListModel<>();
 
         for (Song song : MediaLogic.getMusicList()) {
-            if (song.toString().contains(filter)) {
+            if (StringUtils.containsIgnoreCase(song.toString(), filter)) {
                 model.addElement(song);
             }
         }
@@ -538,6 +543,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     private void loadSongsListJList() {
 
+        searchSongsListTextField.setText("");
         songsListLabel.setText(genders[selectedGender]);
         setMusicList(musicListByGenders.get(selectedGender), genders[selectedGender]);
         selectedSong = 0;
@@ -616,22 +622,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         if (timerRandomSong.isRunning()) {
 
             timerRandomSong.stop();
-
-        }
-
-    }
-
-    private void returnFocusMainPanel() {
-
-        if (!timerFocusMainPanel.isRunning()) {
-
-            timerFocusMainPanel.start();
-            timerReturnFocus.stop();
-
-        } else {
-
-            timerFocusMainPanel.stop();
-            timerReturnFocus.start();
 
         }
 
