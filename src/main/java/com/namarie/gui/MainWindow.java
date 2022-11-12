@@ -46,7 +46,16 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     // General components
     private JPanel containerPanel;
+    private JPanel westPanel;
+    private JPanel northPanel;
+    private JPanel eastPanel;
+    private JPanel southPanel;
     private JPanel centerPanel;
+    private JPanel westCenterPanel;
+    private JPanel northCenterPanel;
+    private JPanel eastCenterPanel;
+    private JPanel southCenterPanel;
+    private JPanel centerCenterPanel;
     private JPanel videoPanel;
     private JPanel musicListPanel;
     private JPanel songsListPanel;
@@ -380,7 +389,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         this.setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
-        this.setUndecorated(true);
         this.setContentPane(containerPanel);
 
         // Reshape components to screen resolution
@@ -456,7 +464,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         String darkLight = "#262626";
         String light = "#D9D9D9";
 
-        Font defaultFont = new Font("Aria Narrow", Font.PLAIN, 36);
+        Font defaultFont = new Font("Aria Narrow", Font.PLAIN, 28);
 
         Border blackLine = BorderFactory.createLineBorder(Color.decode(dark), 8);
 
