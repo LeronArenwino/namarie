@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import uk.co.caprica.vlcj.player.base.MediaPlayer;
 import uk.co.caprica.vlcj.player.component.AudioPlayerComponent;
 import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent;
+import uk.co.caprica.vlcj.player.embedded.fullscreen.adaptive.AdaptiveFullScreenStrategy;
 
 import javax.swing.*;
 import javax.swing.Timer;
@@ -116,6 +117,9 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
          */
         @Override
         public void keyPressed(KeyEvent e) {
+            if (e.getKeyCode() == 122) {
+                videoMediaPlayer.mediaPlayer().fullScreen().toggle();
+            }
             // Event to open a settings window (Key 'Q')
             if (e.getKeyCode() == 81) {
                 settingsWindow.setVisible(true);
@@ -387,13 +391,12 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         this.setTitle("Namarie");
         this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         this.setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
-        this.setLocationRelativeTo(null);
-        this.setResizable(false);
+        this.setResizable(true);
         this.setContentPane(containerPanel);
+        this.setMinimumSize(new Dimension(RESOLUTION_WIDTH / 2, RESOLUTION_HEIGHT / 2));
 
         // Reshape components to screen resolution
-        videoPanel.setPreferredSize(new Dimension(RESOLUTION_WIDTH / 2, RESOLUTION_HEIGHT / 2));
-        musicListPanel.setPreferredSize(new Dimension(RESOLUTION_WIDTH / 4, RESOLUTION_HEIGHT / 2));
+        musicListPanel.setPreferredSize(new Dimension(RESOLUTION_WIDTH, RESOLUTION_HEIGHT / 3));
         songsListPanel.setPreferredSize(new Dimension(RESOLUTION_WIDTH / 2, RESOLUTION_HEIGHT));
 
         paintComponents();
@@ -750,7 +753,13 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     private void setVideoMediaPlayer() {
 
         // Create EmbeddedMediaPlayerComponent instances and add to the video panel
-        videoMediaPlayer = new EmbeddedMediaPlayerComponent() {
+        videoMediaPlayer = new EmbeddedMediaPlayerComponent(
+                null,
+                null,
+                new AdaptiveFullScreenStrategy(this),
+                null,
+                null
+        ) {
 
             @Override
             public void finished(MediaPlayer mediaPlayer) {
