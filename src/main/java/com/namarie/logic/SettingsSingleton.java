@@ -93,31 +93,31 @@ public class SettingsSingleton {
 //    private static final String DEFAULT_VALUE_BOLD = "false";
 
     // Paths control variables
-    public static String pathToVideos;
-    public static String pathToSongs;
-    public static boolean isPromotionalVideos;
-    public static String pathToPromotionalVideos;
+    private static String pathToVideos;
+    private static String pathToSongs;
+    private static boolean promotionalVideos;
+    private static String pathToPromotionalVideos;
 
     // Time control variables
-    public static int timeToPlayRandomSongs;
-    public static int timeToRepeatSongs;
+    private static int timeToPlayRandomSongs;
+    private static int timeToRepeatSongs;
 
     // Credits control variables
-    public static int amountCredits;
-    public static boolean isLockScreen;
-    public static boolean isSaveSongs;
+    private static int amountCredits;
+    private static boolean lockScreen;
+    private static boolean saveSongs;
 
     // Keys control variables
-    public static int valueToUpIndex;
-    public static int valueToDownIndex;
-    public static int valueToUpIndexes;
-    public static int valueToDownIndexes;
-    public static int valueToChangeGenderToUp;
-    public static int valueToChangeGenderToDown;
-    public static int valueToAddCoin;
-    public static int valueToRemoveCoin;
-    public static int valueToPlayNextSong;
-    public static int valueToPowerOff;
+    private static int valueToUpIndex;
+    private static int valueToDownIndex;
+    private static int valueToUpIndexes;
+    private static int valueToDownIndexes;
+    private static int valueToChangeGenderToUp;
+    private static int valueToChangeGenderToDown;
+    private static int valueToAddCoin;
+    private static int valueToRemoveCoin;
+    private static int valueToPlayNextSong;
+    private static int valueToPowerOff;
 
     static {
         try {
@@ -172,7 +172,7 @@ public class SettingsSingleton {
         // Set paths control variables
         setPathToVideos(properties.getProperty(KEY_PATH_TO_VIDEOS));
         setPathToSongs(properties.getProperty(KEY_PATH_TO_SONGS));
-        setIsPromotionalVideos(Boolean.parseBoolean(properties.getProperty(KEY_IS_PROMOTIONAL_VIDEOS)));
+        setPromotionalVideos(Boolean.parseBoolean(properties.getProperty(KEY_IS_PROMOTIONAL_VIDEOS)));
         setPathToPromotionalVideos(properties.getProperty(KEY_PATH_TO_PROMOTIONAL_VIDEOS));
 
         // Set time control variables
@@ -181,8 +181,8 @@ public class SettingsSingleton {
 
         // Set credits control variables
         setAmountCredits(Integer.parseInt(properties.getProperty(KEY_AMOUNT_CREDITS)));
-        setIsLockScreen(Boolean.parseBoolean(properties.getProperty(KEY_LOCK_SCREEN)));
-        setIsSaveSongs(Boolean.parseBoolean(properties.getProperty(KEY_SAVE_SONGS)));
+        setLockScreen(Boolean.parseBoolean(properties.getProperty(KEY_LOCK_SCREEN)));
+        setSaveSongs(Boolean.parseBoolean(properties.getProperty(KEY_SAVE_SONGS)));
 
         // Set keys control variables
         setValueToUpIndex(Integer.parseInt(properties.getProperty(KEY_UP_SONG)));
@@ -199,80 +199,155 @@ public class SettingsSingleton {
 
     }
 
-    private static void setPathToVideos(String pathToVideos) {
+    public static String getPathToVideos() {
+        return pathToVideos;
+    }
+
+    public static void setPathToVideos(String pathToVideos) {
         SettingsSingleton.pathToVideos = pathToVideos;
     }
 
-    private static void setPathToSongs(String pathToSongs) {
+    public static String getPathToSongs() {
+        return pathToSongs;
+    }
+
+    public static void setPathToSongs(String pathToSongs) {
         SettingsSingleton.pathToSongs = pathToSongs;
     }
 
-    private static void setIsPromotionalVideos(boolean isPromotionalVideos) {
-        SettingsSingleton.isPromotionalVideos = isPromotionalVideos;
+    public static boolean isPromotionalVideos() {
+        return promotionalVideos;
     }
 
-    private static void setPathToPromotionalVideos(String pathToPromotionalVideos) {
+    public static void setPromotionalVideos(boolean promotionalVideos) {
+        SettingsSingleton.promotionalVideos = promotionalVideos;
+    }
+
+    public static String getPathToPromotionalVideos() {
+        return pathToPromotionalVideos;
+    }
+
+    public static void setPathToPromotionalVideos(String pathToPromotionalVideos) {
         SettingsSingleton.pathToPromotionalVideos = pathToPromotionalVideos;
     }
 
-    private static void setTimeToPlayRandomSongs(int timeToPlayRandomSongs) {
+    public static int getTimeToPlayRandomSongs() {
+        return timeToPlayRandomSongs;
+    }
+
+    public static void setTimeToPlayRandomSongs(int timeToPlayRandomSongs) {
         SettingsSingleton.timeToPlayRandomSongs = timeToPlayRandomSongs;
     }
 
-    private static void setTimeToRepeatSongs(int timeToRepeatSongs) {
+    public static int getTimeToRepeatSongs() {
+        return timeToRepeatSongs;
+    }
+
+    public static void setTimeToRepeatSongs(int timeToRepeatSongs) {
         SettingsSingleton.timeToRepeatSongs = timeToRepeatSongs;
     }
 
-    private static void setAmountCredits(int amountCredits) {
+    public static int getAmountCredits() {
+        return amountCredits;
+    }
+
+    public static void setAmountCredits(int amountCredits) {
         SettingsSingleton.amountCredits = amountCredits;
     }
 
-    private static void setIsLockScreen(boolean isLockScreen) {
-        SettingsSingleton.isLockScreen = isLockScreen;
+    public static boolean isLockScreen() {
+        return lockScreen;
     }
 
-    private static void setIsSaveSongs(boolean isSaveSongs) {
-        SettingsSingleton.isSaveSongs = isSaveSongs;
+    public static void setLockScreen(boolean lockScreen) {
+        SettingsSingleton.lockScreen = lockScreen;
     }
 
-    private static void setValueToUpIndex(int valueToUpIndex) {
+    public static boolean isSaveSongs() {
+        return saveSongs;
+    }
+
+    public static void setSaveSongs(boolean saveSongs) {
+        SettingsSingleton.saveSongs = saveSongs;
+    }
+
+    public static int getValueToUpIndex() {
+        return valueToUpIndex;
+    }
+
+    public static void setValueToUpIndex(int valueToUpIndex) {
         SettingsSingleton.valueToUpIndex = valueToUpIndex;
     }
 
-    private static void setValueToDownIndex(int valueToDownIndex) {
+    public static int getValueToDownIndex() {
+        return valueToDownIndex;
+    }
+
+    public static void setValueToDownIndex(int valueToDownIndex) {
         SettingsSingleton.valueToDownIndex = valueToDownIndex;
     }
 
-    private static void setValueToUpIndexes(int valueToUpIndexes) {
+    public static int getValueToUpIndexes() {
+        return valueToUpIndexes;
+    }
+
+    public static void setValueToUpIndexes(int valueToUpIndexes) {
         SettingsSingleton.valueToUpIndexes = valueToUpIndexes;
     }
 
-    private static void setValueToDownIndexes(int valueToDownIndexes) {
+    public static int getValueToDownIndexes() {
+        return valueToDownIndexes;
+    }
+
+    public static void setValueToDownIndexes(int valueToDownIndexes) {
         SettingsSingleton.valueToDownIndexes = valueToDownIndexes;
     }
 
-    private static void setValueToChangeGenderToUp(int valueToChangeGenderToUp) {
+    public static int getValueToChangeGenderToUp() {
+        return valueToChangeGenderToUp;
+    }
+
+    public static void setValueToChangeGenderToUp(int valueToChangeGenderToUp) {
         SettingsSingleton.valueToChangeGenderToUp = valueToChangeGenderToUp;
     }
 
-    private static void setValueToChangeGenderToDown(int valueToChangeGenderToDown) {
+    public static int getValueToChangeGenderToDown() {
+        return valueToChangeGenderToDown;
+    }
+
+    public static void setValueToChangeGenderToDown(int valueToChangeGenderToDown) {
         SettingsSingleton.valueToChangeGenderToDown = valueToChangeGenderToDown;
     }
 
-    private static void setValueToAddCoin(int valueToAddCoin) {
+    public static int getValueToAddCoin() {
+        return valueToAddCoin;
+    }
+
+    public static void setValueToAddCoin(int valueToAddCoin) {
         SettingsSingleton.valueToAddCoin = valueToAddCoin;
     }
 
-    private static void setValueToRemoveCoin(int valueToRemoveCoin) {
+    public static int getValueToRemoveCoin() {
+        return valueToRemoveCoin;
+    }
+
+    public static void setValueToRemoveCoin(int valueToRemoveCoin) {
         SettingsSingleton.valueToRemoveCoin = valueToRemoveCoin;
     }
 
-    private static void setValueToPlayNextSong(int valueToPlayNextSong) {
+    public static int getValueToPlayNextSong() {
+        return valueToPlayNextSong;
+    }
+
+    public static void setValueToPlayNextSong(int valueToPlayNextSong) {
         SettingsSingleton.valueToPlayNextSong = valueToPlayNextSong;
     }
 
-    private static void setValueToPowerOff(int valueToPowerOff) {
-        SettingsSingleton.valueToPowerOff = valueToPowerOff;
+    public static int getValueToPowerOff() {
+        return valueToPowerOff;
     }
 
+    public static void setValueToPowerOff(int valueToPowerOff) {
+        SettingsSingleton.valueToPowerOff = valueToPowerOff;
+    }
 }
