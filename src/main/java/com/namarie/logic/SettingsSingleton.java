@@ -122,9 +122,9 @@ public class SettingsSingleton {
     private static String valueTextColor;
     private static String valueFont;
     private static String valueFontStyle;
-    private static String valueFontSize;
+    private static int valueFontSize;
     private static String valueForeground;
-    private static String valueBold;
+    private static boolean valueBold;
 
     static {
         try {
@@ -217,9 +217,9 @@ public class SettingsSingleton {
         setValueTextColor(properties.getProperty(KEY_TEXT_COLOR));
         setValueFont(properties.getProperty(KEY_FONT));
         setValueFontStyle(properties.getProperty(KEY_FONT_STYLE));
-        setValueFontSize(properties.getProperty(KEY_FONT_SIZE));
+        setValueFontSize(Integer.parseInt(properties.getProperty(KEY_FONT_SIZE)));
         setValueForeground(properties.getProperty(KEY_FOREGROUND));
-        setValueBold(properties.getProperty(KEY_BOLD));
+        setValueBold(Boolean.parseBoolean(properties.getProperty(KEY_BOLD)));
 
     }
 
@@ -407,11 +407,11 @@ public class SettingsSingleton {
         SettingsSingleton.valueFontStyle = valueFontStyle;
     }
 
-    public static String getValueFontSize() {
+    public static int getValueFontSize() {
         return valueFontSize;
     }
 
-    public static void setValueFontSize(String valueFontSize) {
+    public static void setValueFontSize(int valueFontSize) {
         SettingsSingleton.valueFontSize = valueFontSize;
     }
 
@@ -423,11 +423,12 @@ public class SettingsSingleton {
         SettingsSingleton.valueForeground = valueForeground;
     }
 
-    public static String getValueBold() {
+    public static boolean isValueBold() {
         return valueBold;
     }
 
-    public static void setValueBold(String valueBold) {
+    public static void setValueBold(boolean valueBold) {
         SettingsSingleton.valueBold = valueBold;
     }
+
 }
