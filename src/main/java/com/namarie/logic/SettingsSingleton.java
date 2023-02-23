@@ -195,7 +195,6 @@ public class SettingsSingleton {
         setValueToRemoveCoin(Integer.parseInt(properties.getProperty(KEY_REMOVE_COIN)));
         setValueToPlayNextSong(Integer.parseInt(properties.getProperty(KEY_NEXT_SONG)));
         setValueToPowerOff(Integer.parseInt(properties.getProperty(KEY_POWER_OFF)));
-        // setValueToSettingsWindow(Integer.valueOf(properties.getProperty(KEY_SETTINGS)));
 
     }
 
