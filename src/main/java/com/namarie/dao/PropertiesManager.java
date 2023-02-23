@@ -17,6 +17,9 @@ public class PropertiesManager {
             = Logger.getLogger(
             PropertiesManager.class.getName());
 
+    private PropertiesManager(){throw new IllegalStateException("Utility class");
+    }
+
     public static Properties loadProperties() {
 
         Properties properties = new Properties();
