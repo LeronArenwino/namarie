@@ -36,7 +36,7 @@ public class PropertiesManager {
 
 
         } catch (IOException e) {
-            logger.log(Level.WARNING, "Reader error: " + e);
+            logger.log(Level.WARNING, "Reader error: {0}", e);
         }
 
         return properties;
@@ -48,7 +48,7 @@ public class PropertiesManager {
         try {
             properties.store(new FileWriter(PATH_TO_SETTINGS), "Namarie - settings");
         } catch (IOException e) {
-            logger.log(Level.WARNING, "Properties store error: " + e);
+            logger.log(Level.WARNING, "Properties store error: {0}", e);
         }
 
     }
