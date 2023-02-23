@@ -44,16 +44,15 @@ public class SettingsSingleton {
     public static final String KEY_REMOVE_COIN = "removeCoin";
     public static final String KEY_POWER_OFF = "powerOff";
     public static final String KEY_NEXT_SONG = "nextSong";
-    public static final String KEY_SETTINGS = "settings";
 
     //View TabPanel
-//    public static final String KEY_BACKGROUND_COLOR = "backgroundColor";
-//    public static final String KEY_TEXT_COLOR = "textColor";
-//    public static final String KEY_FONT = "font";
-//    public static final String KEY_FONT_STYLE = "fontStyle";
-//    public static final String KEY_FOREGROUND = "foreground";
-//    public static final String KEY_FONT_SIZE = "fontSize";
-//    public static final String KEY_BOLD = "fontBold";
+    public static final String KEY_BACKGROUND_COLOR = "backgroundColor";
+    public static final String KEY_TEXT_COLOR = "textColor";
+    public static final String KEY_FONT = "font";
+    public static final String KEY_FONT_STYLE = "fontStyle";
+    public static final String KEY_FOREGROUND = "foreground";
+    public static final String KEY_FONT_SIZE = "fontSize";
+    public static final String KEY_BOLD = "fontBold";
 
     // Folders constants
     private static final String DEFAULT_VALUE_PATH_VIDEOS = "";
@@ -77,20 +76,19 @@ public class SettingsSingleton {
     private static final String DEFAULT_VALUE_DOWN_SONGS = "111";
     private static final String DEFAULT_VALUE_UP_GENDER = "107";
     private static final String DEFAULT_VALUE_DOWN_GENDER = "109";
-    private static final String DEFAULT_VALUE_ADD_COIN = "65";
-    private static final String DEFAULT_VALUE_REMOVE_COIN = "66";
-    private static final String DEFAULT_VALUE_NEXT_SONG = "78";
-    private static final String DEFAULT_VALUE_POWER_OFF = "70";
-    private static final String DEFAULT_VALUE_SETTINGS = "67";
+    private static final String DEFAULT_VALUE_ADD_COIN = "112";
+    private static final String DEFAULT_VALUE_REMOVE_COIN = "113";
+    private static final String DEFAULT_VALUE_NEXT_SONG = "114";
+    private static final String DEFAULT_VALUE_POWER_OFF = "123";
 
     //View constants
-//    private static final String DEFAULT_VALUE_BACKGROUND_COLOR = "102,204,255";
-//    private static final String DEFAULT_VALUE_TEXT_COLOR = "255,255,255";
-//    private static final String DEFAULT_VALUE_FONT = "Arial";
-//    private static final String DEFAULT_VALUE_FONT_STYLE = "Regular";
-//    private static final String DEFAULT_VALUE_FONT_SIZE = "20";
-//    private static final String DEFAULT_VALUE_FOREGROUND = "000,000,000";
-//    private static final String DEFAULT_VALUE_BOLD = "false";
+    private static final String DEFAULT_VALUE_BACKGROUND_COLOR = "#66CCFF";
+    private static final String DEFAULT_VALUE_TEXT_COLOR = "#FFFFFF";
+    private static final String DEFAULT_VALUE_FONT = "Arial";
+    private static final String DEFAULT_VALUE_FONT_STYLE = "Regular";
+    private static final String DEFAULT_VALUE_FONT_SIZE = "20";
+    private static final String DEFAULT_VALUE_FOREGROUND = "#000000";
+    private static final String DEFAULT_VALUE_BOLD = "false";
 
     // Paths control variables
     private static String pathToVideos;
@@ -119,6 +117,15 @@ public class SettingsSingleton {
     private static int valueToPlayNextSong;
     private static int valueToPowerOff;
 
+    // View control variables
+    private static String valueBackgroundColor;
+    private static String valueTextColor;
+    private static String valueFont;
+    private static String valueFontStyle;
+    private static String valueFontSize;
+    private static String valueForeground;
+    private static String valueBold;
+
     static {
         try {
             instance = new SettingsSingleton();
@@ -136,21 +143,22 @@ public class SettingsSingleton {
 
         Properties properties = new Properties();
 
+        // Paths section
         properties.put(KEY_PATH_TO_VIDEOS, DEFAULT_VALUE_PATH_VIDEOS);
         properties.put(KEY_PATH_TO_SONGS, DEFAULT_VALUE_PATH_SONGS);
         properties.put(KEY_IS_PROMOTIONAL_VIDEOS, DEFAULT_VALUE_PROMOTIONAL_VIDEO);
         properties.put(KEY_PATH_TO_PROMOTIONAL_VIDEOS, DEFAULT_VALUE_PATH_PROMOTIONAL_VIDEO);
 
-        //Time
+        // Time section
         properties.put(KEY_TIME_TO_PLAY_RANDOM_SONGS, DEFAULT_VALUE_RANDOM_SONG);
         properties.put(KEY_TIME_TO_REPEAT_SONGS, DEFAULT_VALUE_REPEAT_SONGS);
 
-        //Credits
+        // Credits section
         properties.put(KEY_AMOUNT_CREDITS, DEFAULT_VALUE_AMOUNT_CREDITS);
         properties.put(KEY_LOCK_SCREEN, DEFAULT_VALUE_LOCK_SCREEN);
         properties.put(KEY_SAVE_SONGS, DEFAULT_VALUE_SAVE_SONGS);
 
-        //Keys
+        // Keys section
         properties.put(KEY_UP_SONG, DEFAULT_VALUE_UP_SONG);
         properties.put(KEY_DOWN_SONG, DEFAULT_VALUE_DOWN_SONG);
         properties.put(KEY_UP_SONGS, DEFAULT_VALUE_UP_SONGS);
@@ -161,7 +169,15 @@ public class SettingsSingleton {
         properties.put(KEY_REMOVE_COIN, DEFAULT_VALUE_REMOVE_COIN);
         properties.put(KEY_NEXT_SONG, DEFAULT_VALUE_NEXT_SONG);
         properties.put(KEY_POWER_OFF, DEFAULT_VALUE_POWER_OFF);
-        properties.put(KEY_SETTINGS, DEFAULT_VALUE_SETTINGS);
+
+        // View section
+        properties.put(KEY_BACKGROUND_COLOR, DEFAULT_VALUE_BACKGROUND_COLOR);
+        properties.put(KEY_TEXT_COLOR, DEFAULT_VALUE_TEXT_COLOR);
+        properties.put(KEY_FONT, DEFAULT_VALUE_FONT);
+        properties.put(KEY_FONT_STYLE, DEFAULT_VALUE_FONT_STYLE);
+        properties.put(KEY_FONT_SIZE, DEFAULT_VALUE_FONT_SIZE);
+        properties.put(KEY_FOREGROUND, DEFAULT_VALUE_FOREGROUND);
+        properties.put(KEY_BOLD, DEFAULT_VALUE_BOLD);
 
         return properties;
 
@@ -195,6 +211,15 @@ public class SettingsSingleton {
         setValueToRemoveCoin(Integer.parseInt(properties.getProperty(KEY_REMOVE_COIN)));
         setValueToPlayNextSong(Integer.parseInt(properties.getProperty(KEY_NEXT_SONG)));
         setValueToPowerOff(Integer.parseInt(properties.getProperty(KEY_POWER_OFF)));
+
+        // Set view control variables
+        setValueBackgroundColor(properties.getProperty(KEY_BACKGROUND_COLOR));
+        setValueTextColor(properties.getProperty(KEY_TEXT_COLOR));
+        setValueFont(properties.getProperty(KEY_FONT));
+        setValueFontStyle(properties.getProperty(KEY_FONT_STYLE));
+        setValueFontSize(properties.getProperty(KEY_FONT_SIZE));
+        setValueForeground(properties.getProperty(KEY_FOREGROUND));
+        setValueBold(properties.getProperty(KEY_BOLD));
 
     }
 
@@ -348,5 +373,61 @@ public class SettingsSingleton {
 
     public static void setValueToPowerOff(int valueToPowerOff) {
         SettingsSingleton.valueToPowerOff = valueToPowerOff;
+    }
+
+    public static String getValueBackgroundColor() {
+        return valueBackgroundColor;
+    }
+
+    public static void setValueBackgroundColor(String valueBackgroundColor) {
+        SettingsSingleton.valueBackgroundColor = valueBackgroundColor;
+    }
+
+    public static String getValueTextColor() {
+        return valueTextColor;
+    }
+
+    public static void setValueTextColor(String valueTextColor) {
+        SettingsSingleton.valueTextColor = valueTextColor;
+    }
+
+    public static String getValueFont() {
+        return valueFont;
+    }
+
+    public static void setValueFont(String valueFont) {
+        SettingsSingleton.valueFont = valueFont;
+    }
+
+    public static String getValueFontStyle() {
+        return valueFontStyle;
+    }
+
+    public static void setValueFontStyle(String valueFontStyle) {
+        SettingsSingleton.valueFontStyle = valueFontStyle;
+    }
+
+    public static String getValueFontSize() {
+        return valueFontSize;
+    }
+
+    public static void setValueFontSize(String valueFontSize) {
+        SettingsSingleton.valueFontSize = valueFontSize;
+    }
+
+    public static String getValueForeground() {
+        return valueForeground;
+    }
+
+    public static void setValueForeground(String valueForeground) {
+        SettingsSingleton.valueForeground = valueForeground;
+    }
+
+    public static String getValueBold() {
+        return valueBold;
+    }
+
+    public static void setValueBold(String valueBold) {
+        SettingsSingleton.valueBold = valueBold;
     }
 }
