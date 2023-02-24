@@ -10,8 +10,13 @@ public class SettingsSingleton {
     private SettingsSingleton() {
     }
 
+    public static final GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+
+    // Fonts
+    public static String[] fontFamilyNames = graphicsEnvironment.getAvailableFontFamilyNames();
+
     // Screen resolution
-    public static final GraphicsDevice RESOLUTION = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    public static final GraphicsDevice RESOLUTION = graphicsEnvironment.getDefaultScreenDevice();
     public static final int RESOLUTION_WIDTH = RESOLUTION.getDisplayMode().getWidth();
     public static final int RESOLUTION_HEIGHT = RESOLUTION.getDisplayMode().getHeight();
 
@@ -47,12 +52,10 @@ public class SettingsSingleton {
 
     //View TabPanel
     public static final String KEY_BACKGROUND_COLOR = "backgroundColor";
-    public static final String KEY_TEXT_COLOR = "textColor";
+    public static final String KEY_FOREGROUND = "foreground";
     public static final String KEY_FONT = "font";
     public static final String KEY_FONT_STYLE = "fontStyle";
-    public static final String KEY_FOREGROUND = "foreground";
     public static final String KEY_FONT_SIZE = "fontSize";
-    public static final String KEY_BOLD = "fontBold";
 
     // Folders constants
     private static final String DEFAULT_VALUE_PATH_VIDEOS = "";
@@ -83,12 +86,10 @@ public class SettingsSingleton {
 
     //View constants
     private static final String DEFAULT_VALUE_BACKGROUND_COLOR = "#66CCFF";
-    private static final String DEFAULT_VALUE_TEXT_COLOR = "#FFFFFF";
+    private static final String DEFAULT_VALUE_FOREGROUND = "#FFFFFF";
     private static final String DEFAULT_VALUE_FONT = "Arial";
     private static final String DEFAULT_VALUE_FONT_STYLE = "Regular";
     private static final String DEFAULT_VALUE_FONT_SIZE = "20";
-    private static final String DEFAULT_VALUE_FOREGROUND = "#000000";
-    private static final String DEFAULT_VALUE_BOLD = "false";
 
     // Paths control variables
     private static String pathToVideos;
@@ -119,12 +120,10 @@ public class SettingsSingleton {
 
     // View control variables
     private static String valueBackgroundColor;
-    private static String valueTextColor;
+    private static String valueForeground;
     private static String valueFont;
     private static String valueFontStyle;
     private static int valueFontSize;
-    private static String valueForeground;
-    private static boolean valueBold;
 
     static {
         try {
@@ -172,12 +171,10 @@ public class SettingsSingleton {
 
         // View section
         properties.put(KEY_BACKGROUND_COLOR, DEFAULT_VALUE_BACKGROUND_COLOR);
-        properties.put(KEY_TEXT_COLOR, DEFAULT_VALUE_TEXT_COLOR);
+        properties.put(KEY_FOREGROUND, DEFAULT_VALUE_FOREGROUND);
         properties.put(KEY_FONT, DEFAULT_VALUE_FONT);
         properties.put(KEY_FONT_STYLE, DEFAULT_VALUE_FONT_STYLE);
         properties.put(KEY_FONT_SIZE, DEFAULT_VALUE_FONT_SIZE);
-        properties.put(KEY_FOREGROUND, DEFAULT_VALUE_FOREGROUND);
-        properties.put(KEY_BOLD, DEFAULT_VALUE_BOLD);
 
         return properties;
 
@@ -214,12 +211,10 @@ public class SettingsSingleton {
 
         // Set view control variables
         setValueBackgroundColor(properties.getProperty(KEY_BACKGROUND_COLOR));
-        setValueTextColor(properties.getProperty(KEY_TEXT_COLOR));
+        setValueForeground(properties.getProperty(KEY_FOREGROUND));
         setValueFont(properties.getProperty(KEY_FONT));
         setValueFontStyle(properties.getProperty(KEY_FONT_STYLE));
         setValueFontSize(Integer.parseInt(properties.getProperty(KEY_FONT_SIZE)));
-        setValueForeground(properties.getProperty(KEY_FOREGROUND));
-        setValueBold(Boolean.parseBoolean(properties.getProperty(KEY_BOLD)));
 
     }
 
@@ -383,14 +378,6 @@ public class SettingsSingleton {
         SettingsSingleton.valueBackgroundColor = valueBackgroundColor;
     }
 
-    public static String getValueTextColor() {
-        return valueTextColor;
-    }
-
-    public static void setValueTextColor(String valueTextColor) {
-        SettingsSingleton.valueTextColor = valueTextColor;
-    }
-
     public static String getValueFont() {
         return valueFont;
     }
@@ -421,14 +408,6 @@ public class SettingsSingleton {
 
     public static void setValueForeground(String valueForeground) {
         SettingsSingleton.valueForeground = valueForeground;
-    }
-
-    public static boolean isValueBold() {
-        return valueBold;
-    }
-
-    public static void setValueBold(boolean valueBold) {
-        SettingsSingleton.valueBold = valueBold;
     }
 
 }
