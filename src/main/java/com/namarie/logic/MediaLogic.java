@@ -2,8 +2,6 @@ package com.namarie.logic;
 
 import com.namarie.entity.Media;
 import com.namarie.entity.Song;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +12,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.namarie.logic.SettingsLogic.*;
+import static com.namarie.logic.SettingsSingleton.*;
 
 /**
  * This class control the logic of the application relative with media, like generate music list, video list, genders list, etc.
@@ -32,27 +30,6 @@ public class MediaLogic {
     private static final String PATTERN_VIDEO = "(\\S+(\\.(?i)(mp4|mov|wmv|avi|flv|mkv|mpg))$)";
     private static final String PATTERN_AUDIO = "(\\S+(\\.(?i)(mp3|wav|wma|mpeg))$)";
 
-    // Folders
-    private static String videosPath;
-    private static String songsPath;
-    private static boolean promotionalVideoValidate;
-    private static String promotionalVideoPath;
-
-    // Time
-    private static int randomSong;
-
-    // Keys
-    private static int upSong;
-    private static int downSong;
-    private static int upSongs;
-    private static int downSongs;
-    private static int upGender;
-    private static int downGender;
-    private static int addCoin;
-    private static int removeCoin;
-    private static int powerOff;
-    private static int nextSong;
-
     private static final Pattern patternMedia;
     private static final Pattern patternVideo;
     private static final Pattern patternAudio;
@@ -63,9 +40,6 @@ public class MediaLogic {
     private static int songCounter = 0;
 
     static {
-
-        // Load data from JSON file
-        MediaLogic.loadSettingsValues(SettingsLogic.loadSettings());
 
         // Regex to extensions
         patternMedia = Pattern.compile(PATTERN);
@@ -80,66 +54,6 @@ public class MediaLogic {
 
     private MediaLogic() {
         throw new IllegalStateException("Utility class");
-    }
-
-    public static String getVideosPath() {
-        return videosPath;
-    }
-
-    public static String getSongsPath() {
-        return songsPath;
-    }
-
-    public static boolean isPromotionalVideoValidate() {
-        return promotionalVideoValidate;
-    }
-
-    public static String getPromotionalVideoPath() {
-        return promotionalVideoPath;
-    }
-
-    public static int getRandomSong() {
-        return randomSong;
-    }
-
-    public static int getUpSong() {
-        return upSong;
-    }
-
-    public static int getDownSong() {
-        return downSong;
-    }
-
-    public static int getUpSongs() {
-        return upSongs;
-    }
-
-    public static int getDownSongs() {
-        return downSongs;
-    }
-
-    public static int getUpGender() {
-        return upGender;
-    }
-
-    public static int getDownGender() {
-        return downGender;
-    }
-
-    public static int getAddCoin() {
-        return addCoin;
-    }
-
-    public static int getRemoveCoin() {
-        return removeCoin;
-    }
-
-    public static int getPowerOff() {
-        return powerOff;
-    }
-
-    public static int getNextSong() {
-        return nextSong;
     }
 
     public static Pattern getPatternMedia() {
@@ -169,7 +83,7 @@ public class MediaLogic {
 
         genders = null;
 
-        File directory = new File(songsPath);
+        File directory = new File(getPathToSongs());
 
         if (directory.isDirectory()) genders = directory.list();
 
@@ -179,7 +93,7 @@ public class MediaLogic {
 
         for (String gender : genders) {
 
-            File genderDirectory = new File(String.format(ACTION_MEDIA, songsPath, File.separator, gender));
+            File genderDirectory = new File(String.format(ACTION_MEDIA, getPathToSongs(), File.separator, gender));
 
             if (!genderDirectory.isDirectory()) {
                 List<String> gendersList = new ArrayList<>(Arrays.asList(genders));
@@ -237,37 +151,7 @@ public class MediaLogic {
     /**
      * This method load the values in a file (settings.json) to fields.
      *
-     * @param values JSONObject with the values to load.
      */
-    public static void loadSettingsValues(JSONObject values) {
-
-        try {
-            //Folders
-            videosPath = (String) values.get(KEY_PATH_VIDEOS);
-            songsPath = (String) values.get(KEY_PATH_SONGS);
-            promotionalVideoValidate = (boolean) values.get(KEY_PROMOTIONAL_VIDEO);
-            promotionalVideoPath = (String) values.get(KEY_PATH_PROMOTIONAL_VIDEO);
-
-            // Time
-            randomSong = (int) values.get(KEY_RANDOM_SONG);
-
-            //Keys
-            upSong = (int) values.get(KEY_UP_SONG);
-            downSong = (int) values.get(KEY_DOWN_SONG);
-            upSongs = (int) values.get(KEY_UP_SONGS);
-            downSongs = (int) values.get(KEY_DOWN_SONGS);
-            upGender = (int) values.get(KEY_UP_GENDER);
-            downGender = (int) values.get(KEY_DOWN_GENDER);
-            addCoin = (int) values.get(KEY_ADD_COIN);
-            removeCoin = (int) values.get(KEY_REMOVE_COIN);
-            powerOff = (int) values.get(KEY_POWER_OFF);
-            nextSong = (int) values.get(KEY_NEXT_SONG);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     public static void musicList() {
 
@@ -276,7 +160,7 @@ public class MediaLogic {
 
         musicList = new ArrayList<>();
 
-        File directory = new File(songsPath);
+        File directory = new File(getPathToSongs());
 
         if (directory.isDirectory()) genders = directory.list();
 
@@ -285,7 +169,7 @@ public class MediaLogic {
 
         for (String gender : genders) {
 
-            File genderDirectory = new File(String.format(ACTION_MEDIA, songsPath, File.separator, gender));
+            File genderDirectory = new File(String.format(ACTION_MEDIA, getPathToSongs(), File.separator, gender));
 
             if (genderDirectory.isDirectory()) {
                 singers = genderDirectory.list();
@@ -328,7 +212,7 @@ public class MediaLogic {
 
         for (String song : songs) {
 
-            File songFile = new File(String.format(ACTION_SONG, songsPath, File.separator, gender, File.separator, singer, File.separator, song));
+            File songFile = new File(String.format(ACTION_SONG, getPathToSongs(), File.separator, gender, File.separator, singer, File.separator, song));
 
             if (songFile.isFile()) {
                 Matcher matcher = patternMedia.matcher(songFile.getName());
@@ -351,7 +235,7 @@ public class MediaLogic {
 
         for (String singer : singers) {
 
-            File singerDirectory = new File(String.format(ACTION_LIST, songsPath, File.separator, gender, File.separator, singer));
+            File singerDirectory = new File(String.format(ACTION_LIST, getPathToSongs(), File.separator, gender, File.separator, singer));
 
             if (singerDirectory.isDirectory()) {
                 songs = singerDirectory.list();
