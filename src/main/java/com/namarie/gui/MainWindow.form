@@ -20,60 +20,14 @@
       <grid id="73a38" binding="northPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints border-constraint="North"/>
         <properties/>
-        <border type="none"/>
+        <border type="empty"/>
         <children/>
       </grid>
       <grid id="51c6a" binding="eastPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints border-constraint="East"/>
         <properties/>
         <border type="none"/>
-        <children>
-          <grid id="d0c43" binding="songsListPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
-            <constraints border-constraint="Center"/>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <scrollpane id="8f2cb" binding="songsListScrollPanel">
-                <constraints border-constraint="Center"/>
-                <properties>
-                  <horizontalScrollBarPolicy value="31"/>
-                  <verticalScrollBarPolicy value="21"/>
-                </properties>
-                <border type="none"/>
-                <children>
-                  <component id="b329b" class="javax.swing.JList" binding="songsListJList">
-                    <constraints/>
-                    <properties/>
-                  </component>
-                </children>
-              </scrollpane>
-              <grid id="6eeb4" binding="searchSongPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
-                <constraints border-constraint="South"/>
-                <properties/>
-                <border type="none"/>
-                <children>
-                  <component id="13a6d" class="javax.swing.JTextField" binding="searchSongsListTextField">
-                    <constraints border-constraint="Center"/>
-                    <properties/>
-                  </component>
-                  <component id="f186c" class="javax.swing.JButton" binding="searchSongsListButton">
-                    <constraints border-constraint="East"/>
-                    <properties>
-                      <text value="Button"/>
-                      <visible value="false"/>
-                    </properties>
-                  </component>
-                </children>
-              </grid>
-              <component id="4313e" class="javax.swing.JLabel" binding="songsListLabel">
-                <constraints border-constraint="North"/>
-                <properties>
-                  <text value="Label"/>
-                </properties>
-              </component>
-            </children>
-          </grid>
-        </children>
+        <children/>
       </grid>
       <grid id="f71a6" binding="southPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints border-constraint="South"/>
@@ -108,62 +62,13 @@
             <constraints border-constraint="South"/>
             <properties/>
             <border type="none"/>
-            <children>
-              <grid id="4c476" binding="musicListPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
-                <constraints border-constraint="Center"/>
-                <properties/>
-                <border type="none"/>
-                <children>
-                  <scrollpane id="4ce5e" binding="musicListScrollPanel">
-                    <constraints border-constraint="Center"/>
-                    <properties>
-                      <horizontalScrollBarPolicy value="31"/>
-                      <verticalScrollBarPolicy value="21"/>
-                    </properties>
-                    <border type="none"/>
-                    <children>
-                      <component id="bde52" class="javax.swing.JList" binding="musicQueueJList">
-                        <constraints/>
-                        <properties/>
-                      </component>
-                    </children>
-                  </scrollpane>
-                  <component id="c1688" class="javax.swing.JLabel" binding="numberSong">
-                    <constraints border-constraint="North"/>
-                    <properties>
-                      <text value="Label"/>
-                    </properties>
-                  </component>
-                  <component id="cd1a5" class="javax.swing.JLabel" binding="currentCreditsLabel">
-                    <constraints border-constraint="South"/>
-                    <properties>
-                      <text value="Label"/>
-                    </properties>
-                  </component>
-                </children>
-              </grid>
-            </children>
+            <children/>
           </grid>
           <grid id="23f5" binding="centerCenterPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints border-constraint="Center"/>
             <properties/>
             <border type="none"/>
-            <children>
-              <grid id="ce13f" binding="videoPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
-                <constraints border-constraint="Center"/>
-                <properties/>
-                <border type="none"/>
-                <children>
-                  <component id="dc6fc" class="javax.swing.JLabel" binding="videoLabel">
-                    <constraints border-constraint="South"/>
-                    <properties>
-                      <opaque value="true"/>
-                      <text value="Label"/>
-                    </properties>
-                  </component>
-                </children>
-              </grid>
-            </children>
+            <children/>
           </grid>
         </children>
       </grid>
