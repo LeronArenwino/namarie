@@ -5,8 +5,6 @@ import java.util.Properties;
 
 public class SettingsSingleton {
 
-    private static final SettingsSingleton instance;
-
     private SettingsSingleton() {
     }
 
@@ -124,19 +122,6 @@ public class SettingsSingleton {
     private static String valueFont;
     private static String valueFontStyle;
     private static int valueFontSize;
-
-    static {
-        try {
-            instance = new SettingsSingleton();
-        } catch (Exception e) {
-            throw new RuntimeException("Exception occurred in creating singleton instance");
-        }
-    }
-
-    @SuppressWarnings("UnusedReturnValue")
-    public static SettingsSingleton getInstance(){
-        return instance;
-    }
 
     public static Properties defaultSettingsProperties(){
 
