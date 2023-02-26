@@ -20,7 +20,7 @@ public class Media {
 
     @Override
     public String toString() {
-        return String.format("%05d %s", getNumber(), getName().substring(0, getName().length() - 4));
+        return String.format(" %05d %s ", getNumber(), getName().substring(0, getName().length() - 4));
     }
 
 }
