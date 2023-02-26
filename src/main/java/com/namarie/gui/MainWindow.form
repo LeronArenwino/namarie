@@ -10,68 +10,6 @@
       <requestFocusEnabled value="false"/>
     </properties>
     <border type="empty"/>
-    <children>
-      <grid id="b3850" binding="westPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
-        <constraints border-constraint="West"/>
-        <properties/>
-        <border type="none"/>
-        <children/>
-      </grid>
-      <grid id="73a38" binding="northPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
-        <constraints border-constraint="North"/>
-        <properties/>
-        <border type="empty"/>
-        <children/>
-      </grid>
-      <grid id="51c6a" binding="eastPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
-        <constraints border-constraint="East"/>
-        <properties/>
-        <border type="none"/>
-        <children/>
-      </grid>
-      <grid id="f71a6" binding="southPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
-        <constraints border-constraint="South"/>
-        <properties/>
-        <border type="none"/>
-        <children/>
-      </grid>
-      <grid id="60162" binding="centerPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
-        <constraints border-constraint="Center"/>
-        <properties/>
-        <border type="none"/>
-        <children>
-          <grid id="3cbc9" binding="westCenterPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
-            <constraints border-constraint="West"/>
-            <properties/>
-            <border type="none"/>
-            <children/>
-          </grid>
-          <grid id="fbd44" binding="northCenterPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
-            <constraints border-constraint="North"/>
-            <properties/>
-            <border type="none"/>
-            <children/>
-          </grid>
-          <grid id="1487c" binding="eastCenterPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
-            <constraints border-constraint="East"/>
-            <properties/>
-            <border type="none"/>
-            <children/>
-          </grid>
-          <grid id="3f4d2" binding="southCenterPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
-            <constraints border-constraint="South"/>
-            <properties/>
-            <border type="none"/>
-            <children/>
-          </grid>
-          <grid id="23f5" binding="centerCenterPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
-            <constraints border-constraint="Center"/>
-            <properties/>
-            <border type="none"/>
-            <children/>
-          </grid>
-        </children>
-      </grid>
-    </children>
+    <children/>
   </grid>
 </form>
