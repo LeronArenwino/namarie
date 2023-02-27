@@ -1,17 +1,13 @@
 package com.namarie.gui;
 
-import com.namarie.logic.SettingsLogic;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Properties;
 
-import static com.namarie.logic.SettingsLogic.*;
+import static com.namarie.dao.PropertiesManager.*;
+import static com.namarie.logic.SettingsSingleton.*;
 
 public class SettingsWindow extends JFrame {
 
@@ -23,13 +19,13 @@ public class SettingsWindow extends JFrame {
     private JPanel timePanel;
     private JPanel creditsPanel;
     private JPanel keysPanel;
-    private JPanel viewPanel;
-    private JLabel tittleWelcomePanel;
-    private JLabel tittleFoldersPanel;
-    private JLabel tittleTimePanel;
+    private JPanel mainViewPanel;
+    private JLabel titleWelcomePanel;
+    private JLabel titleFoldersPanel;
+    private JLabel titleTimePanel;
     private JLabel tittleCreditsPanel;
-    private JLabel tittleKeysPanel;
-    private JLabel tittleViewPanel;
+    private JLabel titleKeysPanel;
+    private JLabel titleMainViewPanel;
     private JPanel containerFoldersPanel;
     private JTextPane textFoldersPanel;
     private JPanel southPanel;
@@ -61,14 +57,12 @@ public class SettingsWindow extends JFrame {
     private JButton nextSongButton;
     private JPanel containerKeysPanel;
     private JPanel containerCreditsPanel;
-    private JPanel containerViewPanel;
+    private JPanel containerMainViewPanel;
     private JTextPane textViewPanel;
-    private JButton color1SearchButton;
-    private JButton color2SearchButton;
+    private JButton backgroundColorSearchButton;
     private JComboBox<String> fontComboBox;
     private JButton foregroundSearchButton;
     private JComboBox<Integer> fontSizeComboBox;
-    private JCheckBox boldCheckBox;
     private JTextPane textWelcomePanel;
     private JLabel videoLabel;
     private JLabel musicLabel;
@@ -84,14 +78,11 @@ public class SettingsWindow extends JFrame {
     private JLabel downGenderLabel;
     private JLabel removeCoinLabel;
     private JLabel nextSongLabel;
-    private JLabel color1Label;
-    private JLabel color1ViewLabel;
+    private JLabel backgroundColorMainTextLabel;
+    private JLabel backgroundColorMainViewLabel;
     private JLabel fontLabel;
-    private JLabel color2Label;
-    private JLabel color2ViewLabel;
-    private JLabel foregroundLabel;
+    private JLabel foregroundColorMainTextLabel;
     private JLabel fontSizeLabel;
-    private JLabel clickLabel;
     private JLabel upSongSymbolLabel;
     private JLabel downSongSymbolLabel;
     private JLabel upGenderSymbolLabel;
@@ -109,12 +100,10 @@ public class SettingsWindow extends JFrame {
     private JLabel fontStyleLabel;
     private JComboBox<String> fontStyleComboBox;
     private JButton exitButton;
-    private JButton button1;
-    private JButton button2;
-    private JButton button3;
-    private JButton button4;
-    private JButton button5;
-    private JButton button6;
+    private JLabel foregroundColorViewLabel;
+    private JPanel listViewPanel;
+    private JPanel containerListViewPanel;
+    private JLabel titleListViewPanel;
 
     public SettingsWindow() {
 
@@ -128,19 +117,15 @@ public class SettingsWindow extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser = new JFileChooser();
 
-                fileChooser.setDialogTitle("Save Settings");
-                fileChooser.setMultiSelectionEnabled(false);
-                fileChooser.setSelectedFile(new File(SettingsLogic.PATH));
-                fileChooser.setCurrentDirectory(new File("."));
-                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-                fileChooser.setAcceptAllFileFilterUsed(false);
+                int selection = JOptionPane.showConfirmDialog(getContentPane(), "Are you sure?", "Warning", JOptionPane.OK_CANCEL_OPTION);
+                if (selection == JOptionPane.YES_NO_OPTION) {
+                    saveProperties(settingsToProperties());
+                    loadSettings();
 
-                if (fileChooser.showSaveDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
-                    SettingsLogic.save(settingsValues());
-                    loadSettings(SettingsLogic.loadSettings());
+                    JOptionPane.showMessageDialog(null, "Properties saved!");
                 }
+
             }
         });
         defaultButton.addActionListener(new ActionListener() {
@@ -153,8 +138,10 @@ public class SettingsWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 int selection = JOptionPane.showConfirmDialog(getContentPane(), "Are you sure?", "Warning", JOptionPane.OK_CANCEL_OPTION);
                 if (selection == JOptionPane.YES_NO_OPTION) {
-                    SettingsLogic.saveDefault();
-                    loadSettings(SettingsLogic.loadSettings());
+                    saveProperties(defaultSettingsProperties());
+                    loadSettings();
+
+                    JOptionPane.showMessageDialog(null, "Default properties saved!");
                 }
             }
         });
@@ -501,89 +488,122 @@ public class SettingsWindow extends JFrame {
         this.getContentPane().add(containerPanel);
         this.setVisible(false);
 
-        loadSettings(SettingsLogic.loadSettings());
+        paintComponents();
+
+        loadSettings();
 
     }
 
-    private void loadSettings(JSONObject values) {
+    private void paintComponents() {
 
-        try {
-            //Folders
-            videoTextField.setText((String) values.get(KEY_PATH_VIDEOS));
-            musicTextField.setText((String) values.get(KEY_PATH_SONGS));
-            promotionalVideoCheckBox.setSelected((boolean) values.get(KEY_PROMOTIONAL_VIDEO));
-            promotionalTextField.setText((String) values.get(KEY_PATH_PROMOTIONAL_VIDEO));
-            promotionalTextField.setEnabled(promotionalVideoCheckBox.isSelected());
-            promotionalSearchButton.setEnabled(promotionalVideoCheckBox.isSelected());
-
-            //Time
-            timeRandomSongComboBox.setSelectedIndex((int) values.get(KEY_RANDOM_SONG));
-            timeLimitComboBox.setSelectedIndex((int) values.get(KEY_REPEAT_SONGS));
-
-            //Credits
-            creditsComboBox.setSelectedIndex((int) values.get(KEY_AMOUNT_CREDITS));
-            blockScreenWhenHavenCheckBox.setSelected((boolean) values.get(KEY_LOCK_SCREEN));
-            saveSongsWhenPowerCheckBox.setSelected((boolean) values.get(KEY_SAVE_SONGS));
-
-            //Keys
-            upSongSymbolLabel.setText(KeyEvent.getKeyText((int) values.get(KEY_UP_SONG)));
-            upSongButton.setText(Integer.toString((int) values.get(KEY_UP_SONG)));
-            downSongSymbolLabel.setText(KeyEvent.getKeyText((int) values.get(KEY_DOWN_SONG)));
-            downSongButton.setText(Integer.toString((int) values.get(KEY_DOWN_SONG)));
-            upSongsSymbolLabel.setText(KeyEvent.getKeyText((int) values.get(KEY_UP_SONGS)));
-            upSongsButton.setText(Integer.toString((int) values.get(KEY_UP_SONGS)));
-            downSongsSymbolLabel.setText(KeyEvent.getKeyText((int) values.get(KEY_DOWN_SONGS)));
-            downSongsButton.setText(Integer.toString((int) values.get(KEY_DOWN_SONGS)));
-            upGenderSymbolLabel.setText(KeyEvent.getKeyText((int) values.get(KEY_UP_GENDER)));
-            upGenderButton.setText(Integer.toString((int) values.get(KEY_UP_GENDER)));
-            downGenderSymbolLabel.setText(KeyEvent.getKeyText((int) values.get(KEY_DOWN_GENDER)));
-            downGenderButton.setText(Integer.toString((int) values.get(KEY_DOWN_GENDER)));
-            addCoinSymbolLabel.setText(KeyEvent.getKeyText((int) values.get(KEY_ADD_COIN)));
-            addCoinButton.setText(Integer.toString((int) values.get(KEY_ADD_COIN)));
-            removeCoinSymbolLabel.setText(KeyEvent.getKeyText((int) values.get(KEY_REMOVE_COIN)));
-            removeCoinButton.setText(Integer.toString((int) values.get(KEY_REMOVE_COIN)));
-            powerOffSymbolLabel.setText(KeyEvent.getKeyText((int) values.get(KEY_POWER_OFF)));
-            powerOffButton.setText(Integer.toString((int) values.get(KEY_POWER_OFF)));
-            nextSongSymbolLabel.setText(KeyEvent.getKeyText((int) values.get(KEY_NEXT_SONG)));
-            nextSongButton.setText(Integer.toString((int) values.get(KEY_NEXT_SONG)));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        ComboBoxModel<String> modelFonts = new DefaultComboBoxModel<>(fontFamilyNames);
+        fontComboBox.setModel(modelFonts);
 
     }
 
-    private Map<String, Object> settingsValues() {
+    private void loadSettings() {
 
-        Map<String, Object> values = new HashMap<>();
+        setSettingsFromProperties(loadProperties());
 
-        //Folders
-        values.put(KEY_PATH_VIDEOS, videoTextField.getText());
-        values.put(KEY_PATH_SONGS, musicTextField.getText());
-        values.put(KEY_PROMOTIONAL_VIDEO, promotionalVideoCheckBox.isSelected());
-        values.put(KEY_PATH_PROMOTIONAL_VIDEO, promotionalTextField.getText());
+        // Paths control section
+        videoTextField.setText(getPathToVideos());
+        musicTextField.setText(getPathToSongs());
+        promotionalVideoCheckBox.setSelected(isPromotionalVideos());
+        if (isPromotionalVideos())
+            promotionalTextField.setText(getPathToPromotionalVideos());
+        else
+            promotionalTextField.setText("");
+        promotionalTextField.setEnabled(isPromotionalVideos());
+        promotionalSearchButton.setEnabled(isPromotionalVideos());
+
+        // Time control section
+        timeRandomSongComboBox.setSelectedIndex(getTimeToPlayRandomSongs());
+        timeLimitComboBox.setSelectedIndex(getTimeToRepeatSongs());
+
+        // Credits control section
+        creditsComboBox.setSelectedIndex(getAmountCredits());
+        blockScreenWhenHavenCheckBox.setSelected(isLockScreen());
+        saveSongsWhenPowerCheckBox.setSelected(isSaveSongs());
+
+        // Keys control section
+        upSongSymbolLabel.setText(KeyEvent.getKeyText(getValueToUpIndex()));
+        upSongButton.setText(Integer.toString(getValueToUpIndex()));
+
+        downSongSymbolLabel.setText(KeyEvent.getKeyText(getValueToDownIndex()));
+        downSongButton.setText(Integer.toString(getValueToDownIndex()));
+
+        upSongsSymbolLabel.setText(KeyEvent.getKeyText(getValueToUpIndexes()));
+        upSongsButton.setText(Integer.toString(getValueToUpIndexes()));
+
+        downSongsSymbolLabel.setText(KeyEvent.getKeyText(getValueToDownIndexes()));
+        downSongsButton.setText(Integer.toString(getValueToDownIndexes()));
+
+        upGenderSymbolLabel.setText(KeyEvent.getKeyText(getValueToChangeGenderToUp()));
+        upGenderButton.setText(Integer.toString(getValueToChangeGenderToUp()));
+
+        downGenderSymbolLabel.setText(KeyEvent.getKeyText(getValueToChangeGenderToDown()));
+        downGenderButton.setText(Integer.toString(getValueToChangeGenderToDown()));
+
+        addCoinSymbolLabel.setText(KeyEvent.getKeyText(getValueToAddCoin()));
+        addCoinButton.setText(Integer.toString(getValueToAddCoin()));
+
+        removeCoinSymbolLabel.setText(KeyEvent.getKeyText(getValueToRemoveCoin()));
+        removeCoinButton.setText(Integer.toString(getValueToRemoveCoin()));
+
+        powerOffSymbolLabel.setText(KeyEvent.getKeyText(getValueToPowerOff()));
+        powerOffButton.setText(Integer.toString(getValueToPowerOff()));
+
+        nextSongSymbolLabel.setText(KeyEvent.getKeyText(getValueToPlayNextSong()));
+        nextSongButton.setText(Integer.toString(getValueToPlayNextSong()));
+
+        // Main view control section
+        backgroundColorMainViewLabel.setBackground(Color.decode(getValueBackgroundColor()));
+        foregroundColorViewLabel.setBackground(Color.decode(getValueForeground()));
+        fontComboBox.setSelectedItem(getValueFont());
+        fontStyleComboBox.setSelectedItem(getValueFontStyle());
+        fontSizeComboBox.setSelectedItem(String.valueOf(getValueFontSize()));
+
+    }
+
+    private Properties settingsToProperties() {
+
+        Properties properties = new Properties();
+
+        // Path settings
+        properties.put(KEY_PATH_TO_VIDEOS, videoTextField.getText());
+        properties.put(KEY_PATH_TO_SONGS, musicTextField.getText());
+        properties.put(KEY_IS_PROMOTIONAL_VIDEOS, String.valueOf(promotionalVideoCheckBox.isSelected()));
+        properties.put(KEY_PATH_TO_PROMOTIONAL_VIDEOS, promotionalTextField.getText());
 
         //Time
-        values.put(KEY_RANDOM_SONG, timeRandomSongComboBox.getSelectedIndex());
-        values.put(KEY_REPEAT_SONGS, timeLimitComboBox.getSelectedIndex());
+        properties.put(KEY_TIME_TO_PLAY_RANDOM_SONGS, String.valueOf(timeRandomSongComboBox.getSelectedIndex()));
+        properties.put(KEY_TIME_TO_REPEAT_SONGS, String.valueOf(timeLimitComboBox.getSelectedIndex()));
 
         //Credits
-        values.put(KEY_AMOUNT_CREDITS, creditsComboBox.getSelectedIndex());
-        values.put(KEY_LOCK_SCREEN, blockScreenWhenHavenCheckBox.isSelected());
-        values.put(KEY_SAVE_SONGS, saveSongsWhenPowerCheckBox.isSelected());
+        properties.put(KEY_AMOUNT_CREDITS, String.valueOf(creditsComboBox.getSelectedIndex()));
+        properties.put(KEY_LOCK_SCREEN, String.valueOf(blockScreenWhenHavenCheckBox.isSelected()));
+        properties.put(KEY_SAVE_SONGS, String.valueOf(saveSongsWhenPowerCheckBox.isSelected()));
 
         //Keys
-        values.put(KEY_UP_SONG, Integer.parseInt(upSongButton.getText()));
-        values.put(KEY_DOWN_SONG, Integer.parseInt(downSongButton.getText()));
-        values.put(KEY_UP_SONGS, Integer.parseInt(upSongsButton.getText()));
-        values.put(KEY_DOWN_SONGS, Integer.parseInt(downSongsButton.getText()));
-        values.put(KEY_UP_GENDER, Integer.parseInt(upGenderButton.getText()));
-        values.put(KEY_DOWN_GENDER, Integer.parseInt(downGenderButton.getText()));
-        values.put(KEY_ADD_COIN, Integer.parseInt(addCoinButton.getText()));
-        values.put(KEY_REMOVE_COIN, Integer.parseInt(removeCoinButton.getText()));
-        values.put(KEY_POWER_OFF, Integer.parseInt(powerOffButton.getText()));
-        values.put(KEY_NEXT_SONG, Integer.parseInt(nextSongButton.getText()));
+        properties.put(KEY_UP_SONG, upSongButton.getText());
+        properties.put(KEY_DOWN_SONG, downSongButton.getText());
+        properties.put(KEY_UP_SONGS, upSongsButton.getText());
+        properties.put(KEY_DOWN_SONGS, downSongsButton.getText());
+        properties.put(KEY_UP_GENDER, upGenderButton.getText());
+        properties.put(KEY_DOWN_GENDER, downGenderButton.getText());
+        properties.put(KEY_ADD_COIN, addCoinButton.getText());
+        properties.put(KEY_REMOVE_COIN, removeCoinButton.getText());
+        properties.put(KEY_POWER_OFF, powerOffButton.getText());
+        properties.put(KEY_NEXT_SONG, nextSongButton.getText());
 
-        return values;
+        // Main view settings
+        properties.put(KEY_BACKGROUND_COLOR, "#" + Integer.toHexString(backgroundColorMainViewLabel.getBackground().getRGB()).substring(2).toUpperCase());
+        properties.put(KEY_FOREGROUND, "#" + Integer.toHexString(foregroundColorViewLabel.getBackground().getRGB()).substring(2).toUpperCase());
+        properties.put(KEY_FONT, fontComboBox.getSelectedItem().toString());
+        properties.put(KEY_FONT_STYLE, fontStyleComboBox.getSelectedItem().toString());
+        properties.put(KEY_FONT_SIZE, fontSizeComboBox.getSelectedItem().toString());
+
+        return properties;
 
     }
 
