@@ -239,8 +239,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
             }
             // Event to reload settings
             if (e.getKeyCode() == 82) {
-                // Load values from JSON file
-                // MediaLogic.loadSettingsValues(SettingsLogic.loadSettings());
+                // Load values from Properties file
 
                 selectedGender = 0;
                 genders = MediaLogic.getGenders();
