@@ -1,6 +1,6 @@
 package com.namarie.gui;
 
-import com.namarie.entity.Media;
+import com.namarie.entity.Multimedia;
 import com.namarie.entity.Song;
 import com.namarie.logic.MediaLogic;
 import org.apache.commons.lang3.StringUtils;
@@ -82,8 +82,8 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     //
     private transient ArrayList<Song> musicQueueToPlay;
-    private transient List<Media> availableVideos;
-    private transient List<Media> promotionalAvailableVideos;
+    private transient List<Multimedia> availableVideos;
+    private transient List<Multimedia> promotionalAvailableVideos;
     private transient List<List<Song>> musicListByGenders;
     private String[] genders;
     private int selectedGender;
@@ -460,7 +460,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                         int randVideo = rand.nextInt(availableVideos.size());
 
-                        Media video = availableVideos.get(randVideo);
+                        Multimedia video = availableVideos.get(randVideo);
 
                         mediaPlayer.submit(() -> mediaPlayer.media().play(String.format(MediaLogic.ACTION_MEDIA, getPathToVideos(), File.separator, video.getName())));
                         audioMediaPlayer.mediaPlayer().media().play(String.format(MediaLogic.ACTION_SONG, getPathToSongs(), File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName()));
@@ -477,7 +477,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                     int randVideo = rand.nextInt(availableVideos.size());
 
-                    Media video = availableVideos.get(randVideo);
+                    Multimedia video = availableVideos.get(randVideo);
 
                     mediaPlayer.submit(() -> mediaPlayer().media().play(String.format(MediaLogic.ACTION_MEDIA, getPathToVideos(), File.separator, video.getName())));
 
@@ -526,7 +526,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                         int randVideo = rand.nextInt(availableVideos.size());
 
-                        Media video = availableVideos.get(randVideo);
+                        Multimedia video = availableVideos.get(randVideo);
 
                         videoMediaPlayer.mediaPlayer().media().play(String.format(MediaLogic.ACTION_MEDIA, getPathToVideos(), File.separator, video.getName()));
                         mediaPlayer.submit(() -> mediaPlayer.media().play(String.format(MediaLogic.ACTION_SONG, getPathToSongs(), File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName())));
@@ -802,7 +802,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     }
 
-    private void playPromotionalMedia(Media video) {
+    private void playPromotionalMedia(Multimedia video) {
         if (isPromotionalVideos()) {
             videoMediaPlayer.mediaPlayer().media().play(String.format(MediaLogic.ACTION_MEDIA, getPathToPromotionalVideos(), File.separator, video.getName()));
             promotionalVideoStatus = true;
@@ -815,7 +815,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
             int randSong = rand.nextInt(promotionalAvailableVideos.size());
 
-            Media promotionalVideo = promotionalAvailableVideos.get(randSong);
+            Multimedia promotionalVideo = promotionalAvailableVideos.get(randSong);
 
             playPromotionalMedia(promotionalVideo);
 
@@ -862,7 +862,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
             if (!availableVideos.isEmpty()) {
                 int randVideo = rand.nextInt(availableVideos.size());
 
-                Media video = availableVideos.get(randVideo);
+                Multimedia video = availableVideos.get(randVideo);
 
                 videoMediaPlayer.mediaPlayer().media().play(String.format(MediaLogic.ACTION_MEDIA, getPathToVideos(), File.separator, video.getName()));
             }

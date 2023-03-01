@@ -1,6 +1,6 @@
 package com.namarie.logic;
 
-import com.namarie.entity.Media;
+import com.namarie.entity.Multimedia;
 import com.namarie.entity.Song;
 
 import java.io.File;
@@ -111,11 +111,11 @@ public class MediaLogic {
      * @param videosPath Path where is videos.
      * @return the ArrayList<Media> with the videos name or null if this doesn't contain videos.
      */
-    public static List<Media> getVideos(String videosPath) {
+    public static List<Multimedia> getVideos(String videosPath) {
 
         String[] videos = null;
         int videoCounter = 0;
-        List<Media> videoList = new ArrayList<>();
+        List<Multimedia> videoList = new ArrayList<>();
 
         File directory = new File(videosPath);
 
@@ -135,7 +135,7 @@ public class MediaLogic {
 
                 if (matcher.find()) {
 
-                    videoList.add(new Media(videoCounter, video));
+                    videoList.add(new Multimedia(videoCounter, video));
                     videoCounter++;
 
                 }

@@ -1,11 +1,11 @@
 package com.namarie.entity;
 
-public class Media {
+public class Multimedia {
 
     private final int number;
     private final String name;
 
-    public Media(int number, String name) {
+    public Multimedia(int number, String name) {
         this.number = number;
         this.name = name;
     }

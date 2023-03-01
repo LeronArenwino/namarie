@@ -1,6 +1,6 @@
 package com.namarie.entity;
 
-public class Song extends Media {
+public class Song extends Multimedia {
 
     private final String singer;
     private final String gender;
