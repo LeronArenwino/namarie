@@ -56,10 +56,6 @@ public class MultimediaLogic {
         throw new IllegalStateException("Utility class");
     }
 
-    public static Pattern getPatternMultimedia() {
-        return patternMultimedia;
-    }
-
     public static Pattern getPatternVideo() {
         return patternVideo;
     }
