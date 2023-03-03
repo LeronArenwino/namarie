@@ -17,11 +17,6 @@ public class SettingsSingleton {
     public static final String ACTION_LIST = "%s%s%s%s%s";
     public static final String ACTION_SONG = "%s%s%s%s%s%s%s";
 
-    // Regex file extensions
-    public static final String PATTERN = "(\\S+(\\.(?i)(mp3|mp4|wav|wma|mov|wmv|avi|flv|mkv|mpg|mpeg))$)";
-    public static final String PATTERN_VIDEO = "(\\S+(\\.(?i)(mp4|mov|wmv|avi|flv|mkv|mpg))$)";
-    public static final String PATTERN_AUDIO = "(\\S+(\\.(?i)(mp3|wav|wma|mpeg))$)";
-
     // General graphics environment
     public static final GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
 
