@@ -21,6 +21,11 @@ import static com.namarie.logic.SettingsSingleton.*;
  */
 public class MultimediaLogic {
 
+    // Regex file extensions
+    private static final String PATTERN = "(\\S+(\\.(?i)(mp3|mp4|wav|wma|mov|wmv|avi|flv|mkv|mpg|mpeg))$)";
+    private static final String PATTERN_VIDEO = "(\\S+(\\.(?i)(mp4|mov|wmv|avi|flv|mkv|mpg))$)";
+    private static final String PATTERN_AUDIO = "(\\S+(\\.(?i)(mp3|wav|wma|mpeg))$)";
+
     private static final Pattern patternMultimedia;
     private static final Pattern patternVideo;
     private static final Pattern patternAudio;
@@ -38,7 +43,7 @@ public class MultimediaLogic {
         patternAudio = Pattern.compile(PATTERN_AUDIO);
 
         // Music
-        gendersList();
+        loadGendersList(getPathToSongs());
         musicList();
 
     }
@@ -66,11 +71,11 @@ public class MultimediaLogic {
     /**
      * This method generates a genders list with directories name relative to path given.
      */
-    public static void gendersList() {
+    public static void loadGendersList(String path) {
 
         genders = null;
 
-        File directory = new File(getPathToSongs());
+        File directory = new File(path);
 
         if (directory.isDirectory()) genders = directory.list();
 
@@ -80,7 +85,7 @@ public class MultimediaLogic {
 
         for (String gender : genders) {
 
-            File genderDirectory = new File(String.format(ACTION_MULTIMEDIA, getPathToSongs(), File.separator, gender));
+            File genderDirectory = new File(String.format(ACTION_MULTIMEDIA, path, File.separator, gender));
 
             if (!genderDirectory.isDirectory()) {
                 List<String> gendersList = new ArrayList<>(Arrays.asList(genders));
