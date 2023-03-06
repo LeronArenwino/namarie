@@ -20,9 +20,6 @@ public class SettingsSingleton {
     // General graphics environment
     public static final GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
 
-    // Fonts
-    public static final String[] fontFamilyNames = graphicsEnvironment.getAvailableFontFamilyNames();
-
     // Screen resolution
     public static final GraphicsDevice RESOLUTION = graphicsEnvironment.getDefaultScreenDevice();
     public static final int RESOLUTION_WIDTH = RESOLUTION.getDisplayMode().getWidth();

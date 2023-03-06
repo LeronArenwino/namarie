@@ -105,6 +105,9 @@ public class SettingsWindow extends JFrame {
     private JPanel containerListViewPanel;
     private JLabel titleListViewPanel;
 
+    // Fonts
+    protected static final String[] fontFamilyNames = graphicsEnvironment.getAvailableFontFamilyNames();
+
     public SettingsWindow() {
 
         initComponents();
