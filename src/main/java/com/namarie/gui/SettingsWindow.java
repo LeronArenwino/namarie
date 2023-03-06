@@ -400,6 +400,7 @@ public class SettingsWindow extends JFrame {
              */
             @Override
             public void windowOpened(WindowEvent e) {
+                throw new UnsupportedOperationException();
             }
 
             /**
@@ -410,6 +411,7 @@ public class SettingsWindow extends JFrame {
              */
             @Override
             public void windowClosing(WindowEvent e) {
+                throw new UnsupportedOperationException();
             }
 
             /**
@@ -434,7 +436,7 @@ public class SettingsWindow extends JFrame {
              */
             @Override
             public void windowIconified(WindowEvent e) {
-
+                throw new UnsupportedOperationException();
             }
 
             /**
@@ -445,7 +447,7 @@ public class SettingsWindow extends JFrame {
              */
             @Override
             public void windowDeiconified(WindowEvent e) {
-
+                throw new UnsupportedOperationException();
             }
 
             /**
@@ -460,7 +462,7 @@ public class SettingsWindow extends JFrame {
              */
             @Override
             public void windowActivated(WindowEvent e) {
-
+                throw new UnsupportedOperationException();
             }
 
             /**
@@ -475,7 +477,7 @@ public class SettingsWindow extends JFrame {
              */
             @Override
             public void windowDeactivated(WindowEvent e) {
-
+                throw new UnsupportedOperationException();
             }
         });
 
