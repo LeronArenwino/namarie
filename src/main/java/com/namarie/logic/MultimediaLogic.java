@@ -22,9 +22,9 @@ import static com.namarie.logic.SettingsSingleton.*;
 public class MultimediaLogic {
 
     // Regex file extensions
-    private static final String PATTERN = "(\\S+(\\.(?i)(mp3|mp4|wav|wma|mov|wmv|avi|flv|mkv|mpg|mpeg))$)";
-    private static final String PATTERN_VIDEO = "(\\S+(\\.(?i)(mp4|mov|wmv|avi|flv|mkv|mpg))$)";
-    private static final String PATTERN_AUDIO = "(\\S+(\\.(?i)(mp3|wav|wma|mpeg))$)";
+    private static final String PATTERN = "(\\S++(\\.(?i)(mp3|mp4|wav|wma|mov|wmv|avi|flv|mkv|mpg|mpeg))$)";
+    private static final String PATTERN_VIDEO = "(\\S++(\\.(?i)(mp4|mov|wmv|avi|flv|mkv|mpg))$)";
+    private static final String PATTERN_AUDIO = "(\\S++(\\.(?i)(mp3|wav|wma|mpeg))$)";
 
     private static final Pattern patternMultimedia;
     private static final Pattern patternVideo;
