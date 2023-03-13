@@ -108,6 +108,228 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         }
     };
 
+    @SuppressWarnings("FieldCanBeLocal")
+    private final transient KeyListener mainKeyListener = new KeyListener() {
+        /**
+         * Invoked when a key has been typed.
+         * See the class description for {@link KeyEvent} for a definition of
+         * a key typed event.
+         *
+         * @param e the event to be processed
+         */
+        @Override
+        public void keyTyped(KeyEvent e) {
+            e.consume();
+        }
+
+        /**
+         * Invoked when a key has been pressed.
+         * See the class description for {@link KeyEvent} for a definition of
+         * a key pressed event.
+         *
+         * @param e the event to be processed
+         */
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if (e.getKeyCode() == 122) {
+                videoMediaPlayer.mediaPlayer().fullScreen().toggle();
+            }
+            // Event to open a settings window (Key 'Q')
+            if (e.getKeyCode() == 81) {
+                if (settingsWindow == null)
+                    settingsWindow = new SettingsWindow();
+                settingsWindow.setVisible(true);
+            }
+            // Event to open add coin
+            else if (e.getKeyCode() == getValueToAddCoin() && currentCredits < 25) {
+                currentCredits += 1;
+                creditsValidate(currentCredits > 0);
+            }
+            // Event to open remove coin
+            else if (e.getKeyCode() == getValueToRemoveCoin() && currentCredits > 0) {
+                currentCredits -= 1;
+                creditsValidate(currentCredits > 0);
+            }
+            // Event to up gender in gender list
+            else if (e.getKeyCode() == getValueToChangeGenderToUp()) {
+                if (selectedGender < genders.length - 1) {
+                    selectedGender++;
+                } else {
+                    selectedGender = 0;
+                }
+                loadSongsListJList();
+            }
+            // Event to down gender in gender list
+            else if (e.getKeyCode() == getValueToChangeGenderToDown()) {
+                if (selectedGender > 0) {
+                    selectedGender--;
+                } else {
+                    selectedGender = genders.length - 1;
+                }
+                loadSongsListJList();
+            }
+            // Event to up a song in music list
+            else if (e.getKeyCode() == getValueToUpIndex()) {
+                if (selectedSong > 0) {
+                    selectedSong--;
+                } else {
+                    selectedSong = songsListJList.getModel().getSize() - 1;
+                }
+                updateSelectedSongInSongsList();
+            }
+            // Event to down a song in music list
+            else if (e.getKeyCode() == getValueToDownIndex()) {
+                if (selectedSong < songsListJList.getModel().getSize() - 1) {
+                    selectedSong++;
+                } else {
+                    selectedSong = 0;
+                }
+                updateSelectedSongInSongsList();
+            }
+            // Event to up 20 songs in music list
+            else if (e.getKeyCode() == getValueToUpIndexes()) {
+                if (selectedSong < songsListJList.getModel().getSize() - 1) {
+                    selectedSong += 20;
+                    if (selectedSong > songsListJList.getModel().getSize() - 1) {
+                        selectedSong = songsListJList.getModel().getSize() - 1;
+                    }
+                } else {
+                    selectedSong = 0;
+                }
+                updateSelectedSongInSongsList();
+            }
+            // Event to down 20 songs in music list
+            else if (e.getKeyCode() == getValueToDownIndexes()) {
+                if (selectedSong > 0) {
+                    selectedSong -= 20;
+                    if (selectedSong < 0) {
+                        selectedSong = 0;
+                    }
+                } else {
+                    selectedSong = songsListJList.getModel().getSize() - 1;
+                }
+                updateSelectedSongInSongsList();
+            }
+            // Event to play the next song in music queue
+            else if (e.getKeyCode() == getValueToPlayNextSong()) {
+                timerRandomSong.start();
+                videoMediaPlayer.mediaPlayer().controls().stop();
+                audioMediaPlayer.mediaPlayer().controls().stop();
+                if (!musicQueueToPlay.isEmpty()) {
+                    timerRandomSong.stop();
+                    Song song = musicQueueToPlay.get(0);
+                    playSong(song);
+                    musicQueueToPlay.remove(0);
+                    setMusicQueueList(musicQueueToPlay);
+                } else {
+                    timerRandomPromotionalVideo.start();
+                    nameSongLabel.setText(NAMARIE_TITLE);
+                }
+            }
+            // Event to play or add a song to music queue with ENTER
+            else if (e.getKeyCode() == 10 && currentCredits > 0) {
+                Song selectedValue = songsListJList.getSelectedValue();
+                if (selectedValue != null) {
+                    if (promotionalVideoStatus) {
+                        videoMediaPlayer.mediaPlayer().controls().stop();
+                        promotionalVideoStatus = false;
+                    }
+                    if (!videoMediaPlayer.mediaPlayer().status().isPlaying() && !audioMediaPlayer.mediaPlayer().status().isPlaying()) {
+                        playSong(selectedValue);
+                    } else {
+                        musicQueueToPlay.add(selectedValue);
+                        setMusicQueueList(musicQueueToPlay);
+                    }
+                    currentCredits -= 1;
+                    creditsValidate(currentCredits > 0);
+                }
+            }
+            // Event to reload settings
+            if (e.getKeyCode() == 82) {
+                // Load values from Properties file
+
+                selectedGender = 0;
+                genders = MultimediaLogic.getGenders();
+                musicListByGenders = MultimediaLogic.musicListByGenders(MultimediaLogic.getMusicList(), genders);
+                loadSongsListJList();
+            }
+            // Event to set a values in String to select a song
+            else if ((e.getKeyCode() == 48 || e.getKeyCode() == 96 ||
+                    // Event to set '1' value in String to select a song
+                    e.getKeyCode() == 49 || e.getKeyCode() == 97 ||
+                    // Event to set '2' value in String to select a song
+                    e.getKeyCode() == 50 || e.getKeyCode() == 98 ||
+                    // Event to set '3' value in String to select a song
+                    e.getKeyCode() == 51 || e.getKeyCode() == 99 ||
+                    // Event to set '4' value in String to select a song
+                    e.getKeyCode() == 52 || e.getKeyCode() == 100 ||
+                    // Event to set '5' value in String to select a song
+                    e.getKeyCode() == 53 || e.getKeyCode() == 101 ||
+                    // Event to set '6' value in String to select a song
+                    e.getKeyCode() == 54 || e.getKeyCode() == 102 ||
+                    // Event to set '7' value in String to select a
+                    e.getKeyCode() == 55 || e.getKeyCode() == 103 ||
+                    // Event to set '8' value in String to select a
+                    e.getKeyCode() == 56 || e.getKeyCode() == 104 ||
+                    // Event to set '9' value in String to select a
+                    e.getKeyCode() == 57 || e.getKeyCode() == 105) && currentCredits > 0) {
+                for (int i = 0; i < tmpSongNumberToPlay.length; i++) {
+                    if ("-".equals(tmpSongNumberToPlay[i])) {
+                        tmpSongNumberToPlay[i] = String.valueOf(e.getKeyChar());
+                        break;
+                    }
+                }
+                if (Arrays.stream(tmpSongNumberToPlay).noneMatch("-"::equals)) {
+                    selectedSong = Integer.parseInt(String.format(ACTION_LIST, tmpSongNumberToPlay[0], tmpSongNumberToPlay[1], tmpSongNumberToPlay[2], tmpSongNumberToPlay[3], tmpSongNumberToPlay[4]));
+                    if (selectedSong <= Objects.requireNonNull(MultimediaLogic.getMusicList()).size() - 1) {
+                        Song song = Objects.requireNonNull(MultimediaLogic.getMusicList()).get(selectedSong);
+                        if (videoMediaPlayer.mediaPlayer().status().isPlaying() && !promotionalVideoStatus) {
+                            musicQueueToPlay.add(song);
+                            setMusicQueueList(musicQueueToPlay);
+                        }
+                        if (musicQueueToPlay.isEmpty()) {
+                            playSong(song);
+                            promotionalVideoStatus = false;
+                        }
+                        currentCredits -= 1;
+                        creditsValidate(currentCredits > 0);
+                    }
+                    setDefaultString();
+                }
+                songNumberToPlayLabel.setText(String.format(" %s %s %s %s %s ", tmpSongNumberToPlay[0], tmpSongNumberToPlay[1], tmpSongNumberToPlay[2], tmpSongNumberToPlay[3], tmpSongNumberToPlay[4]));
+            }
+            // Event to set default value in String to select a song
+            else if (e.getKeyCode() == 110) {
+                setDefaultString();
+            }
+            // Event to power off computer
+            else if (e.getKeyCode() == getValueToPowerOff()) {
+                String s = JOptionPane.showInputDialog(null, "Password:", "Power off", JOptionPane.PLAIN_MESSAGE);
+                if ("031217".equals(s)) {
+                    videoMediaPlayer.release();
+                    audioMediaPlayer.release();
+                    try {
+                        MultimediaLogic.shutdown();
+                    } catch (IOException ex) {
+                        logger.log(Level.WARNING, () -> "Runtime exec error! " + ex);
+                    }
+                }
+            }
+        }
+
+        /**
+         * Invoked when a key has been released.
+         * See the class description for {@link KeyEvent} for a definition of
+         * a key released event.
+         *
+         * @param e the event to be processed
+         */
+        @Override
+        public void keyReleased(KeyEvent e) {
+            e.consume();
+        }
+    };
+
     public static void main(String[] args) {
 
         // Look and feel to mainWindow
@@ -160,226 +382,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         });
 
         // KeyListener to KeyPressed event
-        this.addKeyListener(new KeyListener() {
-            /**
-             * Invoked when a key has been typed.
-             * See the class description for {@link KeyEvent} for a definition of
-             * a key typed event.
-             *
-             * @param e the event to be processed
-             */
-            @Override
-            public void keyTyped(KeyEvent e) {
-                e.consume();
-            }
-
-            /**
-             * Invoked when a key has been pressed.
-             * See the class description for {@link KeyEvent} for a definition of
-             * a key pressed event.
-             *
-             * @param e the event to be processed
-             */
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == 122) {
-                    videoMediaPlayer.mediaPlayer().fullScreen().toggle();
-                }
-                // Event to open a settings window (Key 'Q')
-                if (e.getKeyCode() == 81) {
-                    if (settingsWindow == null)
-                        settingsWindow = new SettingsWindow();
-                    settingsWindow.setVisible(true);
-                }
-                // Event to open add coin
-                else if (e.getKeyCode() == getValueToAddCoin() && currentCredits < 25) {
-                    currentCredits += 1;
-                    creditsValidate(currentCredits > 0);
-                }
-                // Event to open remove coin
-                else if (e.getKeyCode() == getValueToRemoveCoin() && currentCredits > 0) {
-                    currentCredits -= 1;
-                    creditsValidate(currentCredits > 0);
-                }
-                // Event to up gender in gender list
-                else if (e.getKeyCode() == getValueToChangeGenderToUp()) {
-                    if (selectedGender < genders.length - 1) {
-                        selectedGender++;
-                    } else {
-                        selectedGender = 0;
-                    }
-                    loadSongsListJList();
-                }
-                // Event to down gender in gender list
-                else if (e.getKeyCode() == getValueToChangeGenderToDown()) {
-                    if (selectedGender > 0) {
-                        selectedGender--;
-                    } else {
-                        selectedGender = genders.length - 1;
-                    }
-                    loadSongsListJList();
-                }
-                // Event to up a song in music list
-                else if (e.getKeyCode() == getValueToUpIndex()) {
-                    if (selectedSong > 0) {
-                        selectedSong--;
-                    } else {
-                        selectedSong = songsListJList.getModel().getSize() - 1;
-                    }
-                    updateSelectedSongInSongsList();
-                }
-                // Event to down a song in music list
-                else if (e.getKeyCode() == getValueToDownIndex()) {
-                    if (selectedSong < songsListJList.getModel().getSize() - 1) {
-                        selectedSong++;
-                    } else {
-                        selectedSong = 0;
-                    }
-                    updateSelectedSongInSongsList();
-                }
-                // Event to up 20 songs in music list
-                else if (e.getKeyCode() == getValueToUpIndexes()) {
-                    if (selectedSong < songsListJList.getModel().getSize() - 1) {
-                        selectedSong += 20;
-                        if (selectedSong > songsListJList.getModel().getSize() - 1) {
-                            selectedSong = songsListJList.getModel().getSize() - 1;
-                        }
-                    } else {
-                        selectedSong = 0;
-                    }
-                    updateSelectedSongInSongsList();
-                }
-                // Event to down 20 songs in music list
-                else if (e.getKeyCode() == getValueToDownIndexes()) {
-                    if (selectedSong > 0) {
-                        selectedSong -= 20;
-                        if (selectedSong < 0) {
-                            selectedSong = 0;
-                        }
-                    } else {
-                        selectedSong = songsListJList.getModel().getSize() - 1;
-                    }
-                    updateSelectedSongInSongsList();
-                }
-                // Event to play the next song in music queue
-                else if (e.getKeyCode() == getValueToPlayNextSong()) {
-                    timerRandomSong.start();
-                    videoMediaPlayer.mediaPlayer().controls().stop();
-                    audioMediaPlayer.mediaPlayer().controls().stop();
-                    if (!musicQueueToPlay.isEmpty()) {
-                        timerRandomSong.stop();
-                        Song song = musicQueueToPlay.get(0);
-                        playSong(song);
-                        musicQueueToPlay.remove(0);
-                        setMusicQueueList(musicQueueToPlay);
-                    } else {
-                        timerRandomPromotionalVideo.start();
-                        nameSongLabel.setText(NAMARIE_TITLE);
-                    }
-                }
-                // Event to play or add a song to music queue with ENTER
-                else if (e.getKeyCode() == 10 && currentCredits > 0) {
-                    Song selectedValue = songsListJList.getSelectedValue();
-                    if (selectedValue != null) {
-                        if (promotionalVideoStatus) {
-                            videoMediaPlayer.mediaPlayer().controls().stop();
-                            promotionalVideoStatus = false;
-                        }
-                        if (!videoMediaPlayer.mediaPlayer().status().isPlaying() && !audioMediaPlayer.mediaPlayer().status().isPlaying()) {
-                            playSong(selectedValue);
-                        } else {
-                            musicQueueToPlay.add(selectedValue);
-                            setMusicQueueList(musicQueueToPlay);
-                        }
-                        currentCredits -= 1;
-                        creditsValidate(currentCredits > 0);
-                    }
-                }
-                // Event to reload settings
-                if (e.getKeyCode() == 82) {
-                    // Load values from Properties file
-
-                    selectedGender = 0;
-                    genders = MultimediaLogic.getGenders();
-                    musicListByGenders = MultimediaLogic.musicListByGenders(MultimediaLogic.getMusicList(), genders);
-                    loadSongsListJList();
-                }
-                // Event to set a values in String to select a song
-                else if ((e.getKeyCode() == 48 || e.getKeyCode() == 96 ||
-                        // Event to set '1' value in String to select a song
-                        e.getKeyCode() == 49 || e.getKeyCode() == 97 ||
-                        // Event to set '2' value in String to select a song
-                        e.getKeyCode() == 50 || e.getKeyCode() == 98 ||
-                        // Event to set '3' value in String to select a song
-                        e.getKeyCode() == 51 || e.getKeyCode() == 99 ||
-                        // Event to set '4' value in String to select a song
-                        e.getKeyCode() == 52 || e.getKeyCode() == 100 ||
-                        // Event to set '5' value in String to select a song
-                        e.getKeyCode() == 53 || e.getKeyCode() == 101 ||
-                        // Event to set '6' value in String to select a song
-                        e.getKeyCode() == 54 || e.getKeyCode() == 102 ||
-                        // Event to set '7' value in String to select a
-                        e.getKeyCode() == 55 || e.getKeyCode() == 103 ||
-                        // Event to set '8' value in String to select a
-                        e.getKeyCode() == 56 || e.getKeyCode() == 104 ||
-                        // Event to set '9' value in String to select a
-                        e.getKeyCode() == 57 || e.getKeyCode() == 105) && currentCredits > 0) {
-                    for (int i = 0; i < tmpSongNumberToPlay.length; i++) {
-                        if ("-".equals(tmpSongNumberToPlay[i])) {
-                            tmpSongNumberToPlay[i] = String.valueOf(e.getKeyChar());
-                            break;
-                        }
-                    }
-                    if (Arrays.stream(tmpSongNumberToPlay).noneMatch("-"::equals)) {
-                        selectedSong = Integer.parseInt(String.format(ACTION_LIST, tmpSongNumberToPlay[0], tmpSongNumberToPlay[1], tmpSongNumberToPlay[2], tmpSongNumberToPlay[3], tmpSongNumberToPlay[4]));
-                        if (selectedSong <= Objects.requireNonNull(MultimediaLogic.getMusicList()).size() - 1) {
-                            Song song = Objects.requireNonNull(MultimediaLogic.getMusicList()).get(selectedSong);
-                            if (videoMediaPlayer.mediaPlayer().status().isPlaying() && !promotionalVideoStatus) {
-                                musicQueueToPlay.add(song);
-                                setMusicQueueList(musicQueueToPlay);
-                            }
-                            if (musicQueueToPlay.isEmpty()) {
-                                playSong(song);
-                                promotionalVideoStatus = false;
-                            }
-                            currentCredits -= 1;
-                            creditsValidate(currentCredits > 0);
-                        }
-                        setDefaultString();
-                    }
-                    songNumberToPlayLabel.setText(String.format(" %s %s %s %s %s ", tmpSongNumberToPlay[0], tmpSongNumberToPlay[1], tmpSongNumberToPlay[2], tmpSongNumberToPlay[3], tmpSongNumberToPlay[4]));
-                }
-                // Event to set default value in String to select a song
-                else if (e.getKeyCode() == 110) {
-                    setDefaultString();
-                }
-                // Event to power off computer
-                else if (e.getKeyCode() == getValueToPowerOff()) {
-                    String s = JOptionPane.showInputDialog(null, "Password:", "Power off", JOptionPane.PLAIN_MESSAGE);
-                    if ("031217".equals(s)) {
-                        videoMediaPlayer.release();
-                        audioMediaPlayer.release();
-                        try {
-                            MultimediaLogic.shutdown();
-                        } catch (IOException ex) {
-                            logger.log(Level.WARNING, () -> "Runtime exec error! " + ex);
-                        }
-                    }
-                }
-            }
-
-            /**
-             * Invoked when a key has been released.
-             * See the class description for {@link KeyEvent} for a definition of
-             * a key released event.
-             *
-             * @param e the event to be processed
-             */
-            @Override
-            public void keyReleased(KeyEvent e) {
-                e.consume();
-            }
-        });
+        this.addKeyListener(mainKeyListener);
 
         initComponents();
 
