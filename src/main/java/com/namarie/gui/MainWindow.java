@@ -155,6 +155,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
             @Override
             public void windowLostFocus(WindowEvent e) {
+                // Do nothing because is not necessary.
             }
         });
 
