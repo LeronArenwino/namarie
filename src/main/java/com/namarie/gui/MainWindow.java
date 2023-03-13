@@ -190,7 +190,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                     if (settingsWindow == null)
                         settingsWindow = new SettingsWindow();
                     settingsWindow.setVisible(true);
-                    //timerFocusMainPanel.stop();
                 }
                 // Event to open add coin
                 else if (e.getKeyCode() == getValueToAddCoin() && currentCredits < 25) {
