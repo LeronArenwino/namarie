@@ -5,8 +5,8 @@ public class Song extends Multimedia {
     private final String singer;
     private final String gender;
 
-    public Song(int number, String name, String singer, String gender) {
-        super(number, name);
+    public Song(int number, String name, String extension, String singer, String gender) {
+        super(number, name, extension);
         this.singer = singer;
         this.gender = gender;
     }
