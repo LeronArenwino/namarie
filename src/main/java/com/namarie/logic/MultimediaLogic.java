@@ -2,49 +2,57 @@ package com.namarie.logic;
 
 import com.namarie.entity.Multimedia;
 import com.namarie.entity.Song;
+import com.namarie.gui.MainWindow;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.namarie.logic.SettingsSingleton.*;
+import static org.apache.commons.io.FilenameUtils.getExtension;
 
 /**
- * This class control the logic of the application relative with media, like generate music list, video list, genders list, etc.
+ * This class control the logic of the application relative with multimedia, like generate music list, video list, genders list, etc.
  *
  * @author Francisco Dueñas
  */
 public class MultimediaLogic {
 
+    // Create a Logger
+    private static final Logger logger = Logger.getLogger(MainWindow.class.getName());
+
     // Regex file extensions
-    private static final String PATTERN = "(\\S+(\\.(?i)(mp3|mp4|wav|wma|mov|wmv|avi|flv|mkv|mpg|mpeg))$)";
-    private static final String PATTERN_VIDEO = "(\\S+(\\.(?i)(mp4|mov|wmv|avi|flv|mkv|mpg))$)";
-    private static final String PATTERN_AUDIO = "(\\S+(\\.(?i)(mp3|wav|wma|mpeg))$)";
+    private static final String[] MULTIMEDIA_EXTENSIONS = {"mp3", "mp4", "wav", "wma", "mov", "wmv", "avi", "flv", "mkv", "mpg", "mpeg"};
+    private static final String[] AUDIO_EXTENSIONS = {"mp3", "wav", "wma", "mpeg"};
+    private static final String[] VIDEO_EXTENSIONS = {"mp4", "mov", "wmv", "avi", "flv", "mkv", "mpg"};
 
-    private static final Pattern patternMultimedia;
-    private static final Pattern patternVideo;
-    private static final Pattern patternAudio;
-
-    private static String[] genders;
     private static List<Song> musicList;
+    private static List<List<Song>> musicListByGenders;
+    private static List<String> gendersList;
+    private static List<Multimedia> videosList;
+    private static List<Multimedia> promotionalVideosList;
 
     private static int songCounter = 0;
 
     static {
 
-        // Regex to extensions
-        patternMultimedia = Pattern.compile(PATTERN);
-        patternVideo = Pattern.compile(PATTERN_VIDEO);
-        patternAudio = Pattern.compile(PATTERN_AUDIO);
+        setGendersList(listDirectories(getPathToSongs()));
+        setMusicList(generateMusicList(getPathToSongs()));
+        setMusicListByGenders(generateMusicListByGender(getMusicList(), getGendersList()));
 
         // Music
-        loadGendersList(getPathToSongs());
-        musicList();
+        for (Song song : musicList) {
+            System.out.println(song);
+        }
+        // setVideosList(getPathToVideos());
 
     }
 
@@ -52,45 +60,74 @@ public class MultimediaLogic {
         throw new IllegalStateException("Utility class");
     }
 
-    public static Pattern getPatternVideo() {
-        return patternVideo;
-    }
+    // Getters and setters
 
-    public static Pattern getPatternAudio() {
-        return patternAudio;
-    }
 
     public static List<Song> getMusicList() {
         return musicList;
     }
 
-    public static String[] getGenders() {
-        return genders;
+    public static void setMusicList(List<Song> musicList) {
+        MultimediaLogic.musicList = musicList;
     }
 
-    /**
-     * This method generates a genders list with directories name relative to path given.
-     */
-    public static void loadGendersList(String path) {
+    public static List<List<Song>> getMusicListByGenders() {
+        return musicListByGenders;
+    }
 
-        genders = null;
+    public static void setMusicListByGenders(List<List<Song>> musicListByGenders) {
+        MultimediaLogic.musicListByGenders = musicListByGenders;
+    }
 
-        File directory = new File(path);
+    public static List<String> getGendersList() {
+        return gendersList;
+    }
 
-        if (directory.isDirectory()) genders = directory.list();
+    public static void setGendersList(List<String> gendersList) {
+        MultimediaLogic.gendersList = gendersList;
+    }
 
-        if (genders == null) genders = new String[0];
+    public static List<Multimedia> getVideosList() {
+        return videosList;
+    }
 
-        Arrays.sort(genders, String::compareToIgnoreCase);
+    public static void setVideosList(List<Multimedia> videosList) {
+        MultimediaLogic.videosList = videosList;
+    }
 
-        for (String gender : genders) {
+    public static List<Multimedia> getPromotionalVideosList() {
+        return promotionalVideosList;
+    }
 
-            File genderDirectory = new File(String.format(ACTION_MULTIMEDIA, path, File.separator, gender));
+    public static void setPromotionalVideosList(List<Multimedia> promotionalVideosList) {
+        MultimediaLogic.promotionalVideosList = promotionalVideosList;
+    }
 
-            if (!genderDirectory.isDirectory()) {
-                List<String> gendersList = new ArrayList<>(Arrays.asList(genders));
-                gendersList.remove(gender);
-                genders = gendersList.toArray(new String[0]);
+    public static void setVideosList(String pathToVideos) {
+
+        videosList = null;
+        int videoCounter = 0;
+        String[] files = null;
+
+        File directory = new File(pathToVideos);
+
+        if (directory.isDirectory()) files = directory.list();
+
+        if (files == null) files = new String[0];
+
+        Arrays.sort(files, String::compareToIgnoreCase);
+
+        for (String filename : files) {
+
+            File videoDirectory = new File(String.format(FORMAT_MULTIMEDIA, pathToVideos, File.separator, filename));
+
+            String extension = getExtension(videoDirectory.getName());
+
+            if (videoDirectory.isFile() && Arrays.stream(AUDIO_EXTENSIONS).anyMatch(extension::contains)) {
+
+                videosList.add(new Multimedia(videoCounter, filename));
+                videoCounter++;
+
             }
 
         }
@@ -100,76 +137,39 @@ public class MultimediaLogic {
     /**
      * This method generates a videos list with videos name relative to path given.
      *
-     * @param videosPath Path where is videos.
+     * @param pathToVideos Path where is videos.
      * @return the ArrayList<Media> with the videos name or null if this doesn't contain videos.
      */
-    public static List<Multimedia> getVideos(String videosPath) {
+    public static List<Multimedia> getVideos(String pathToVideos) {
 
-        String[] videos = null;
+        String[] files = null;
         int videoCounter = 0;
         List<Multimedia> videoList = new ArrayList<>();
 
-        File directory = new File(videosPath);
+        File directory = new File(pathToVideos);
 
-        if (directory.isDirectory()) videos = directory.list();
+        if (directory.isDirectory()) files = directory.list();
 
-        if (videos == null) return Collections.emptyList();
+        if (files == null) return Collections.emptyList();
 
-        Arrays.sort(videos, String::compareToIgnoreCase);
+        Arrays.sort(files, String::compareToIgnoreCase);
 
-        for (String video : videos) {
+        for (String filename : files) {
 
-            File videoDirectory = new File(String.format(ACTION_MULTIMEDIA, videosPath, File.separator, video));
+            File videoDirectory = new File(String.format(FORMAT_MULTIMEDIA, pathToVideos, File.separator, filename));
 
-            if (videoDirectory.isFile()) {
+            String extension = getExtension(videoDirectory.getName());
 
-                Matcher matcher = patternMultimedia.matcher(videoDirectory.getName());
+            if (videoDirectory.isFile() && Arrays.stream(AUDIO_EXTENSIONS).anyMatch(extension::contains)) {
 
-                if (matcher.find()) {
-
-                    videoList.add(new Multimedia(videoCounter, video));
-                    videoCounter++;
-
-                }
+                videoList.add(new Multimedia(videoCounter, filename));
+                videoCounter++;
 
             }
 
         }
 
         return videoList;
-
-    }
-
-    /**
-     * This method load the values in a file (settings.json) to fields.
-     *
-     */
-
-    public static void musicList() {
-
-        String[] genders = null;
-        String[] singers;
-
-        musicList = new ArrayList<>();
-
-        File directory = new File(getPathToSongs());
-
-        if (directory.isDirectory()) genders = directory.list();
-
-        if (genders == null) return;
-        Arrays.sort(genders, String::compareToIgnoreCase);
-
-        for (String gender : genders) {
-
-            File genderDirectory = new File(String.format(ACTION_MULTIMEDIA, getPathToSongs(), File.separator, gender));
-
-            if (genderDirectory.isDirectory()) {
-                singers = genderDirectory.list();
-                musicList = Stream.of(musicList, getSongsBySinger(singers, gender))
-                        .flatMap(Collection::stream)
-                        .collect(Collectors.toList());
-            }
-        }
 
     }
 
@@ -195,48 +195,121 @@ public class MultimediaLogic {
         return musicListByGenders;
     }
 
-    public static List<Song> getSongs(String[] songs, String singer, String gender) {
+    private static List<String> filesListByExtensions(String path, String[] extensions) {
 
-        List<Song> musicList = new ArrayList<>();
+        List<String> songsList = new ArrayList<>();
 
-        if (songs == null) return Collections.emptyList();
-        Arrays.sort(songs, String::compareToIgnoreCase);
-
-        for (String song : songs) {
-
-            File songFile = new File(String.format(ACTION_SONG, getPathToSongs(), File.separator, gender, File.separator, singer, File.separator, song));
-
-            if (songFile.isFile()) {
-                Matcher matcher = patternMultimedia.matcher(songFile.getName());
-                if (matcher.find()) {
-                    musicList.add(new Song(songCounter, song, singer, gender));
-                    songCounter++;
-                }
-            }
+        try (Stream<Path> stream = Files.walk(Paths.get(path), 1)) {
+            songsList = stream.map(Path::normalize)
+                    .filter(Files::isRegularFile)
+                    .map(file -> file.getFileName().toString())
+                    .filter(file -> Arrays.stream(extensions).anyMatch(file::endsWith))
+                    .collect(Collectors.toList());
+        } catch (IOException exception) {
+            logger.log(Level.WARNING, () -> "IOException error! " + exception);
         }
-        return musicList;
+
+        return songsList;
+
     }
 
-    public static List<Song> getSongsBySinger(String[] singers, String gender) {
+    private static List<Song> generateMusicList(String path) {
 
         List<Song> musicList = new ArrayList<>();
-        String[] songs;
 
-        if (singers == null) return Collections.emptyList();
-        Arrays.sort(singers, String::compareToIgnoreCase);
+        if (!getGendersList().isEmpty()) musicList = songsListByGender(path, getGendersList());
 
-        for (String singer : singers) {
-
-            File singerDirectory = new File(String.format(ACTION_LIST, getPathToSongs(), File.separator, gender, File.separator, singer));
-
-            if (singerDirectory.isDirectory()) {
-                songs = singerDirectory.list();
-                musicList = Stream.of(musicList, getSongs(songs, singer, gender))
-                        .flatMap(Collection::stream)
-                        .collect(Collectors.toList());
-            }
-        }
         return musicList;
+
+    }
+
+    private static List<List<Song>> generateMusicListByGender(List<Song> musicList, List<String> gendersList) {
+
+        List<List<Song>> musicListByGenders = new ArrayList<>();
+
+        if (!gendersList.isEmpty()) for (String gender : gendersList) {
+
+            List<Song> musicListByGender = new ArrayList<>();
+            for (Song song : musicList) {
+                if (gender.equals(song.getGender())) musicListByGender.add(song);
+            }
+            musicListByGenders.add(musicListByGender);
+        }
+
+        return musicListByGenders;
+
+    }
+
+    /**
+     * This method generates a list with all directories name relative to path given.
+     *
+     * @param path Path of directory
+     * @return List String with all directories names relatives to path given.
+     */
+    private static List<String> listDirectories(String path) {
+
+        List<String> directoriesList = new ArrayList<>();
+
+        try (Stream<Path> stream = Files.walk(Paths.get(path), 1)) {
+            directoriesList = stream.map(Path::normalize)
+                    .filter(Files::isDirectory)
+                    .map(directory -> directory.getFileName().toString())
+                    .collect(Collectors.toList());
+            directoriesList.remove(0);
+        } catch (IOException exception) {
+            logger.log(Level.WARNING, () -> "IOException error! " + exception);
+        }
+
+        return directoriesList;
+
+    }
+
+    private static List<Song> songsList(List<String> filesList, String gender, String singer) {
+
+        List<Song> songsList = new ArrayList<>();
+
+        if (!filesList.isEmpty()) for (String name : filesList) {
+
+            songsList.add(new Song(songCounter++, name, singer, gender));
+
+        }
+
+        return songsList;
+
+    }
+
+    private static List<Song> songsListBySinger(String path, String gender, List<String> singers) {
+
+        List<Song> songsList = new ArrayList<>();
+        List<String> songsFromFiles;
+
+        if (!singers.isEmpty()) for (String singer : singers) {
+
+            songsFromFiles = filesListByExtensions(String.format("%s%s%s%s%s", path, File.separator, gender, File.separator, singer), MULTIMEDIA_EXTENSIONS);
+
+            songsList = songsList(songsFromFiles, gender, singer);
+
+        }
+
+        return songsList;
+
+    }
+
+    private static List<Song> songsListByGender(String path, List<String> genders) {
+
+        List<Song> songsListByGender = new ArrayList<>();
+        List<String> singersByGender;
+
+        if (!genders.isEmpty()) for (String gender : genders) {
+
+            singersByGender = listDirectories(String.format("%s%s%s", path, File.separator, gender));
+
+            songsListByGender = songsListBySinger(path, gender, singersByGender);
+
+        }
+
+        return songsListByGender;
+
     }
 
     public static void shutdown() throws IllegalArgumentException, IOException {
