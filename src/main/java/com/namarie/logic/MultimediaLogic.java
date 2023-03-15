@@ -52,7 +52,6 @@ public class MultimediaLogic {
         for (Song song : musicList) {
             System.out.println(song);
         }
-        // setVideosList(getPathToVideos());
 
     }
 
