@@ -27,7 +27,7 @@ import static org.apache.commons.io.FilenameUtils.getExtension;
 public class MultimediaLogic {
 
     // Create a Logger
-    private static final Logger logger = Logger.getLogger(MainWindow.class.getName());
+    private static final Logger logger = Logger.getLogger(MultimediaLogic.class.getName());
 
     // Regex file extensions
     private static final String[] MULTIMEDIA_EXTENSIONS = {"mp3", "mp4", "wav", "wma", "mov", "wmv", "avi", "flv", "mkv", "mpg", "mpeg"};
