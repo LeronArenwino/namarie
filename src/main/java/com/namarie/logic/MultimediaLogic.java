@@ -2,7 +2,6 @@ package com.namarie.logic;
 
 import com.namarie.entity.Multimedia;
 import com.namarie.entity.Song;
-import com.namarie.gui.MainWindow;
 
 import java.io.File;
 import java.io.IOException;
