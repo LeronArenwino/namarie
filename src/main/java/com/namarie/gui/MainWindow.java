@@ -26,9 +26,9 @@ import java.util.*;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
 
 import static com.namarie.dao.PropertiesManager.loadProperties;
+import static com.namarie.logic.MultimediaLogic.*;
 import static com.namarie.logic.SettingsSingleton.*;
 
 public class MainWindow extends javax.swing.JFrame implements Serializable {
@@ -249,7 +249,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 // Load values from Properties file
 
                 selectedGender = 0;
-                genders = MultimediaLogic.getGenders();
+                genders = MultimediaLogic.getGendersList().toArray(new String[0]);
                 musicListByGenders = MultimediaLogic.musicListByGenders(MultimediaLogic.getMusicList(), genders);
                 loadSongsListJList();
             }
@@ -439,132 +439,10 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         centerCenterPanel = new JPanel(new BorderLayout());
 
         // Create EmbeddedMediaPlayerComponent instances
-        videoMediaPlayer = new EmbeddedMediaPlayerComponent(
-                null,
-                null,
-                new AdaptiveFullScreenStrategy(this),
-                null,
-                null
-        ) {
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                MainWindow.super.requestFocus();
-            }
-
-            @Override
-            public void finished(MediaPlayer mediaPlayer) {
-
-                timerRandomSong.start();
-
-                if (!audioMediaPlayer.mediaPlayer().status().isPlaying() && !mediaPlayer.status().isPlaying() && !musicQueueToPlay.isEmpty()) {
-
-                    timerRandomSong.stop();
-
-                    Song song = musicQueueToPlay.get(0);
-
-                    Matcher matcher = MultimediaLogic.getPatternVideo().matcher(song.getName());
-
-                    if (matcher.find()) {
-
-                        mediaPlayer.submit(() -> mediaPlayer.media().play(String.format(ACTION_SONG, getPathToSongs(), File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName())));
-
-                    }
-
-                    matcher = MultimediaLogic.getPatternAudio().matcher(song.getName());
-
-                    if (matcher.find()) {
-
-                        int randVideo = rand.nextInt(availableVideos.size());
-
-                        Multimedia video = availableVideos.get(randVideo);
-
-                        mediaPlayer.submit(() -> mediaPlayer.media().play(String.format(ACTION_MULTIMEDIA, getPathToVideos(), File.separator, video.getName())));
-                        audioMediaPlayer.mediaPlayer().media().play(String.format(ACTION_SONG, getPathToSongs(), File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName()));
-
-                    }
-
-                    musicQueueToPlay.remove(0);
-
-                    setMusicQueueList(musicQueueToPlay);
-
-                } else if (audioMediaPlayer.mediaPlayer().status().isPlaying()) {
-
-                    timerRandomSong.stop();
-
-                    int randVideo = rand.nextInt(availableVideos.size());
-
-                    Multimedia video = availableVideos.get(randVideo);
-
-                    mediaPlayer.submit(() -> mediaPlayer().media().play(String.format(ACTION_MULTIMEDIA, getPathToVideos(), File.separator, video.getName())));
-
-                } else {
-
-                    timerRandomPromotionalVideo.start();
-                    nameSongLabel.setText(NAMARIE_TITLE);
-
-                }
-
-            }
-
-            @Override
-            public void error(MediaPlayer mediaPlayer) {
-                JOptionPane.showMessageDialog(null, ADVERTISEMENT_MESSAGE, "Warning", JOptionPane.WARNING_MESSAGE);
-            }
-        };
+        createEmbeddedMediaPlayerComponent();
 
         // Create AudioPlayerComponent instances
-        audioMediaPlayer = new AudioPlayerComponent() {
-
-            @Override
-            public void finished(MediaPlayer mediaPlayer) {
-
-                videoMediaPlayer.mediaPlayer().controls().stop();
-
-                timerRandomSong.start();
-
-                if (!mediaPlayer.status().isPlaying() && !musicQueueToPlay.isEmpty()) {
-
-                    timerRandomSong.stop();
-
-                    Song song = musicQueueToPlay.get(0);
-
-                    Matcher matcher = MultimediaLogic.getPatternVideo().matcher(song.getName());
-
-                    if (matcher.find()) {
-
-                        videoMediaPlayer.mediaPlayer().media().play(String.format(ACTION_SONG, getPathToSongs(), File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName()));
-
-                    }
-
-                    matcher = MultimediaLogic.getPatternAudio().matcher(song.getName());
-
-                    if (matcher.find()) {
-
-                        int randVideo = rand.nextInt(availableVideos.size());
-
-                        Multimedia video = availableVideos.get(randVideo);
-
-                        videoMediaPlayer.mediaPlayer().media().play(String.format(ACTION_MULTIMEDIA, getPathToVideos(), File.separator, video.getName()));
-                        mediaPlayer.submit(() -> mediaPlayer.media().play(String.format(ACTION_SONG, getPathToSongs(), File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName())));
-
-                    }
-
-                    musicQueueToPlay.remove(0);
-
-                    setMusicQueueList(musicQueueToPlay);
-
-                } else {
-                    timerRandomPromotionalVideo.start();
-                    nameSongLabel.setText(NAMARIE_TITLE);
-                }
-            }
-
-            @Override
-            public void error(MediaPlayer mediaPlayer) {
-                JOptionPane.showMessageDialog(null, ADVERTISEMENT_MESSAGE, "Warning", JOptionPane.WARNING_MESSAGE);
-            }
-        };
+        createAudioPlayerComponent();
 
         // Music and songs list panels
         songsListPanel = new JPanel(new BorderLayout());
@@ -621,6 +499,9 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         ActionListener playRandomPromotionalVideo = e -> playRandomPromotionalVideo();
         timerRandomPromotionalVideo = new Timer(0, playRandomPromotionalVideo);
+
+        // Optional variables
+        availableVideos = getVideosList().orElse(Collections.emptyList());
 
     }
 
@@ -766,10 +647,11 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     private void loadComponentsData() {
 
-        availableVideos = MultimediaLogic.getVideos(getPathToVideos());
+        availableVideos = getVideosList().orElse(Collections.emptyList());
+
         promotionalAvailableVideos = MultimediaLogic.getVideos(getPathToPromotionalVideos());
 
-        genders = MultimediaLogic.getGenders();
+        genders = MultimediaLogic.getGendersList().toArray(new String[0]);
 
         musicListByGenders = MultimediaLogic.musicListByGenders(MultimediaLogic.getMusicList(), genders);
 
@@ -780,6 +662,145 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         creditsValidate(false);
 
         setDefaultString();
+
+    }
+
+    private void createAudioPlayerComponent() {
+
+        audioMediaPlayer = new AudioPlayerComponent() {
+
+            @Override
+            public void finished(MediaPlayer mediaPlayer) {
+
+                videoMediaPlayer.mediaPlayer().controls().stop();
+
+                timerRandomSong.start();
+
+                if (!mediaPlayer.status().isPlaying() && !musicQueueToPlay.isEmpty()) {
+
+                    timerRandomSong.stop();
+
+                    Song song = musicQueueToPlay.get(0);
+
+                    Optional<String> pathToSong = song.pathToSong(getPathToSongs());
+
+                    if (Arrays.stream(VIDEO_EXTENSIONS).anyMatch(song.getName()::endsWith)) {
+
+                        videoMediaPlayer.mediaPlayer().media().play(pathToSong.orElse("Path to song not found!"));
+
+                    } else if (Arrays.stream(AUDIO_EXTENSIONS).anyMatch(song.getName()::endsWith)) {
+
+                        int randVideo = rand.nextInt(availableVideos.size());
+
+                        Multimedia video = availableVideos.get(randVideo);
+
+                        videoMediaPlayer.mediaPlayer().media().play(String.format(FORMAT_MULTIMEDIA, getPathToVideos(), File.separator, video.getName()));
+                        mediaPlayer.submit(() -> mediaPlayer.media().play(String.format(ACTION_SONG, getPathToSongs(), File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName())));
+
+                    }
+
+                    musicQueueToPlay.remove(0);
+
+                    setMusicQueueList(musicQueueToPlay);
+
+                } else {
+                    timerRandomPromotionalVideo.start();
+                    nameSongLabel.setText(NAMARIE_TITLE);
+                }
+            }
+
+            @Override
+            public void error(MediaPlayer mediaPlayer) {
+                JOptionPane.showMessageDialog(null, ADVERTISEMENT_MESSAGE, "Warning", JOptionPane.WARNING_MESSAGE);
+            }
+        };
+
+    }
+
+    private void createEmbeddedMediaPlayerComponent() {
+
+        videoMediaPlayer = new EmbeddedMediaPlayerComponent(
+                null,
+                null,
+                new AdaptiveFullScreenStrategy(this),
+                null,
+                null
+        ) {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                MainWindow.super.requestFocus();
+            }
+
+            @Override
+            public void finished(MediaPlayer mediaPlayer) {
+
+                timerRandomSong.start();
+
+                if (!audioMediaPlayer.mediaPlayer().status().isPlaying() && !mediaPlayer.status().isPlaying() && !musicQueueToPlay.isEmpty()) {
+
+                    timerRandomSong.stop();
+
+                    Song song = musicQueueToPlay.get(0);
+
+                    Optional<String> pathToSong = song.pathToSong(getPathToSongs());
+
+                    if (Arrays.stream(VIDEO_EXTENSIONS).anyMatch(song.getName()::endsWith)) {
+
+                        mediaPlayer.submit(() -> mediaPlayer.media().play(pathToSong.orElse("Path to song not found!")));
+
+                    } else if (Arrays.stream(AUDIO_EXTENSIONS).anyMatch(song.getName()::endsWith)) {
+
+                        if (!availableVideos.isEmpty()) {
+
+                            int randVideo = rand.nextInt(availableVideos.size());
+
+                            Multimedia video = availableVideos.get(randVideo);
+
+                            Optional<String> pathToVideo = video.pathToVideo(getPathToVideos());
+
+                            mediaPlayer.submit(() -> mediaPlayer.media().play(pathToVideo.orElse("Path to video not found!")));
+
+                        }
+
+                        audioMediaPlayer.mediaPlayer().media().play(pathToSong.orElse("Path to song not found!"));
+
+                    }
+
+                    musicQueueToPlay.remove(0);
+
+                    setMusicQueueList(musicQueueToPlay);
+
+                } else if (audioMediaPlayer.mediaPlayer().status().isPlaying()) {
+
+                    timerRandomSong.stop();
+
+                    if (!availableVideos.isEmpty()){
+
+                        int randVideo = rand.nextInt(availableVideos.size());
+
+                        Multimedia video = availableVideos.get(randVideo);
+
+                        Optional<String> pathToVideo = video.pathToVideo(getPathToVideos());
+
+                        mediaPlayer.submit(() -> mediaPlayer().media().play(pathToVideo.orElse("Path to video not found!")));
+
+                    }
+
+                } else {
+
+                    timerRandomPromotionalVideo.start();
+                    nameSongLabel.setText(NAMARIE_TITLE);
+
+                }
+
+            }
+
+            @Override
+            public void error(MediaPlayer mediaPlayer) {
+                JOptionPane.showMessageDialog(null, ADVERTISEMENT_MESSAGE, "Warning", JOptionPane.WARNING_MESSAGE);
+            }
+        };
 
     }
 
@@ -819,7 +840,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     private void playPromotionalMedia(Multimedia video) {
         if (isPromotionalVideos()) {
-            videoMediaPlayer.mediaPlayer().media().play(String.format(ACTION_MULTIMEDIA, getPathToPromotionalVideos(), File.separator, video.getName()));
+            videoMediaPlayer.mediaPlayer().media().play(String.format(FORMAT_MULTIMEDIA, getPathToPromotionalVideos(), File.separator, video.getName()));
             promotionalVideoStatus = true;
         }
     }
@@ -863,25 +884,25 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     private void playSong(Song song) {
 
-        Matcher matcher = MultimediaLogic.getPatternVideo().matcher(song.getName());
+        Optional<String> pathToSong = song.pathToSong(getPathToSongs());
 
-        if (matcher.find()) {
+        if (Arrays.stream(VIDEO_EXTENSIONS).anyMatch(song.getName()::endsWith)) {
 
-            videoMediaPlayer.mediaPlayer().media().play(String.format(ACTION_SONG, getPathToSongs(), File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName()));
+            videoMediaPlayer.mediaPlayer().media().play(pathToSong.orElse("Path to song not found!"));
             nameSongLabel.setText(song.toString());
-        }
 
-        matcher = MultimediaLogic.getPatternAudio().matcher(song.getName());
+        } else if (Arrays.stream(AUDIO_EXTENSIONS).anyMatch(song.getName()::endsWith)) {
 
-        if (matcher.find()) {
             if (!availableVideos.isEmpty()) {
                 int randVideo = rand.nextInt(availableVideos.size());
 
                 Multimedia video = availableVideos.get(randVideo);
 
-                videoMediaPlayer.mediaPlayer().media().play(String.format(ACTION_MULTIMEDIA, getPathToVideos(), File.separator, video.getName()));
+                Optional<String> pathToVideo = video.pathToVideo(getPathToVideos());
+
+                videoMediaPlayer.mediaPlayer().media().play(pathToVideo.orElse("Path to video not found!"));
             }
-            audioMediaPlayer.mediaPlayer().media().play(String.format(ACTION_SONG, getPathToSongs(), File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName()));
+            audioMediaPlayer.mediaPlayer().media().play(pathToSong.orElse("Path to song not found!"));
             nameSongLabel.setText(song.toString());
 
         }
