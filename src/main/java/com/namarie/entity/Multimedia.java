@@ -1,5 +1,10 @@
 package com.namarie.entity;
 
+import java.io.File;
+import java.util.Optional;
+
+import static com.namarie.logic.MultimediaLogic.FORMAT_MULTIMEDIA;
+
 public class Multimedia {
 
     private final int number;
@@ -16,6 +21,14 @@ public class Multimedia {
 
     public String getName() {
         return name;
+    }
+
+    public Optional<String> pathToVideo(String path) {
+
+        String pathToVideo = String.format(FORMAT_MULTIMEDIA, path, File.separator, getName());
+
+        return Optional.ofNullable(pathToVideo);
+
     }
 
     @Override
