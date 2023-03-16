@@ -13,7 +13,6 @@ public class SettingsSingleton {
     public static final String NAMARIE_TITLE = "Namarie jukebox";
 
     // String format
-    public static final String ACTION_MULTIMEDIA = "%s%s%s";
     public static final String ACTION_LIST = "%s%s%s%s%s";
     public static final String ACTION_SONG = "%s%s%s%s%s%s%s";
 
