@@ -1,5 +1,10 @@
 package com.namarie.entity;
 
+import java.io.File;
+import java.util.Optional;
+
+import static com.namarie.logic.SettingsSingleton.ACTION_SONG;
+
 public class Song extends Multimedia {
 
     private final String singer;
@@ -17,6 +22,14 @@ public class Song extends Multimedia {
 
     public String getGender() {
         return gender;
+    }
+
+    public Optional<String> pathToSong(String path){
+
+        String pathToSong = String.format(ACTION_SONG, path, File.separator, getGender(), File.separator, getSinger(), File.separator, getName());
+
+        return Optional.ofNullable(pathToSong);
+
     }
 
     @Override
