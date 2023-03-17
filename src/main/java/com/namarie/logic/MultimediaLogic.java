@@ -32,8 +32,6 @@ public class MultimediaLogic {
 
     // Regex file extensions
     private static final String[] MULTIMEDIA_EXTENSIONS = {"mp3", "mp4", "wav", "wma", "mov", "wmv", "avi", "flv", "mkv", "mpg", "mpeg"};
-    protected static final String[] AUDIO_EXTENSIONS = {"mp3", "wav", "wma", "mpeg"};
-    protected static final String[] VIDEO_EXTENSIONS = {"mp4", "mov", "wmv", "avi", "flv", "mkv", "mpg"};
 
     private static List<Song> musicList;
     private static List<List<Song>> musicListByGenders;
