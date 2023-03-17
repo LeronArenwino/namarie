@@ -51,13 +51,6 @@ public class MultimediaLogic {
         setMusicListByGenders(generateMusicListByGender(getMusicList(), getGendersList()));
         setVideosList(optionalVideosList(filesListByExtensions(getPathToVideos(), VIDEO_EXTENSIONS)));
 
-        // Music
-        for (Song song : musicList) {
-            System.out.println(song);
-        }
-
-
-
     }
 
     private MultimediaLogic() {
