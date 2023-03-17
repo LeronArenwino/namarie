@@ -81,7 +81,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     private transient List<Multimedia> availableVideos;
     private transient List<Multimedia> promotionalAvailableVideos;
     private transient List<List<Song>> musicListByGenders;
-    private String[] genders;
+    private List<String> genders;
     private int selectedGender;
     private int selectedSong;
     private boolean promotionalVideoStatus;
@@ -152,7 +152,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
             }
             // Event to up gender in gender list
             else if (e.getKeyCode() == getValueToChangeGenderToUp()) {
-                if (selectedGender < genders.length - 1) {
+                if (selectedGender < genders.size() - 1) {
                     selectedGender++;
                 } else {
                     selectedGender = 0;
@@ -164,7 +164,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 if (selectedGender > 0) {
                     selectedGender--;
                 } else {
-                    selectedGender = genders.length - 1;
+                    selectedGender = genders.size() - 1;
                 }
                 loadSongsListJList();
             }
@@ -249,8 +249,8 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 // Load values from Properties file
 
                 selectedGender = 0;
-                genders = MultimediaLogic.getGendersList().toArray(new String[0]);
-                musicListByGenders = MultimediaLogic.musicListByGenders(MultimediaLogic.getMusicList(), genders);
+                genders = getGendersList();
+                musicListByGenders = getMusicListByGenders();
                 loadSongsListJList();
             }
             // Event to set a values in String to select a song
@@ -280,7 +280,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                     }
                 }
                 if (Arrays.stream(tmpSongNumberToPlay).noneMatch("-"::equals)) {
-                    selectedSong = Integer.parseInt(String.format(ACTION_LIST, tmpSongNumberToPlay[0], tmpSongNumberToPlay[1], tmpSongNumberToPlay[2], tmpSongNumberToPlay[3], tmpSongNumberToPlay[4]));
+                    selectedSong = Integer.parseInt(String.format(FORMAT_LIST, tmpSongNumberToPlay[0], tmpSongNumberToPlay[1], tmpSongNumberToPlay[2], tmpSongNumberToPlay[3], tmpSongNumberToPlay[4]));
                     if (selectedSong <= Objects.requireNonNull(MultimediaLogic.getMusicList()).size() - 1) {
                         Song song = Objects.requireNonNull(MultimediaLogic.getMusicList()).get(selectedSong);
                         if (videoMediaPlayer.mediaPlayer().status().isPlaying() && !promotionalVideoStatus) {
@@ -501,7 +501,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         timerRandomPromotionalVideo = new Timer(0, playRandomPromotionalVideo);
 
         // Optional variables
-        availableVideos = getVideosList().orElse(Collections.emptyList());
+        availableVideos = getVideosList();
 
     }
 
@@ -647,13 +647,13 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     private void loadComponentsData() {
 
-        availableVideos = getVideosList().orElse(Collections.emptyList());
+        availableVideos = getVideosList();
 
-        promotionalAvailableVideos = MultimediaLogic.getVideos(getPathToPromotionalVideos());
+        promotionalAvailableVideos = getPromotionalVideosList();
 
-        genders = MultimediaLogic.getGendersList().toArray(new String[0]);
+        genders = getGendersList();
 
-        musicListByGenders = MultimediaLogic.musicListByGenders(MultimediaLogic.getMusicList(), genders);
+        musicListByGenders = getMusicListByGenders();
 
         if (!musicListByGenders.isEmpty()) {
             loadSongsListJList();
@@ -690,12 +690,19 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                     } else if (Arrays.stream(AUDIO_EXTENSIONS).anyMatch(song.getName()::endsWith)) {
 
-                        int randVideo = rand.nextInt(availableVideos.size());
+                        if (!availableVideos.isEmpty()) {
 
-                        Multimedia video = availableVideos.get(randVideo);
+                            int randVideo = rand.nextInt(availableVideos.size());
 
-                        videoMediaPlayer.mediaPlayer().media().play(String.format(FORMAT_MULTIMEDIA, getPathToVideos(), File.separator, video.getName()));
-                        mediaPlayer.submit(() -> mediaPlayer.media().play(String.format(ACTION_SONG, getPathToSongs(), File.separator, song.getGender(), File.separator, song.getSinger(), File.separator, song.getName())));
+                            Multimedia video = availableVideos.get(randVideo);
+
+                            Optional<String> pathToVideo = video.pathToVideo(getPathToVideos());
+
+                            videoMediaPlayer.mediaPlayer().media().play(String.format(pathToVideo.orElse("Path to video not found!")));
+
+                        }
+
+                        mediaPlayer.submit(() -> mediaPlayer.media().play(pathToSong.orElse("Path to song not found!")));
 
                     }
 
@@ -775,7 +782,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                     timerRandomSong.stop();
 
-                    if (!availableVideos.isEmpty()){
+                    if (!availableVideos.isEmpty()) {
 
                         int randVideo = rand.nextInt(availableVideos.size());
 
@@ -831,8 +838,8 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     private void loadSongsListJList() {
 
         searchSongsListTextField.setText("");
-        songsListGenderLabel.setText(genders[selectedGender]);
-        setMusicList(musicListByGenders.get(selectedGender), genders[selectedGender]);
+        songsListGenderLabel.setText(genders.get(selectedGender));
+        setMusicList(musicListByGenders.get(selectedGender), genders.get(selectedGender));
         selectedSong = 0;
         updateSelectedSongInSongsList();
 
