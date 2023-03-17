@@ -190,7 +190,9 @@ public class MultimediaLogic {
 
         List<Song> musicList = new ArrayList<>();
 
-        if (!getGendersList().isEmpty()) musicList = songsListByGender(path, getGendersList());
+        if (!getGendersList().isEmpty()) musicList = Stream.of(musicList, songsListByGender(path, getGendersList()))
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
 
         return musicList;
 
@@ -260,7 +262,9 @@ public class MultimediaLogic {
 
             songsFromFiles = filesListByExtensions(String.format("%s%s%s%s%s", path, File.separator, gender, File.separator, singer), MULTIMEDIA_EXTENSIONS);
 
-            songsList = songsList(songsFromFiles, gender, singer);
+            songsList = Stream.of(songsList, songsList(songsFromFiles, gender, singer))
+                    .flatMap(Collection::stream)
+                    .collect(Collectors.toList());
 
         }
 
@@ -277,7 +281,9 @@ public class MultimediaLogic {
 
             singersByGender = listDirectories(String.format("%s%s%s", path, File.separator, gender));
 
-            songsListByGender = songsListBySinger(path, gender, singersByGender);
+            songsListByGender = Stream.of(songsListByGender, songsListBySinger(path, gender, singersByGender))
+                    .flatMap(Collection::stream)
+                    .collect(Collectors.toList());
 
         }
 
