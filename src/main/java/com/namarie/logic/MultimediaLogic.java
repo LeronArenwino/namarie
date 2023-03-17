@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.namarie.logic.SettingsSingleton.*;
-import static org.apache.commons.io.FilenameUtils.getExtension;
 
 /**
  * This class control the logic of the application relative with multimedia, like generate music list, video list, genders list, etc.
@@ -28,7 +27,9 @@ public class MultimediaLogic {
     // Create a Logger
     private static final Logger logger = Logger.getLogger(MultimediaLogic.class.getName());
 
+    // String format
     public static final String FORMAT_MULTIMEDIA = "%s%s%s";
+    public static final String FORMAT_LIST = "%s%s%s%s%s";
 
     // Regex file extensions
     private static final String[] MULTIMEDIA_EXTENSIONS = {"mp3", "mp4", "wav", "wma", "mov", "wmv", "avi", "flv", "mkv", "mpg", "mpeg"};
@@ -36,18 +37,20 @@ public class MultimediaLogic {
     private static List<Song> musicList;
     private static List<List<Song>> musicListByGenders;
     private static List<String> gendersList;
-    private static Optional<List<Multimedia>> videosList;
+    private static List<Multimedia> videosList;
     private static List<Multimedia> promotionalVideosList;
 
     private static int songCounter = 0;
     private static int videosCounter = 0;
+    private static int promotionalVideosCounter = 0;
 
     static {
 
         setGendersList(listDirectories(getPathToSongs()));
         setMusicList(generateMusicList(getPathToSongs()));
         setMusicListByGenders(generateMusicListByGender(getMusicList(), getGendersList()));
-        setVideosList(optionalVideosList(filesListByExtensions(getPathToVideos(), VIDEO_EXTENSIONS)));
+        setVideosList(videosList(filesListByExtensions(getPathToVideos(), VIDEO_EXTENSIONS)));
+        setPromotionalVideosList(promotionalVideosList(filesListByExtensions(getPathToPromotionalVideos(), VIDEO_EXTENSIONS)));
 
     }
 
@@ -82,11 +85,11 @@ public class MultimediaLogic {
         MultimediaLogic.gendersList = gendersList;
     }
 
-    public static Optional<List<Multimedia>> getVideosList() {
+    public static List<Multimedia> getVideosList() {
         return videosList;
     }
 
-    public static void setVideosList(Optional<List<Multimedia>> videosList) {
+    public static void setVideosList(List<Multimedia> videosList) {
         MultimediaLogic.videosList = videosList;
     }
 
@@ -98,67 +101,7 @@ public class MultimediaLogic {
         MultimediaLogic.promotionalVideosList = promotionalVideosList;
     }
 
-    /**
-     * This method generates a videos list with videos name relative to path given.
-     *
-     * @param pathToVideos Path where is videos.
-     * @return the ArrayList<Media> with the videos name or null if this doesn't contain videos.
-     */
-    public static List<Multimedia> getVideos(String pathToVideos) {
-
-        String[] files = null;
-        int videoCounter = 0;
-        List<Multimedia> videoList = new ArrayList<>();
-
-        File directory = new File(pathToVideos);
-
-        if (directory.isDirectory()) files = directory.list();
-
-        if (files == null) return Collections.emptyList();
-
-        Arrays.sort(files, String::compareToIgnoreCase);
-
-        for (String filename : files) {
-
-            File videoDirectory = new File(String.format(FORMAT_MULTIMEDIA, pathToVideos, File.separator, filename));
-
-            String extension = getExtension(videoDirectory.getName());
-
-            if (videoDirectory.isFile() && Arrays.stream(AUDIO_EXTENSIONS).anyMatch(extension::contains)) {
-
-                videoList.add(new Multimedia(videoCounter, filename));
-                videoCounter++;
-
-            }
-
-        }
-
-        return videoList;
-
-    }
-
-    public static List<List<Song>> musicListByGenders(List<Song> musicList, String[] gendersList) {
-
-        List<List<Song>> musicListByGenders = new ArrayList<>();
-
-        if (gendersList == null) return Collections.emptyList();
-
-        Arrays.sort(gendersList, String::compareToIgnoreCase);
-
-        for (String gender : gendersList) {
-            List<Song> musicListByGender = new ArrayList<>();
-            for (Song song : musicList) {
-                if (gender.equals(song.getGender())) {
-                    musicListByGender.add(song);
-                }
-
-            }
-            musicListByGenders.add(musicListByGender);
-        }
-
-        return musicListByGenders;
-    }
-
+    // Methods
     private static List<String> filesListByExtensions(String path, String[] extensions) {
 
         List<String> songsList = new ArrayList<>();
@@ -251,7 +194,7 @@ public class MultimediaLogic {
 
         if (!singers.isEmpty()) for (String singer : singers) {
 
-            songsFromFiles = filesListByExtensions(String.format("%s%s%s%s%s", path, File.separator, gender, File.separator, singer), MULTIMEDIA_EXTENSIONS);
+            songsFromFiles = filesListByExtensions(String.format(FORMAT_LIST, path, File.separator, gender, File.separator, singer), MULTIMEDIA_EXTENSIONS);
 
             songsList = Stream.of(songsList, songsList(songsFromFiles, gender, singer))
                     .flatMap(Collection::stream)
@@ -270,7 +213,7 @@ public class MultimediaLogic {
 
         if (!genders.isEmpty()) for (String gender : genders) {
 
-            singersByGender = listDirectories(String.format("%s%s%s", path, File.separator, gender));
+            singersByGender = listDirectories(String.format(FORMAT_MULTIMEDIA, path, File.separator, gender));
 
             songsListByGender = Stream.of(songsListByGender, songsListBySinger(path, gender, singersByGender))
                     .flatMap(Collection::stream)
@@ -282,7 +225,19 @@ public class MultimediaLogic {
 
     }
 
-    private static Optional<List<Multimedia>> optionalVideosList(List<String> filesList) {
+    private static List<Multimedia> promotionalVideosList(List<String> filesList) {
+
+        List<Multimedia> promotionalVideosList = new ArrayList<>();
+
+        if (!filesList.isEmpty()) for (String name : filesList) {
+            promotionalVideosList.add(new Multimedia(promotionalVideosCounter++, name));
+        }
+
+        return promotionalVideosList;
+
+    }
+
+    private static List<Multimedia> videosList(List<String> filesList) {
 
         List<Multimedia> videosList = new ArrayList<>();
 
@@ -290,7 +245,7 @@ public class MultimediaLogic {
             videosList.add(new Multimedia(videosCounter++, name));
         }
 
-        return Optional.of(videosList);
+        return videosList;
 
     }
 
