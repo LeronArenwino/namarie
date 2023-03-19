@@ -41,10 +41,13 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     // Random secure generator
     private final Random rand = SecureRandom.getInstanceStrong();
 
+    // Error files
     private static final String ERROR_MP_4 = "error.mp4";
     private static final String ERROR_MP_3 = "error.mp3";
-    private final String PATH_TO_ERROR_MP_4 = String.format(FORMAT_MULTIMEDIA, new File("").getAbsolutePath(), File.separator, ERROR_MP_4);
-    private final String PATH_TO_ERROR_MP_3 = String.format(FORMAT_MULTIMEDIA, new File("").getAbsolutePath(), File.separator, ERROR_MP_3);
+
+    // Path to error files
+    private final String pathToErrorMP4 = String.format(FORMAT_MULTIMEDIA, new File("").getAbsolutePath(), File.separator, ERROR_MP_4);
+    private final String pathToErrorMP3 = String.format(FORMAT_MULTIMEDIA, new File("").getAbsolutePath(), File.separator, ERROR_MP_3);
 
     // General components
     private JPanel containerPanel;
@@ -691,7 +694,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                     if (getVideoExtensions().stream().anyMatch(song.getName()::endsWith)) {
 
-                        videoMediaPlayer.mediaPlayer().media().play(pathToSong.orElse(PATH_TO_ERROR_MP_3));
+                        videoMediaPlayer.mediaPlayer().media().play(pathToSong.orElse(pathToErrorMP3));
 
                     } else if (getAudioExtensions().stream().anyMatch(song.getName()::endsWith)) {
 
@@ -703,11 +706,11 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                             Optional<String> pathToVideo = video.pathToVideo(getPathToVideos());
 
-                            videoMediaPlayer.mediaPlayer().media().play(String.format(pathToVideo.orElse(PATH_TO_ERROR_MP_3)));
+                            videoMediaPlayer.mediaPlayer().media().play(String.format(pathToVideo.orElse(pathToErrorMP3)));
 
                         }
 
-                        mediaPlayer.submit(() -> mediaPlayer.media().play(pathToSong.orElse(PATH_TO_ERROR_MP_3)));
+                        mediaPlayer.submit(() -> mediaPlayer.media().play(pathToSong.orElse(pathToErrorMP3)));
 
                     }
 
@@ -759,7 +762,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                     if (getVideoExtensions().stream().anyMatch(song.getName()::endsWith)) {
 
-                        mediaPlayer.submit(() -> mediaPlayer.media().play(pathToSong.orElse(PATH_TO_ERROR_MP_3)));
+                        mediaPlayer.submit(() -> mediaPlayer.media().play(pathToSong.orElse(pathToErrorMP3)));
 
                     } else if (getAudioExtensions().stream().anyMatch(song.getName()::endsWith)) {
 
@@ -771,11 +774,11 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                             Optional<String> pathToVideo = video.pathToVideo(getPathToVideos());
 
-                            mediaPlayer.submit(() -> mediaPlayer.media().play(pathToVideo.orElse(PATH_TO_ERROR_MP_3)));
+                            mediaPlayer.submit(() -> mediaPlayer.media().play(pathToVideo.orElse(pathToErrorMP3)));
 
                         }
 
-                        audioMediaPlayer.mediaPlayer().media().play(pathToSong.orElse(PATH_TO_ERROR_MP_3));
+                        audioMediaPlayer.mediaPlayer().media().play(pathToSong.orElse(pathToErrorMP3));
 
                     }
 
@@ -795,7 +798,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                         Optional<String> pathToVideo = video.pathToVideo(getPathToVideos());
 
-                        mediaPlayer.submit(() -> mediaPlayer().media().play(pathToVideo.orElse(PATH_TO_ERROR_MP_3)));
+                        mediaPlayer.submit(() -> mediaPlayer().media().play(pathToVideo.orElse(pathToErrorMP3)));
 
                     }
 
@@ -901,7 +904,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         if (getVideoExtensions().stream().anyMatch(song.getName()::endsWith)) {
 
-            videoMediaPlayer.mediaPlayer().media().play(pathToSong.orElse(PATH_TO_ERROR_MP_4));
+            videoMediaPlayer.mediaPlayer().media().play(pathToSong.orElse(pathToErrorMP4));
             nameSongLabel.setText(song.toString());
 
         } else if (getAudioExtensions().stream().anyMatch(song.getName()::endsWith)) {
@@ -913,9 +916,9 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                 Optional<String> pathToVideo = video.pathToVideo(getPathToVideos());
 
-                videoMediaPlayer.mediaPlayer().media().play(pathToVideo.orElse(PATH_TO_ERROR_MP_4));
+                videoMediaPlayer.mediaPlayer().media().play(pathToVideo.orElse(pathToErrorMP4));
             }
-            audioMediaPlayer.mediaPlayer().media().play(pathToSong.orElse(PATH_TO_ERROR_MP_3));
+            audioMediaPlayer.mediaPlayer().media().play(pathToSong.orElse(pathToErrorMP3));
             nameSongLabel.setText(song.toString());
 
         }
