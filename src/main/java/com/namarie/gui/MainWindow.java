@@ -648,6 +648,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         songsListJList.setFont(fontFromSettings);
         musicQueueJList.setFont(fontFromSettings);
 
+        containerJMenuBar.setVisible(false);
 
     }
 
