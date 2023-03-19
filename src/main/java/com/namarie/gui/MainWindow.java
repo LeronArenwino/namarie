@@ -103,6 +103,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     private javax.swing.Timer timerReturnFocus;
     private javax.swing.Timer timerRandomSong;
     private javax.swing.Timer timerRandomPromotionalVideo;
+    private javax.swing.Timer timerToFullScreen;
 
     private final transient ListSelectionListener songsListListSelection = new ListSelectionListener() {
         /**
@@ -507,6 +508,9 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         ActionListener playRandomPromotionalVideo = e -> playRandomPromotionalVideo();
         timerRandomPromotionalVideo = new Timer(0, playRandomPromotionalVideo);
 
+        ActionListener fullScreen = e -> videoMediaPlayer.mediaPlayer().fullScreen().toggle();
+        timerToFullScreen = new Timer(1000, fullScreen);
+
         // Optional variables
         availableVideos = getVideosList();
 
@@ -525,6 +529,9 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         timerRandomPromotionalVideo.setRepeats(false);
         timerRandomPromotionalVideo.start();
+
+        timerToFullScreen.setRepeats(false);
+        timerToFullScreen.start();
 
     }
 
