@@ -144,8 +144,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
             }
             // Event to open a settings window (Key 'Q')
             if (e.getKeyCode() == 81) {
-                if (settingsWindow == null)
-                    settingsWindow = new SettingsWindow();
+                if (settingsWindow == null) settingsWindow = new SettingsWindow();
                 settingsWindow.setVisible(true);
             }
             // Event to open add coin
@@ -584,8 +583,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         Border blackLine = BorderFactory.createLineBorder(Color.decode(dark), 8);
 
-        TitledBorder musicQueueTitledBorder = BorderFactory.createTitledBorder(
-                blackLine, "");
+        TitledBorder musicQueueTitledBorder = BorderFactory.createTitledBorder(blackLine, "");
         musicQueueTitledBorder.setTitleJustification(TitledBorder.CENTER);
         musicQueueTitledBorder.setTitleColor(Color.decode(light));
         musicQueueTitledBorder.setTitleFont(defaultFont);
@@ -706,7 +704,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                             Optional<String> pathToVideo = video.pathToVideo(getPathToVideos());
 
-                            videoMediaPlayer.mediaPlayer().media().play(String.format(pathToVideo.orElse(pathToErrorMP3)));
+                            videoMediaPlayer.mediaPlayer().media().play(String.format(pathToVideo.orElse(pathToErrorMP4)));
 
                         }
 
@@ -734,13 +732,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     private void createEmbeddedMediaPlayerComponent() {
 
-        videoMediaPlayer = new EmbeddedMediaPlayerComponent(
-                null,
-                null,
-                new AdaptiveFullScreenStrategy(this),
-                null,
-                null
-        ) {
+        videoMediaPlayer = new EmbeddedMediaPlayerComponent(null, null, new AdaptiveFullScreenStrategy(this), null, null) {
 
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -774,7 +766,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                             Optional<String> pathToVideo = video.pathToVideo(getPathToVideos());
 
-                            mediaPlayer.submit(() -> mediaPlayer.media().play(pathToVideo.orElse(pathToErrorMP3)));
+                            mediaPlayer.submit(() -> mediaPlayer.media().play(pathToVideo.orElse(pathToErrorMP4)));
 
                         }
 
@@ -798,7 +790,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                         Optional<String> pathToVideo = video.pathToVideo(getPathToVideos());
 
-                        mediaPlayer.submit(() -> mediaPlayer().media().play(pathToVideo.orElse(pathToErrorMP3)));
+                        mediaPlayer.submit(() -> mediaPlayer().media().play(pathToVideo.orElse(pathToErrorMP4)));
 
                     }
 
