@@ -8,9 +8,6 @@ public class SettingsSingleton {
     private SettingsSingleton() {
     }
 
-    public static final String[] AUDIO_EXTENSIONS = {"mp3", "wav", "wma", "mpeg"};
-    public static final String[] VIDEO_EXTENSIONS = {"mp4", "mov", "wmv", "avi", "flv", "mkv", "mpg"};
-
     // Relevant messages
     public static final String ADVERTISEMENT_MESSAGE = "Error media-player!";
     public static final String NAMARIE_TITLE = "Namarie jukebox";
