@@ -671,6 +671,38 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     }
 
+    private void checkAvailableVideos() {
+
+        if (!availableVideos.isEmpty()) {
+
+            int randVideo = rand.nextInt(availableVideos.size());
+
+            Multimedia video = availableVideos.get(randVideo);
+
+            Optional<String> pathToVideo = video.pathToVideo(getPathToVideos());
+
+            videoMediaPlayer.mediaPlayer().media().play(String.format(pathToVideo.orElse(pathToErrorMP4)));
+
+        }
+
+    }
+
+    private void checkAvailableVideos(MediaPlayer mediaPlayer) {
+
+        if (!availableVideos.isEmpty()) {
+
+            int randVideo = rand.nextInt(availableVideos.size());
+
+            Multimedia video = availableVideos.get(randVideo);
+
+            Optional<String> pathToVideo = video.pathToVideo(getPathToVideos());
+
+            mediaPlayer.submit(() -> mediaPlayer.media().play(pathToVideo.orElse(pathToErrorMP4)));
+
+        }
+
+    }
+
     private void createAudioPlayerComponent() {
 
         audioMediaPlayer = new AudioPlayerComponent() {
@@ -696,17 +728,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                     } else if (getAudioExtensions().stream().anyMatch(song.getName()::endsWith)) {
 
-                        if (!availableVideos.isEmpty()) {
-
-                            int randVideo = rand.nextInt(availableVideos.size());
-
-                            Multimedia video = availableVideos.get(randVideo);
-
-                            Optional<String> pathToVideo = video.pathToVideo(getPathToVideos());
-
-                            videoMediaPlayer.mediaPlayer().media().play(String.format(pathToVideo.orElse(pathToErrorMP4)));
-
-                        }
+                        checkAvailableVideos();
 
                         mediaPlayer.submit(() -> mediaPlayer.media().play(pathToSong.orElse(pathToErrorMP3)));
 
@@ -758,17 +780,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                     } else if (getAudioExtensions().stream().anyMatch(song.getName()::endsWith)) {
 
-                        if (!availableVideos.isEmpty()) {
-
-                            int randVideo = rand.nextInt(availableVideos.size());
-
-                            Multimedia video = availableVideos.get(randVideo);
-
-                            Optional<String> pathToVideo = video.pathToVideo(getPathToVideos());
-
-                            mediaPlayer.submit(() -> mediaPlayer.media().play(pathToVideo.orElse(pathToErrorMP4)));
-
-                        }
+                        checkAvailableVideos(mediaPlayer);
 
                         audioMediaPlayer.mediaPlayer().media().play(pathToSong.orElse(pathToErrorMP3));
 
@@ -782,17 +794,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                     timerRandomSong.stop();
 
-                    if (!availableVideos.isEmpty()) {
-
-                        int randVideo = rand.nextInt(availableVideos.size());
-
-                        Multimedia video = availableVideos.get(randVideo);
-
-                        Optional<String> pathToVideo = video.pathToVideo(getPathToVideos());
-
-                        mediaPlayer.submit(() -> mediaPlayer().media().play(pathToVideo.orElse(pathToErrorMP4)));
-
-                    }
+                    checkAvailableVideos(mediaPlayer);
 
                 } else {
 
@@ -902,6 +904,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         } else if (getAudioExtensions().stream().anyMatch(song.getName()::endsWith)) {
 
             if (!availableVideos.isEmpty()) {
+
                 int randVideo = rand.nextInt(availableVideos.size());
 
                 Multimedia video = availableVideos.get(randVideo);
@@ -909,7 +912,9 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 Optional<String> pathToVideo = video.pathToVideo(getPathToVideos());
 
                 videoMediaPlayer.mediaPlayer().media().play(pathToVideo.orElse(pathToErrorMP4));
+
             }
+
             audioMediaPlayer.mediaPlayer().media().play(pathToSong.orElse(pathToErrorMP3));
             nameSongLabel.setText(song.toString());
 
