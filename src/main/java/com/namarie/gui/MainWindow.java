@@ -41,8 +41,8 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     // Random secure generator
     private final Random rand = SecureRandom.getInstanceStrong();
 
-    private final String ERROR_VIDEO = "error_media.mp4";
-    private final String ERROR_AUDIO = "error_audio.mp3";
+    private static final String ERROR_VIDEO = "error.mp4";
+    private static final String ERROR_AUDIO = "error.mp3";
     private final String PATH_TO_ERROR_VIDEO = String.format(FORMAT_MULTIMEDIA, new File("").getAbsolutePath(), File.separator, ERROR_VIDEO);
     private final String PATH_TO_ERROR_AUDIO = String.format(FORMAT_MULTIMEDIA, new File("").getAbsolutePath(), File.separator, ERROR_AUDIO);
 
