@@ -32,7 +32,9 @@ public class MultimediaLogic {
     public static final String FORMAT_LIST = "%s%s%s%s%s";
 
     // Regex file extensions
-    private static final String[] MULTIMEDIA_EXTENSIONS = {"mp3", "mp4", "wav", "wma", "mov", "wmv", "avi", "flv", "mkv", "mpg", "mpeg"};
+    private static final List<String> MULTIMEDIA_EXTENSIONS = Collections.unmodifiableList(Arrays.asList("mp3", "mp4", "wav", "wma", "mov", "wmv", "avi", "flv", "mkv", "mpg", "mpeg"));
+    private static final List<String> AUDIO_EXTENSIONS = Collections.unmodifiableList(Arrays.asList("mp3", "wav", "wma", "mpeg"));
+    private static final List<String> VIDEO_EXTENSIONS = Collections.unmodifiableList(Arrays.asList("mp4", "mov", "wmv", "avi", "flv", "mkv", "mpg"));
 
     private static List<Song> musicList;
     private static List<List<Song>> musicListByGenders;
@@ -101,8 +103,17 @@ public class MultimediaLogic {
         MultimediaLogic.promotionalVideosList = promotionalVideosList;
     }
 
+
+    public static List<String> getAudioExtensions() {
+        return AUDIO_EXTENSIONS;
+    }
+
+    public static List<String> getVideoExtensions() {
+        return VIDEO_EXTENSIONS;
+    }
+
     // Methods
-    private static List<String> filesListByExtensions(String path, String[] extensions) {
+    private static List<String> filesListByExtensions(String path, List<String> extensions) {
 
         List<String> songsList = new ArrayList<>();
 
@@ -110,7 +121,7 @@ public class MultimediaLogic {
             songsList = stream.map(Path::normalize)
                     .filter(Files::isRegularFile)
                     .map(file -> file.getFileName().toString())
-                    .filter(file -> Arrays.stream(extensions).anyMatch(file::endsWith))
+                    .filter(file -> extensions.stream().anyMatch(file::endsWith))
                     .collect(Collectors.toList());
         } catch (IOException exception) {
             logger.log(Level.WARNING, () -> "IOException error! " + exception);

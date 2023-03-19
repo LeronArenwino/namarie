@@ -689,11 +689,11 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                     Optional<String> pathToSong = song.pathToSong(getPathToSongs());
 
-                    if (Arrays.stream(VIDEO_EXTENSIONS).anyMatch(song.getName()::endsWith)) {
+                    if (getVideoExtensions().stream().anyMatch(song.getName()::endsWith)) {
 
                         videoMediaPlayer.mediaPlayer().media().play(pathToSong.orElse(PATH_TO_ERROR_MP_3));
 
-                    } else if (Arrays.stream(AUDIO_EXTENSIONS).anyMatch(song.getName()::endsWith)) {
+                    } else if (getAudioExtensions().stream().anyMatch(song.getName()::endsWith)) {
 
                         if (!availableVideos.isEmpty()) {
 
@@ -757,11 +757,11 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                     Optional<String> pathToSong = song.pathToSong(getPathToSongs());
 
-                    if (Arrays.stream(VIDEO_EXTENSIONS).anyMatch(song.getName()::endsWith)) {
+                    if (getVideoExtensions().stream().anyMatch(song.getName()::endsWith)) {
 
                         mediaPlayer.submit(() -> mediaPlayer.media().play(pathToSong.orElse(PATH_TO_ERROR_MP_3)));
 
-                    } else if (Arrays.stream(AUDIO_EXTENSIONS).anyMatch(song.getName()::endsWith)) {
+                    } else if (getAudioExtensions().stream().anyMatch(song.getName()::endsWith)) {
 
                         if (!availableVideos.isEmpty()) {
 
@@ -899,12 +899,12 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         /* TODO: Check null song */
         Optional<String> pathToSong = song.pathToSong(getPathToSongs());
 
-        if (Arrays.stream(VIDEO_EXTENSIONS).anyMatch(song.getName()::endsWith)) {
+        if (getVideoExtensions().stream().anyMatch(song.getName()::endsWith)) {
 
             videoMediaPlayer.mediaPlayer().media().play(pathToSong.orElse(PATH_TO_ERROR_MP_4));
             nameSongLabel.setText(song.toString());
 
-        } else if (Arrays.stream(AUDIO_EXTENSIONS).anyMatch(song.getName()::endsWith)) {
+        } else if (getAudioExtensions().stream().anyMatch(song.getName()::endsWith)) {
 
             if (!availableVideos.isEmpty()) {
                 int randVideo = rand.nextInt(availableVideos.size());
