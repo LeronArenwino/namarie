@@ -48,11 +48,7 @@ public class MultimediaLogic {
 
     static {
 
-        setGendersList(listDirectories(getPathToSongs()));
-        setMusicList(generateMusicList(getPathToSongs()));
-        setMusicListByGenders(generateMusicListByGender(getMusicList(), getGendersList()));
-        setVideosList(videosList(filesListByExtensions(getPathToVideos(), VIDEO_EXTENSIONS)));
-        setPromotionalVideosList(promotionalVideosList(filesListByExtensions(getPathToPromotionalVideos(), VIDEO_EXTENSIONS)));
+        loadData();
 
     }
 
@@ -61,8 +57,6 @@ public class MultimediaLogic {
     }
 
     // Getters and setters
-
-
     public static List<Song> getMusicList() {
         return musicList;
     }
@@ -113,6 +107,20 @@ public class MultimediaLogic {
     }
 
     // Methods
+    public static void loadData(){
+
+        songCounter = 0;
+        videosCounter = 0;
+        promotionalVideosCounter = 0;
+
+        setGendersList(listDirectories(getPathToSongs()));
+        setMusicList(generateMusicList(getPathToSongs()));
+        setMusicListByGenders(generateMusicListByGender(getMusicList(), getGendersList()));
+        setVideosList(videosList(filesListByExtensions(getPathToVideos(), VIDEO_EXTENSIONS)));
+        setPromotionalVideosList(promotionalVideosList(filesListByExtensions(getPathToPromotionalVideos(), VIDEO_EXTENSIONS)));
+
+    }
+
     private static List<String> filesListByExtensions(String path, List<String> extensions) {
 
         List<String> songsList = new ArrayList<>();
