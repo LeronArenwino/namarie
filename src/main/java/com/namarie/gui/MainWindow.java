@@ -144,6 +144,11 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
             if (e.getKeyCode() == KeyEvent.VK_F11) {
                 videoMediaPlayer.mediaPlayer().fullScreen().toggle();
             }
+            // Event to reload view components and data
+            else if (e.getKeyCode() == KeyEvent.VK_F9) {
+                paintComponents();
+                loadComponentsData();
+            }
             // Event to make visible the containerJMenuBar
             else if (e.getKeyCode() == KeyEvent.VK_F10) {
                 containerJMenuBar.setVisible(!containerJMenuBar.isVisible());
@@ -251,16 +256,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                     currentCredits -= 1;
                     creditsValidate(currentCredits > 0);
                 }
-            }
-            // Event to reload settings
-            else if (e.getKeyCode() == KeyEvent.VK_F9) {
-                // TODO: Reload values
-                // Load values from Properties file
-
-                selectedGender = 0;
-                genders = getGendersList();
-                musicListByGenders = getMusicListByGenders();
-                loadSongsListJList();
             }
             // Event to set a values in String to select a song
             else if ((e.getKeyCode() == KeyEvent.VK_0 || e.getKeyCode() == KeyEvent.VK_NUMPAD0 ||
@@ -482,10 +477,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         // Temporal string to calculate number song to play
         tmpSongNumberToPlay = new String[5];
 
-        // Values to calculate credits
-        selectedGender = 0;
-        currentCredits = 0;
-
         // Search songs components
         searchSongPanel = new JPanel(new BorderLayout());
         searchSongsListTextField = new JTextField();
@@ -511,9 +502,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         ActionListener fullScreen = e -> videoMediaPlayer.mediaPlayer().fullScreen().toggle();
         timerToFullScreen = new Timer(1000, fullScreen);
-
-        // Optional variables
-        availableVideos = getVideosList();
 
     }
 
@@ -670,6 +658,10 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     private void loadComponentsData() {
 
+        // Values to calculate credits
+        selectedGender = 0;
+        currentCredits = 0;
+
         availableVideos = getVideosList();
 
         promotionalAvailableVideos = getPromotionalVideosList();
@@ -682,7 +674,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
             loadSongsListJList();
         }
 
-        creditsValidate(false);
+        creditsValidate(currentCredits > 0);
 
         setDefaultString();
 
