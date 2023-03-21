@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.Properties;
 
 import static com.namarie.dao.PropertiesManager.*;
+import static com.namarie.logic.MultimediaLogic.loadData;
 import static com.namarie.logic.SettingsSingleton.*;
 
 public class SettingsWindow extends JFrame {
@@ -285,6 +286,8 @@ public class SettingsWindow extends JFrame {
         songListColorForegroundLabel.setBackground(Color.decode(getValueForeground()));
         songListFontJComboBox.setSelectedItem(getValueFont());
         songListFontSizeJComboBox.setSelectedItem(String.valueOf(getValueFontSize()));
+
+        loadData();
 
     }
 
