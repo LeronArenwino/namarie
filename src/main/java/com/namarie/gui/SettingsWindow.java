@@ -75,6 +75,20 @@ public class SettingsWindow extends JFrame {
     private JPanel containerListViewPanel;
     private JLabel titleListViewPanel;
 
+    // Song list components
+    private JLabel songListBackgroundLabel;
+    private JLabel songListFontLabel;
+    private JComboBox<String> songListFontJComboBox;
+    private JLabel songListForegroundLabel;
+    private JLabel songListFontSizeLabel;
+    private JComboBox<Integer> songListFontSizeJComboBox;
+    private JTextPane titleSongListViewPanel;
+    private JLabel songListColorBackgroundLabel;
+    private JLabel songListColorForegroundLabel;
+    private JButton songListColorForegroundJButton;
+    private JButton songListColorBackgroundJButton;
+    private transient ComboBoxModel<String> songListFonts;
+
     private transient ComboBoxModel<String> modelFonts;
 
     public SettingsWindow() {
@@ -89,6 +103,10 @@ public class SettingsWindow extends JFrame {
         this.setVisible(false);
 
         initComponents();
+
+        paintComponents();
+
+        loadSettings();
 
         saveButton.addActionListener(new ActionListener() {
             /**
@@ -220,16 +238,14 @@ public class SettingsWindow extends JFrame {
     private void initComponents() {
 
         modelFonts = new DefaultComboBoxModel<>(fontFamilyNames);
-
-        paintComponents();
-
-        loadSettings();
+        songListFonts = new DefaultComboBoxModel<>(fontFamilyNames);
 
     }
 
     private void paintComponents() {
 
         fontComboBox.setModel(modelFonts);
+        songListFontJComboBox.setModel(songListFonts);
 
     }
 
@@ -264,6 +280,12 @@ public class SettingsWindow extends JFrame {
         fontStyleComboBox.setSelectedItem(getValueFontStyle());
         fontSizeComboBox.setSelectedItem(String.valueOf(getValueFontSize()));
 
+        // Song list view control
+        songListColorBackgroundLabel.setBackground(Color.decode(getValueBackgroundColor()));
+        songListColorForegroundLabel.setBackground(Color.decode(getValueForeground()));
+        songListFontJComboBox.setSelectedItem(getValueFont());
+        songListFontSizeJComboBox.setSelectedItem(String.valueOf(getValueFontSize()));
+
     }
 
     private Properties settingsToProperties() {
@@ -291,6 +313,12 @@ public class SettingsWindow extends JFrame {
         properties.put(KEY_FONT, Objects.requireNonNull(fontComboBox.getSelectedItem()).toString());
         properties.put(KEY_FONT_STYLE, Objects.requireNonNull(fontStyleComboBox.getSelectedItem()).toString());
         properties.put(KEY_FONT_SIZE, Objects.requireNonNull(fontSizeComboBox.getSelectedItem()).toString());
+
+        // Main view settings
+        properties.put(KEY_SONG_LIST_BACKGROUND_COLOR, "#" + Integer.toHexString(songListColorBackgroundLabel.getBackground().getRGB()).substring(2).toUpperCase());
+        properties.put(KEY_SONG_LIST_FOREGROUND, "#" + Integer.toHexString(songListColorForegroundLabel.getBackground().getRGB()).substring(2).toUpperCase());
+        properties.put(KEY_SONG_LIST_FONT, Objects.requireNonNull(songListFontJComboBox.getSelectedItem()).toString());
+        properties.put(KEY_SONG_LIST_FONT_SIZE, Objects.requireNonNull(songListFontSizeJComboBox.getSelectedItem()).toString());
 
         return properties;
 

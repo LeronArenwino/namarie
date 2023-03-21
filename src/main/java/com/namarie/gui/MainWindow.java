@@ -588,6 +588,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         String light = "#D9D9D9";
 
         Font defaultFont = new Font("Aria Narrow", Font.PLAIN, 28);
+        Font songListFont = new Font(getSongListValueFont(), Font.PLAIN, getSongListValueFontSize());
 
         Border blackLine = BorderFactory.createLineBorder(Color.decode(dark), 8);
 
@@ -637,9 +638,9 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         songsListGenderLabel.setFont(defaultFont);
         songsListGenderLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        songsListJList.setBackground(Color.decode(darkLight));
-        songsListJList.setForeground(Color.decode(light));
-        songsListJList.setFont(defaultFont);
+        songsListJList.setBackground(Color.decode(getSongListValueBackgroundColor()));
+        songsListJList.setForeground(Color.decode(getSongListValueForeground()));
+        songsListJList.setFont(songListFont);
 
         searchSongPanel.setBackground(Color.decode(dark));
 
