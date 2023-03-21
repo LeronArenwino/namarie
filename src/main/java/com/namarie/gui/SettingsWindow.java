@@ -75,7 +75,7 @@ public class SettingsWindow extends JFrame {
     private JPanel containerListViewPanel;
     private JLabel titleListViewPanel;
 
-    private ComboBoxModel<String> modelFonts;
+    private transient ComboBoxModel<String> modelFonts;
 
     public SettingsWindow() {
 
