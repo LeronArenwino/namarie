@@ -140,26 +140,26 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
          */
         @Override
         public void keyPressed(KeyEvent e) {
-            if (e.getKeyCode() == 122) {
+            // Event to make window fullscreen
+            if (e.getKeyCode() == KeyEvent.VK_F11) {
                 videoMediaPlayer.mediaPlayer().fullScreen().toggle();
             }
-            // Event to open a settings window (Key 'Q')
-            if (e.getKeyCode() == 81) {
-                if (settingsWindow == null) settingsWindow = new SettingsWindow();
-                settingsWindow.setVisible(true);
+            // Event to make visible the containerJMenuBar
+            else if (e.getKeyCode() == KeyEvent.VK_F10) {
+                containerJMenuBar.setVisible(!containerJMenuBar.isVisible());
             }
             // Event to open add coin
-            else if (e.getKeyCode() == getValueToAddCoin() && currentCredits < 25) {
+            else if (e.getKeyCode() == KeyEvent.VK_F1 && currentCredits < 25) {
                 currentCredits += 1;
                 creditsValidate(currentCredits > 0);
             }
             // Event to open remove coin
-            else if (e.getKeyCode() == getValueToRemoveCoin() && currentCredits > 0) {
+            else if (e.getKeyCode() == KeyEvent.VK_F2 && currentCredits > 0) {
                 currentCredits -= 1;
                 creditsValidate(currentCredits > 0);
             }
             // Event to up gender in gender list
-            else if (e.getKeyCode() == getValueToChangeGenderToUp()) {
+            else if (e.getKeyCode() == KeyEvent.VK_ADD || e.getKeyCode() == KeyEvent.VK_LEFT) {
                 if (selectedGender < genders.size() - 1) {
                     selectedGender++;
                 } else {
@@ -168,7 +168,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 loadSongsListJList();
             }
             // Event to down gender in gender list
-            else if (e.getKeyCode() == getValueToChangeGenderToDown()) {
+            else if (e.getKeyCode() == KeyEvent.VK_SUBTRACT || e.getKeyCode() == KeyEvent.VK_RIGHT) {
                 if (selectedGender > 0) {
                     selectedGender--;
                 } else {
@@ -177,7 +177,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 loadSongsListJList();
             }
             // Event to up a song in music list
-            else if (e.getKeyCode() == getValueToUpIndex()) {
+            else if (e.getKeyCode() == KeyEvent.VK_UP) {
                 if (selectedSong > 0) {
                     selectedSong--;
                 } else {
@@ -186,7 +186,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 updateSelectedSongInSongsList();
             }
             // Event to down a song in music list
-            else if (e.getKeyCode() == getValueToDownIndex()) {
+            else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                 if (selectedSong < songsListJList.getModel().getSize() - 1) {
                     selectedSong++;
                 } else {
@@ -195,7 +195,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 updateSelectedSongInSongsList();
             }
             // Event to up 20 songs in music list
-            else if (e.getKeyCode() == getValueToUpIndexes()) {
+            else if (e.getKeyCode() == KeyEvent.VK_MULTIPLY) {
                 if (selectedSong < songsListJList.getModel().getSize() - 1) {
                     selectedSong += 20;
                     if (selectedSong > songsListJList.getModel().getSize() - 1) {
@@ -207,7 +207,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 updateSelectedSongInSongsList();
             }
             // Event to down 20 songs in music list
-            else if (e.getKeyCode() == getValueToDownIndexes()) {
+            else if (e.getKeyCode() == KeyEvent.VK_DIVIDE) {
                 if (selectedSong > 0) {
                     selectedSong -= 20;
                     if (selectedSong < 0) {
@@ -219,7 +219,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 updateSelectedSongInSongsList();
             }
             // Event to play the next song in music queue
-            else if (e.getKeyCode() == getValueToPlayNextSong()) {
+            else if (e.getKeyCode() == KeyEvent.VK_F3) {
                 timerRandomSong.start();
                 videoMediaPlayer.mediaPlayer().controls().stop();
                 audioMediaPlayer.mediaPlayer().controls().stop();
@@ -235,7 +235,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 }
             }
             // Event to play or add a song to music queue with ENTER
-            else if (e.getKeyCode() == 10 && currentCredits > 0) {
+            else if (e.getKeyCode() == KeyEvent.VK_ENTER && currentCredits > 0) {
                 Song selectedValue = songsListJList.getSelectedValue();
                 if (selectedValue != null) {
                     if (promotionalVideoStatus) {
@@ -253,7 +253,8 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 }
             }
             // Event to reload settings
-            if (e.getKeyCode() == 82) {
+            else if (e.getKeyCode() == KeyEvent.VK_F9) {
+                // TODO: Reload values
                 // Load values from Properties file
 
                 selectedGender = 0;
@@ -262,25 +263,25 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 loadSongsListJList();
             }
             // Event to set a values in String to select a song
-            else if ((e.getKeyCode() == 48 || e.getKeyCode() == 96 ||
+            else if ((e.getKeyCode() == KeyEvent.VK_0 || e.getKeyCode() == KeyEvent.VK_NUMPAD0 ||
                     // Event to set '1' value in String to select a song
-                    e.getKeyCode() == 49 || e.getKeyCode() == 97 ||
+                    e.getKeyCode() == KeyEvent.VK_1 || e.getKeyCode() == KeyEvent.VK_NUMPAD1 ||
                     // Event to set '2' value in String to select a song
-                    e.getKeyCode() == 50 || e.getKeyCode() == 98 ||
+                    e.getKeyCode() == KeyEvent.VK_2 || e.getKeyCode() == KeyEvent.VK_NUMPAD2 ||
                     // Event to set '3' value in String to select a song
-                    e.getKeyCode() == 51 || e.getKeyCode() == 99 ||
+                    e.getKeyCode() == KeyEvent.VK_3 || e.getKeyCode() == KeyEvent.VK_NUMPAD3 ||
                     // Event to set '4' value in String to select a song
-                    e.getKeyCode() == 52 || e.getKeyCode() == 100 ||
+                    e.getKeyCode() == KeyEvent.VK_4 || e.getKeyCode() == KeyEvent.VK_NUMPAD4 ||
                     // Event to set '5' value in String to select a song
-                    e.getKeyCode() == 53 || e.getKeyCode() == 101 ||
+                    e.getKeyCode() == KeyEvent.VK_5 || e.getKeyCode() == KeyEvent.VK_NUMPAD5 ||
                     // Event to set '6' value in String to select a song
-                    e.getKeyCode() == 54 || e.getKeyCode() == 102 ||
+                    e.getKeyCode() == KeyEvent.VK_6 || e.getKeyCode() == KeyEvent.VK_NUMPAD6 ||
                     // Event to set '7' value in String to select a
-                    e.getKeyCode() == 55 || e.getKeyCode() == 103 ||
+                    e.getKeyCode() == KeyEvent.VK_7 || e.getKeyCode() == KeyEvent.VK_NUMPAD7 ||
                     // Event to set '8' value in String to select a
-                    e.getKeyCode() == 56 || e.getKeyCode() == 104 ||
+                    e.getKeyCode() == KeyEvent.VK_8 || e.getKeyCode() == KeyEvent.VK_NUMPAD8 ||
                     // Event to set '9' value in String to select a
-                    e.getKeyCode() == 57 || e.getKeyCode() == 105) && currentCredits > 0) {
+                    e.getKeyCode() == KeyEvent.VK_9 || e.getKeyCode() == KeyEvent.VK_NUMPAD9) && currentCredits > 0) {
                 for (int i = 0; i < tmpSongNumberToPlay.length; i++) {
                     if ("-".equals(tmpSongNumberToPlay[i])) {
                         tmpSongNumberToPlay[i] = String.valueOf(e.getKeyChar());
@@ -307,11 +308,11 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 songNumberToPlayLabel.setText(String.format(" %s %s %s %s %s ", tmpSongNumberToPlay[0], tmpSongNumberToPlay[1], tmpSongNumberToPlay[2], tmpSongNumberToPlay[3], tmpSongNumberToPlay[4]));
             }
             // Event to set default value in String to select a song
-            else if (e.getKeyCode() == 110) {
+            else if (e.getKeyCode() == KeyEvent.VK_DECIMAL || e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
                 setDefaultString();
             }
             // Event to power off computer
-            else if (e.getKeyCode() == getValueToPowerOff()) {
+            else if (e.getKeyCode() == KeyEvent.VK_F12) {
                 String s = JOptionPane.showInputDialog(null, "Password:", "Power off", JOptionPane.PLAIN_MESSAGE);
                 if ("031217".equals(s)) {
                     videoMediaPlayer.release();
@@ -656,6 +657,13 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         musicQueueJList.setFont(fontFromSettings);
 
         containerJMenuBar.setVisible(false);
+
+        settingsJMenuItem.addActionListener(e -> {
+                    if (settingsWindow == null) settingsWindow = new SettingsWindow();
+                    settingsWindow.setVisible(true);
+                }
+
+        );
 
     }
 
