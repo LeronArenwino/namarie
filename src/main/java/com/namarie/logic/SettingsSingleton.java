@@ -38,12 +38,18 @@ public class SettingsSingleton {
     public static final String KEY_LOCK_SCREEN = "lockScreen";
     public static final String KEY_SAVE_SONGS = "saveSongs";
 
-    //View TabPanel
+    // View TabPanel
     public static final String KEY_BACKGROUND_COLOR = "backgroundColor";
     public static final String KEY_FOREGROUND = "foreground";
     public static final String KEY_FONT = "font";
     public static final String KEY_FONT_STYLE = "fontStyle";
     public static final String KEY_FONT_SIZE = "fontSize";
+
+    // Song list view TabPanel
+    public static final String KEY_SONG_LIST_BACKGROUND_COLOR = "songListBackgroundColor";
+    public static final String KEY_SONG_LIST_FOREGROUND = "songListForeground";
+    public static final String KEY_SONG_LIST_FONT = "songListFont";
+    public static final String KEY_SONG_LIST_FONT_SIZE = "songListFontSize";
 
     // Folders constants
     private static final String DEFAULT_VALUE_PATH_VIDEOS = "";
@@ -89,7 +95,13 @@ public class SettingsSingleton {
     private static String valueFontStyle;
     private static int valueFontSize;
 
-    public static Properties defaultSettingsProperties(){
+    // Song list control variables
+    private static String songListValueBackgroundColor;
+    private static String songListValueForeground;
+    private static String songListValueFont;
+    private static int songListValueFontSize;
+
+    public static Properties defaultSettingsProperties() {
 
         Properties properties = new Properties();
 
@@ -115,11 +127,17 @@ public class SettingsSingleton {
         properties.put(KEY_FONT_STYLE, DEFAULT_VALUE_FONT_STYLE);
         properties.put(KEY_FONT_SIZE, DEFAULT_VALUE_FONT_SIZE);
 
+        // Song list view section
+        properties.put(KEY_SONG_LIST_BACKGROUND_COLOR, DEFAULT_VALUE_BACKGROUND_COLOR);
+        properties.put(KEY_SONG_LIST_FOREGROUND, DEFAULT_VALUE_FOREGROUND);
+        properties.put(KEY_SONG_LIST_FONT, DEFAULT_VALUE_FONT);
+        properties.put(KEY_SONG_LIST_FONT_SIZE, DEFAULT_VALUE_FONT_SIZE);
+
         return properties;
 
     }
 
-    public static void setSettingsFromProperties(Properties properties){
+    public static void setSettingsFromProperties(Properties properties) {
 
         // Set paths control variables
         setPathToVideos(properties.getProperty(KEY_PATH_TO_VIDEOS));
@@ -142,6 +160,12 @@ public class SettingsSingleton {
         setValueFont(properties.getProperty(KEY_FONT));
         setValueFontStyle(properties.getProperty(KEY_FONT_STYLE));
         setValueFontSize(Integer.parseInt(properties.getProperty(KEY_FONT_SIZE)));
+
+        // Set view control variables
+        setSongListValueBackgroundColor(properties.getProperty(KEY_SONG_LIST_BACKGROUND_COLOR));
+        setSongListValueForeground(properties.getProperty(KEY_SONG_LIST_FOREGROUND));
+        setSongListValueFont(properties.getProperty(KEY_SONG_LIST_FONT));
+        setSongListValueFontSize(Integer.parseInt(properties.getProperty(KEY_SONG_LIST_FONT_SIZE)));
 
     }
 
@@ -255,6 +279,38 @@ public class SettingsSingleton {
 
     public static void setValueForeground(String valueForeground) {
         SettingsSingleton.valueForeground = valueForeground;
+    }
+
+    public static String getSongListValueBackgroundColor() {
+        return songListValueBackgroundColor;
+    }
+
+    public static void setSongListValueBackgroundColor(String songListValueBackgroundColor) {
+        SettingsSingleton.songListValueBackgroundColor = songListValueBackgroundColor;
+    }
+
+    public static String getSongListValueForeground() {
+        return songListValueForeground;
+    }
+
+    public static void setSongListValueForeground(String songListValueForeground) {
+        SettingsSingleton.songListValueForeground = songListValueForeground;
+    }
+
+    public static String getSongListValueFont() {
+        return songListValueFont;
+    }
+
+    public static void setSongListValueFont(String songListValueFont) {
+        SettingsSingleton.songListValueFont = songListValueFont;
+    }
+
+    public static int getSongListValueFontSize() {
+        return songListValueFontSize;
+    }
+
+    public static void setSongListValueFontSize(int songListValueFontSize) {
+        SettingsSingleton.songListValueFontSize = songListValueFontSize;
     }
 
 }
