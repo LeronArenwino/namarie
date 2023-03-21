@@ -38,18 +38,6 @@ public class SettingsSingleton {
     public static final String KEY_LOCK_SCREEN = "lockScreen";
     public static final String KEY_SAVE_SONGS = "saveSongs";
 
-    // Keys TabPanel
-    public static final String KEY_UP_SONG = "upSong";
-    public static final String KEY_DOWN_SONG = "downSong";
-    public static final String KEY_UP_SONGS = "upSongs";
-    public static final String KEY_DOWN_SONGS = "downSongs";
-    public static final String KEY_UP_GENDER = "upGender";
-    public static final String KEY_DOWN_GENDER = "downGender";
-    public static final String KEY_ADD_COIN = "addCoin";
-    public static final String KEY_REMOVE_COIN = "removeCoin";
-    public static final String KEY_POWER_OFF = "powerOff";
-    public static final String KEY_NEXT_SONG = "nextSong";
-
     //View TabPanel
     public static final String KEY_BACKGROUND_COLOR = "backgroundColor";
     public static final String KEY_FOREGROUND = "foreground";
@@ -72,18 +60,6 @@ public class SettingsSingleton {
     private static final String DEFAULT_VALUE_LOCK_SCREEN = "false";
     private static final String DEFAULT_VALUE_SAVE_SONGS = "false";
 
-    //Keys constants
-    private static final String DEFAULT_VALUE_UP_SONG = "38";
-    private static final String DEFAULT_VALUE_DOWN_SONG = "40";
-    private static final String DEFAULT_VALUE_UP_SONGS = "106";
-    private static final String DEFAULT_VALUE_DOWN_SONGS = "111";
-    private static final String DEFAULT_VALUE_UP_GENDER = "107";
-    private static final String DEFAULT_VALUE_DOWN_GENDER = "109";
-    private static final String DEFAULT_VALUE_ADD_COIN = "112";
-    private static final String DEFAULT_VALUE_REMOVE_COIN = "113";
-    private static final String DEFAULT_VALUE_NEXT_SONG = "114";
-    private static final String DEFAULT_VALUE_POWER_OFF = "123";
-
     //View constants
     private static final String DEFAULT_VALUE_BACKGROUND_COLOR = "#66CCFF";
     private static final String DEFAULT_VALUE_FOREGROUND = "#FFFFFF";
@@ -105,18 +81,6 @@ public class SettingsSingleton {
     private static int amountCredits;
     private static boolean lockScreen;
     private static boolean saveSongs;
-
-    // Keys control variables
-    private static int valueToUpIndex;
-    private static int valueToDownIndex;
-    private static int valueToUpIndexes;
-    private static int valueToDownIndexes;
-    private static int valueToChangeGenderToUp;
-    private static int valueToChangeGenderToDown;
-    private static int valueToAddCoin;
-    private static int valueToRemoveCoin;
-    private static int valueToPlayNextSong;
-    private static int valueToPowerOff;
 
     // View control variables
     private static String valueBackgroundColor;
@@ -143,18 +107,6 @@ public class SettingsSingleton {
         properties.put(KEY_AMOUNT_CREDITS, DEFAULT_VALUE_AMOUNT_CREDITS);
         properties.put(KEY_LOCK_SCREEN, DEFAULT_VALUE_LOCK_SCREEN);
         properties.put(KEY_SAVE_SONGS, DEFAULT_VALUE_SAVE_SONGS);
-
-        // Keys section
-        properties.put(KEY_UP_SONG, DEFAULT_VALUE_UP_SONG);
-        properties.put(KEY_DOWN_SONG, DEFAULT_VALUE_DOWN_SONG);
-        properties.put(KEY_UP_SONGS, DEFAULT_VALUE_UP_SONGS);
-        properties.put(KEY_DOWN_SONGS, DEFAULT_VALUE_DOWN_SONGS);
-        properties.put(KEY_UP_GENDER, DEFAULT_VALUE_UP_GENDER);
-        properties.put(KEY_DOWN_GENDER, DEFAULT_VALUE_DOWN_GENDER);
-        properties.put(KEY_ADD_COIN, DEFAULT_VALUE_ADD_COIN);
-        properties.put(KEY_REMOVE_COIN, DEFAULT_VALUE_REMOVE_COIN);
-        properties.put(KEY_NEXT_SONG, DEFAULT_VALUE_NEXT_SONG);
-        properties.put(KEY_POWER_OFF, DEFAULT_VALUE_POWER_OFF);
 
         // View section
         properties.put(KEY_BACKGROUND_COLOR, DEFAULT_VALUE_BACKGROUND_COLOR);
@@ -183,18 +135,6 @@ public class SettingsSingleton {
         setAmountCredits(Integer.parseInt(properties.getProperty(KEY_AMOUNT_CREDITS)));
         setLockScreen(Boolean.parseBoolean(properties.getProperty(KEY_LOCK_SCREEN)));
         setSaveSongs(Boolean.parseBoolean(properties.getProperty(KEY_SAVE_SONGS)));
-
-        // Set keys control variables
-        setValueToUpIndex(Integer.parseInt(properties.getProperty(KEY_UP_SONG)));
-        setValueToDownIndex(Integer.parseInt(properties.getProperty(KEY_DOWN_SONG)));
-        setValueToUpIndexes(Integer.parseInt(properties.getProperty(KEY_UP_SONGS)));
-        setValueToDownIndexes(Integer.parseInt(properties.getProperty(KEY_DOWN_SONGS)));
-        setValueToChangeGenderToUp(Integer.parseInt(properties.getProperty(KEY_UP_GENDER)));
-        setValueToChangeGenderToDown(Integer.parseInt(properties.getProperty(KEY_DOWN_GENDER)));
-        setValueToAddCoin(Integer.parseInt(properties.getProperty(KEY_ADD_COIN)));
-        setValueToRemoveCoin(Integer.parseInt(properties.getProperty(KEY_REMOVE_COIN)));
-        setValueToPlayNextSong(Integer.parseInt(properties.getProperty(KEY_NEXT_SONG)));
-        setValueToPowerOff(Integer.parseInt(properties.getProperty(KEY_POWER_OFF)));
 
         // Set view control variables
         setValueBackgroundColor(properties.getProperty(KEY_BACKGROUND_COLOR));
@@ -275,86 +215,6 @@ public class SettingsSingleton {
 
     public static void setSaveSongs(boolean saveSongs) {
         SettingsSingleton.saveSongs = saveSongs;
-    }
-
-    public static int getValueToUpIndex() {
-        return valueToUpIndex;
-    }
-
-    public static void setValueToUpIndex(int valueToUpIndex) {
-        SettingsSingleton.valueToUpIndex = valueToUpIndex;
-    }
-
-    public static int getValueToDownIndex() {
-        return valueToDownIndex;
-    }
-
-    public static void setValueToDownIndex(int valueToDownIndex) {
-        SettingsSingleton.valueToDownIndex = valueToDownIndex;
-    }
-
-    public static int getValueToUpIndexes() {
-        return valueToUpIndexes;
-    }
-
-    public static void setValueToUpIndexes(int valueToUpIndexes) {
-        SettingsSingleton.valueToUpIndexes = valueToUpIndexes;
-    }
-
-    public static int getValueToDownIndexes() {
-        return valueToDownIndexes;
-    }
-
-    public static void setValueToDownIndexes(int valueToDownIndexes) {
-        SettingsSingleton.valueToDownIndexes = valueToDownIndexes;
-    }
-
-    public static int getValueToChangeGenderToUp() {
-        return valueToChangeGenderToUp;
-    }
-
-    public static void setValueToChangeGenderToUp(int valueToChangeGenderToUp) {
-        SettingsSingleton.valueToChangeGenderToUp = valueToChangeGenderToUp;
-    }
-
-    public static int getValueToChangeGenderToDown() {
-        return valueToChangeGenderToDown;
-    }
-
-    public static void setValueToChangeGenderToDown(int valueToChangeGenderToDown) {
-        SettingsSingleton.valueToChangeGenderToDown = valueToChangeGenderToDown;
-    }
-
-    public static int getValueToAddCoin() {
-        return valueToAddCoin;
-    }
-
-    public static void setValueToAddCoin(int valueToAddCoin) {
-        SettingsSingleton.valueToAddCoin = valueToAddCoin;
-    }
-
-    public static int getValueToRemoveCoin() {
-        return valueToRemoveCoin;
-    }
-
-    public static void setValueToRemoveCoin(int valueToRemoveCoin) {
-        SettingsSingleton.valueToRemoveCoin = valueToRemoveCoin;
-    }
-
-    public static int getValueToPlayNextSong() {
-        return valueToPlayNextSong;
-    }
-
-    public static void setValueToPlayNextSong(int valueToPlayNextSong) {
-        SettingsSingleton.valueToPlayNextSong = valueToPlayNextSong;
-    }
-
-    public static int getValueToPowerOff() {
-        return valueToPowerOff;
-    }
-
-    public static void setValueToPowerOff(int valueToPowerOff) {
-        SettingsSingleton.valueToPowerOff = valueToPowerOff;
     }
 
     public static String getValueBackgroundColor() {
