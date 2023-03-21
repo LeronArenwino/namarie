@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.util.Objects;
 import java.util.Properties;
 
 import static com.namarie.dao.PropertiesManager.*;
@@ -73,7 +74,6 @@ public class SettingsWindow extends JFrame {
     private JPanel listViewPanel;
     private JPanel containerListViewPanel;
     private JLabel titleListViewPanel;
-    private JTextField upSongJTextField;
 
     private ComboBoxModel<String> modelFonts;
 
@@ -288,9 +288,9 @@ public class SettingsWindow extends JFrame {
         // Main view settings
         properties.put(KEY_BACKGROUND_COLOR, "#" + Integer.toHexString(backgroundColorMainViewLabel.getBackground().getRGB()).substring(2).toUpperCase());
         properties.put(KEY_FOREGROUND, "#" + Integer.toHexString(foregroundColorViewLabel.getBackground().getRGB()).substring(2).toUpperCase());
-        properties.put(KEY_FONT, fontComboBox.getSelectedItem().toString());
-        properties.put(KEY_FONT_STYLE, fontStyleComboBox.getSelectedItem().toString());
-        properties.put(KEY_FONT_SIZE, fontSizeComboBox.getSelectedItem().toString());
+        properties.put(KEY_FONT, Objects.requireNonNull(fontComboBox.getSelectedItem()).toString());
+        properties.put(KEY_FONT_STYLE, Objects.requireNonNull(fontStyleComboBox.getSelectedItem()).toString());
+        properties.put(KEY_FONT_SIZE, Objects.requireNonNull(fontSizeComboBox.getSelectedItem()).toString());
 
         return properties;
 
