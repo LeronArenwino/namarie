@@ -68,7 +68,6 @@ public class SettingsWindow extends JFrame {
     private JLabel fontLabel;
     private JLabel foregroundColorMainTextLabel;
     private JLabel fontSizeLabel;
-    private JLabel fontStyleLabel;
     private JComboBox<String> fontStyleComboBox;
     private JButton exitButton;
     private JLabel foregroundColorViewLabel;
@@ -234,6 +233,30 @@ public class SettingsWindow extends JFrame {
                 dispose();
             }
         });
+        songListColorBackgroundJButton.addActionListener(new ActionListener() {
+            /**
+             * Invoked when an action occurs.
+             *
+             * @param e the event to be processed
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Color color = JColorChooser.showDialog(null, "Select a color", Color.decode(getSongListValueBackground()));
+                songListColorBackgroundLabel.setBackground(color);
+            }
+        });
+        songListColorForegroundJButton.addActionListener(new ActionListener() {
+            /**
+             * Invoked when an action occurs.
+             *
+             * @param e the event to be processed
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Color color = JColorChooser.showDialog(null, "Select a color", Color.decode(getSongListValueForeground()));
+                songListColorForegroundLabel.setBackground(color);
+            }
+        });
     }
 
     private void initComponents() {
@@ -275,17 +298,16 @@ public class SettingsWindow extends JFrame {
         saveSongsWhenPowerCheckBox.setSelected(isSaveSongs());
 
         // Main view control section
-        backgroundColorMainViewLabel.setBackground(Color.decode(getValueBackgroundColor()));
+        backgroundColorMainViewLabel.setBackground(Color.decode(getValueBackground()));
         foregroundColorViewLabel.setBackground(Color.decode(getValueForeground()));
         fontComboBox.setSelectedItem(getValueFont());
-        fontStyleComboBox.setSelectedItem(getValueFontStyle());
         fontSizeComboBox.setSelectedItem(String.valueOf(getValueFontSize()));
 
         // Song list view control
-        songListColorBackgroundLabel.setBackground(Color.decode(getValueBackgroundColor()));
-        songListColorForegroundLabel.setBackground(Color.decode(getValueForeground()));
-        songListFontJComboBox.setSelectedItem(getValueFont());
-        songListFontSizeJComboBox.setSelectedItem(String.valueOf(getValueFontSize()));
+        songListColorBackgroundLabel.setBackground(Color.decode(getSongListValueBackground()));
+        songListColorForegroundLabel.setBackground(Color.decode(getSongListValueForeground()));
+        songListFontJComboBox.setSelectedItem(getSongListValueFont());
+        songListFontSizeJComboBox.setSelectedItem(String.valueOf(getSongListValueFontSize()));
 
         loadData();
 
@@ -311,14 +333,13 @@ public class SettingsWindow extends JFrame {
         properties.put(KEY_SAVE_SONGS, String.valueOf(saveSongsWhenPowerCheckBox.isSelected()));
 
         // Main view settings
-        properties.put(KEY_BACKGROUND_COLOR, "#" + Integer.toHexString(backgroundColorMainViewLabel.getBackground().getRGB()).substring(2).toUpperCase());
+        properties.put(KEY_BACKGROUND, "#" + Integer.toHexString(backgroundColorMainViewLabel.getBackground().getRGB()).substring(2).toUpperCase());
         properties.put(KEY_FOREGROUND, "#" + Integer.toHexString(foregroundColorViewLabel.getBackground().getRGB()).substring(2).toUpperCase());
         properties.put(KEY_FONT, Objects.requireNonNull(fontComboBox.getSelectedItem()).toString());
-        properties.put(KEY_FONT_STYLE, Objects.requireNonNull(fontStyleComboBox.getSelectedItem()).toString());
         properties.put(KEY_FONT_SIZE, Objects.requireNonNull(fontSizeComboBox.getSelectedItem()).toString());
 
         // Main view settings
-        properties.put(KEY_SONG_LIST_BACKGROUND_COLOR, "#" + Integer.toHexString(songListColorBackgroundLabel.getBackground().getRGB()).substring(2).toUpperCase());
+        properties.put(KEY_SONG_LIST_BACKGROUND, "#" + Integer.toHexString(songListColorBackgroundLabel.getBackground().getRGB()).substring(2).toUpperCase());
         properties.put(KEY_SONG_LIST_FOREGROUND, "#" + Integer.toHexString(songListColorForegroundLabel.getBackground().getRGB()).substring(2).toUpperCase());
         properties.put(KEY_SONG_LIST_FONT, Objects.requireNonNull(songListFontJComboBox.getSelectedItem()).toString());
         properties.put(KEY_SONG_LIST_FONT_SIZE, Objects.requireNonNull(songListFontSizeJComboBox.getSelectedItem()).toString());
