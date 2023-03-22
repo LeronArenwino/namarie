@@ -39,14 +39,13 @@ public class SettingsSingleton {
     public static final String KEY_SAVE_SONGS = "saveSongs";
 
     // View TabPanel
-    public static final String KEY_BACKGROUND_COLOR = "backgroundColor";
+    public static final String KEY_BACKGROUND = "background";
     public static final String KEY_FOREGROUND = "foreground";
     public static final String KEY_FONT = "font";
-    public static final String KEY_FONT_STYLE = "fontStyle";
     public static final String KEY_FONT_SIZE = "fontSize";
 
     // Song list view TabPanel
-    public static final String KEY_SONG_LIST_BACKGROUND_COLOR = "songListBackgroundColor";
+    public static final String KEY_SONG_LIST_BACKGROUND = "songListBackground";
     public static final String KEY_SONG_LIST_FOREGROUND = "songListForeground";
     public static final String KEY_SONG_LIST_FONT = "songListFont";
     public static final String KEY_SONG_LIST_FONT_SIZE = "songListFontSize";
@@ -67,10 +66,9 @@ public class SettingsSingleton {
     private static final String DEFAULT_VALUE_SAVE_SONGS = "false";
 
     //View constants
-    private static final String DEFAULT_VALUE_BACKGROUND_COLOR = "#66CCFF";
+    private static final String DEFAULT_VALUE_BACKGROUND = "#66CCFF";
     private static final String DEFAULT_VALUE_FOREGROUND = "#FFFFFF";
     private static final String DEFAULT_VALUE_FONT = "Arial";
-    private static final String DEFAULT_VALUE_FONT_STYLE = "Regular";
     private static final String DEFAULT_VALUE_FONT_SIZE = "20";
 
     // Paths control variables
@@ -89,14 +87,13 @@ public class SettingsSingleton {
     private static boolean saveSongs;
 
     // View control variables
-    private static String valueBackgroundColor;
+    private static String valueBackground;
     private static String valueForeground;
     private static String valueFont;
-    private static String valueFontStyle;
     private static int valueFontSize;
 
     // Song list control variables
-    private static String songListValueBackgroundColor;
+    private static String songListValueBackground;
     private static String songListValueForeground;
     private static String songListValueFont;
     private static int songListValueFontSize;
@@ -121,14 +118,13 @@ public class SettingsSingleton {
         properties.put(KEY_SAVE_SONGS, DEFAULT_VALUE_SAVE_SONGS);
 
         // View section
-        properties.put(KEY_BACKGROUND_COLOR, DEFAULT_VALUE_BACKGROUND_COLOR);
+        properties.put(KEY_BACKGROUND, DEFAULT_VALUE_BACKGROUND);
         properties.put(KEY_FOREGROUND, DEFAULT_VALUE_FOREGROUND);
         properties.put(KEY_FONT, DEFAULT_VALUE_FONT);
-        properties.put(KEY_FONT_STYLE, DEFAULT_VALUE_FONT_STYLE);
         properties.put(KEY_FONT_SIZE, DEFAULT_VALUE_FONT_SIZE);
 
         // Song list view section
-        properties.put(KEY_SONG_LIST_BACKGROUND_COLOR, DEFAULT_VALUE_BACKGROUND_COLOR);
+        properties.put(KEY_SONG_LIST_BACKGROUND, DEFAULT_VALUE_BACKGROUND);
         properties.put(KEY_SONG_LIST_FOREGROUND, DEFAULT_VALUE_FOREGROUND);
         properties.put(KEY_SONG_LIST_FONT, DEFAULT_VALUE_FONT);
         properties.put(KEY_SONG_LIST_FONT_SIZE, DEFAULT_VALUE_FONT_SIZE);
@@ -155,14 +151,13 @@ public class SettingsSingleton {
         setSaveSongs(Boolean.parseBoolean(properties.getProperty(KEY_SAVE_SONGS)));
 
         // Set view control variables
-        setValueBackgroundColor(properties.getProperty(KEY_BACKGROUND_COLOR));
+        setValueBackground(properties.getProperty(KEY_BACKGROUND));
         setValueForeground(properties.getProperty(KEY_FOREGROUND));
         setValueFont(properties.getProperty(KEY_FONT));
-        setValueFontStyle(properties.getProperty(KEY_FONT_STYLE));
         setValueFontSize(Integer.parseInt(properties.getProperty(KEY_FONT_SIZE)));
 
         // Set view control variables
-        setSongListValueBackgroundColor(properties.getProperty(KEY_SONG_LIST_BACKGROUND_COLOR));
+        setSongListValueBackground(properties.getProperty(KEY_SONG_LIST_BACKGROUND));
         setSongListValueForeground(properties.getProperty(KEY_SONG_LIST_FOREGROUND));
         setSongListValueFont(properties.getProperty(KEY_SONG_LIST_FONT));
         setSongListValueFontSize(Integer.parseInt(properties.getProperty(KEY_SONG_LIST_FONT_SIZE)));
@@ -241,12 +236,12 @@ public class SettingsSingleton {
         SettingsSingleton.saveSongs = saveSongs;
     }
 
-    public static String getValueBackgroundColor() {
-        return valueBackgroundColor;
+    public static String getValueBackground() {
+        return valueBackground;
     }
 
-    public static void setValueBackgroundColor(String valueBackgroundColor) {
-        SettingsSingleton.valueBackgroundColor = valueBackgroundColor;
+    public static void setValueBackground(String valueBackground) {
+        SettingsSingleton.valueBackground = valueBackground;
     }
 
     public static String getValueFont() {
@@ -255,14 +250,6 @@ public class SettingsSingleton {
 
     public static void setValueFont(String valueFont) {
         SettingsSingleton.valueFont = valueFont;
-    }
-
-    public static String getValueFontStyle() {
-        return valueFontStyle;
-    }
-
-    public static void setValueFontStyle(String valueFontStyle) {
-        SettingsSingleton.valueFontStyle = valueFontStyle;
     }
 
     public static int getValueFontSize() {
@@ -281,12 +268,12 @@ public class SettingsSingleton {
         SettingsSingleton.valueForeground = valueForeground;
     }
 
-    public static String getSongListValueBackgroundColor() {
-        return songListValueBackgroundColor;
+    public static String getSongListValueBackground() {
+        return songListValueBackground;
     }
 
-    public static void setSongListValueBackgroundColor(String songListValueBackgroundColor) {
-        SettingsSingleton.songListValueBackgroundColor = songListValueBackgroundColor;
+    public static void setSongListValueBackground(String songListValueBackground) {
+        SettingsSingleton.songListValueBackground = songListValueBackground;
     }
 
     public static String getSongListValueForeground() {
