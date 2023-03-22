@@ -503,6 +503,9 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         ActionListener fullScreen = e -> videoMediaPlayer.mediaPlayer().fullScreen().toggle();
         timerToFullScreen = new Timer(1000, fullScreen);
 
+        // Values to calculate credits
+        currentCredits = 0;
+
     }
 
     private void startTimers() {
@@ -615,8 +618,8 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         musicQueueScrollPanel.setBackground(Color.decode(dark));
 
         songsListPanel.setBackground(Color.decode(dark));
-        songsListJList.setSelectionBackground(Color.decode("#FFFFFF"));
-        songsListJList.setSelectionForeground(Color.decode("#000000"));
+        songsListJList.setSelectionBackground(Color.decode(getSongListValueForeground()));
+        songsListJList.setSelectionForeground(Color.decode(getSongListValueBackground()));
         songsListScrollPanel.setBackground(Color.decode(dark));
         songsListScrollPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         songsListScrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
@@ -626,7 +629,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         songsListGenderLabel.setFont(defaultFont);
         songsListGenderLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        songsListJList.setBackground(Color.decode(getSongListValueBackgroundColor()));
+        songsListJList.setBackground(Color.decode(getSongListValueBackground()));
         songsListJList.setForeground(Color.decode(getSongListValueForeground()));
         songsListJList.setFont(songListFont);
 
@@ -642,7 +645,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         Font fontFromSettings = new Font(getValueFont(), Font.PLAIN, getValueFontSize());
 
-        songsListJList.setFont(fontFromSettings);
         musicQueueJList.setFont(fontFromSettings);
 
         containerJMenuBar.setVisible(false);
@@ -658,9 +660,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     private void loadComponentsData() {
 
-        // Values to calculate credits
         selectedGender = 0;
-        currentCredits = 0;
 
         availableVideos = getVideosList();
 
