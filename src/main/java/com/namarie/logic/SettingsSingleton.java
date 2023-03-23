@@ -66,7 +66,7 @@ public class SettingsSingleton {
     private static final String DEFAULT_VALUE_SAVE_SONGS = "false";
 
     //View constants
-    private static final String DEFAULT_VALUE_BACKGROUND = "#66CCFF";
+    private static final String DEFAULT_VALUE_BACKGROUND = "#000000";
     private static final String DEFAULT_VALUE_FOREGROUND = "#FFFFFF";
     private static final String DEFAULT_VALUE_FONT = "Arial";
     private static final String DEFAULT_VALUE_FONT_SIZE = "20";
