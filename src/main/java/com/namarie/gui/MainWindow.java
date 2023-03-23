@@ -591,7 +591,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         centerPanel.setBackground(Color.decode(dark));
         searchSongPanel.setBackground(Color.decode(dark));
 
-        musicQueuePanel.setBorder(musicQueueTitledBorder);
+        musicQueueScrollPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 
         nameSongLabel.setBackground(Color.decode(dark));
         nameSongLabel.setForeground(Color.decode(light));
@@ -610,8 +610,8 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         currentCreditsLabel.setFont(defaultFont);
         currentCreditsLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        musicQueueJList.setBackground(Color.decode(darkLight));
-        musicQueueJList.setForeground(Color.decode(light));
+        musicQueueJList.setBackground(Color.decode(getValueBackground()));
+        musicQueueJList.setForeground(Color.decode(getValueForeground()));
         musicQueueJList.setFont(defaultFont);
 
         musicQueuePanel.setBackground(Color.decode(dark));
@@ -623,6 +623,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         songsListScrollPanel.setBackground(Color.decode(dark));
         songsListScrollPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         songsListScrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        songsListScrollPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 
         songsListGenderLabel.setBackground(Color.decode(dark));
         songsListGenderLabel.setForeground(Color.decode(light));
@@ -647,7 +648,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         musicQueueJList.setFont(fontFromSettings);
 
-        containerJMenuBar.setVisible(false);
+        // containerJMenuBar.setVisible(false);
 
         settingsJMenuItem.addActionListener(e -> {
                     if (settingsWindow == null) settingsWindow = new SettingsWindow();
