@@ -140,21 +140,8 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
          */
         @Override
         public void keyPressed(KeyEvent e) {
-            // Event to make window fullscreen
-            if (e.getKeyCode() == KeyEvent.VK_F11) {
-                videoMediaPlayer.mediaPlayer().fullScreen().toggle();
-            }
-            // Event to reload view components and data
-            else if (e.getKeyCode() == KeyEvent.VK_F9) {
-                paintComponents();
-                loadComponentsData();
-            }
-            // Event to make visible the containerJMenuBar
-            else if (e.getKeyCode() == KeyEvent.VK_F10) {
-                containerJMenuBar.setVisible(!containerJMenuBar.isVisible());
-            }
             // Event to open add coin
-            else if (e.getKeyCode() == KeyEvent.VK_F1 && currentCredits < 25) {
+            if (e.getKeyCode() == KeyEvent.VK_F1 && currentCredits < 25) {
                 currentCredits += 1;
                 creditsValidate(currentCredits > 0);
             }
@@ -162,6 +149,48 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
             else if (e.getKeyCode() == KeyEvent.VK_F2 && currentCredits > 0) {
                 currentCredits -= 1;
                 creditsValidate(currentCredits > 0);
+            }
+            // Event to play the next song in music queue
+            else if (e.getKeyCode() == KeyEvent.VK_F3) {
+                timerRandomSong.start();
+                videoMediaPlayer.mediaPlayer().controls().stop();
+                audioMediaPlayer.mediaPlayer().controls().stop();
+                if (!musicQueueToPlay.isEmpty()) {
+                    timerRandomSong.stop();
+                    Song song = musicQueueToPlay.get(0);
+                    playSong(song);
+                    musicQueueToPlay.remove(0);
+                    setMusicQueueList(musicQueueToPlay);
+                } else {
+                    timerRandomPromotionalVideo.start();
+                    nameSongLabel.setText(NAMARIE_TITLE);
+                }
+            }
+            // Event to reload view components and data
+            else if (e.getKeyCode() == KeyEvent.VK_F5) {
+                paintComponents();
+                loadComponentsData();
+            }
+            // Event to make visible the containerJMenuBar
+            else if (e.getKeyCode() == KeyEvent.VK_F10) {
+                containerJMenuBar.setVisible(!containerJMenuBar.isVisible());
+            }
+            // Event to make window fullscreen
+            else if (e.getKeyCode() == KeyEvent.VK_F11) {
+                videoMediaPlayer.mediaPlayer().fullScreen().toggle();
+            }
+            // Event to power off computer
+            else if (e.getKeyCode() == KeyEvent.VK_F12) {
+                String s = JOptionPane.showInputDialog(null, "Password:", "Power off", JOptionPane.PLAIN_MESSAGE);
+                if ("031217".equals(s)) {
+                    videoMediaPlayer.release();
+                    audioMediaPlayer.release();
+                    try {
+                        MultimediaLogic.shutdown();
+                    } catch (IOException ex) {
+                        logger.log(Level.WARNING, () -> "Runtime exec error! " + ex);
+                    }
+                }
             }
             // Event to up gender in gender list
             else if (e.getKeyCode() == KeyEvent.VK_ADD || e.getKeyCode() == KeyEvent.VK_LEFT) {
@@ -222,22 +251,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                     selectedSong = songsListJList.getModel().getSize() - 1;
                 }
                 updateSelectedSongInSongsList();
-            }
-            // Event to play the next song in music queue
-            else if (e.getKeyCode() == KeyEvent.VK_F3) {
-                timerRandomSong.start();
-                videoMediaPlayer.mediaPlayer().controls().stop();
-                audioMediaPlayer.mediaPlayer().controls().stop();
-                if (!musicQueueToPlay.isEmpty()) {
-                    timerRandomSong.stop();
-                    Song song = musicQueueToPlay.get(0);
-                    playSong(song);
-                    musicQueueToPlay.remove(0);
-                    setMusicQueueList(musicQueueToPlay);
-                } else {
-                    timerRandomPromotionalVideo.start();
-                    nameSongLabel.setText(NAMARIE_TITLE);
-                }
             }
             // Event to play or add a song to music queue with ENTER
             else if (e.getKeyCode() == KeyEvent.VK_ENTER && currentCredits > 0) {
@@ -305,19 +318,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
             // Event to set default value in String to select a song
             else if (e.getKeyCode() == KeyEvent.VK_DECIMAL || e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
                 setDefaultString();
-            }
-            // Event to power off computer
-            else if (e.getKeyCode() == KeyEvent.VK_F12) {
-                String s = JOptionPane.showInputDialog(null, "Password:", "Power off", JOptionPane.PLAIN_MESSAGE);
-                if ("031217".equals(s)) {
-                    videoMediaPlayer.release();
-                    audioMediaPlayer.release();
-                    try {
-                        MultimediaLogic.shutdown();
-                    } catch (IOException ex) {
-                        logger.log(Level.WARNING, () -> "Runtime exec error! " + ex);
-                    }
-                }
             }
         }
 
@@ -648,7 +648,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         musicQueueJList.setFont(fontFromSettings);
 
-        // containerJMenuBar.setVisible(false);
+        containerJMenuBar.setVisible(false);
 
         settingsJMenuItem.addActionListener(e -> {
                     if (settingsWindow == null) settingsWindow = new SettingsWindow();
