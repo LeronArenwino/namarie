@@ -23,12 +23,12 @@ public class SettingsWindow extends JFrame {
     private JPanel foldersPanel;
     private JPanel timePanel;
     private JPanel creditsPanel;
-    private JPanel mainViewPanel;
+    private JPanel musicListQueueViewPanel;
     private JLabel titleWelcomePanel;
     private JLabel titleFoldersPanel;
     private JLabel titleTimePanel;
     private JLabel tittleCreditsPanel;
-    private JLabel titleMainViewPanel;
+    private JLabel titleMusicListQueueViewNorthPanel;
     private JPanel containerFoldersPanel;
     private JTextPane textFoldersPanel;
     private JPanel southPanel;
@@ -50,8 +50,8 @@ public class SettingsWindow extends JFrame {
     private JCheckBox blockScreenWhenHavenCheckBox;
     private JCheckBox saveSongsWhenPowerCheckBox;
     private JPanel containerCreditsPanel;
-    private JPanel containerMainViewPanel;
-    private JTextPane textViewPanel;
+    private JPanel containerMusicListQueueViewPanel;
+    private JTextPane textMusicListQueueViewPanel;
     private JButton backgroundColorSearchButton;
     private JComboBox<String> fontComboBox;
     private JButton foregroundSearchButton;
@@ -71,9 +71,9 @@ public class SettingsWindow extends JFrame {
     private JComboBox<String> fontStyleComboBox;
     private JButton exitButton;
     private JLabel foregroundColorViewLabel;
-    private JPanel listViewPanel;
+    private JPanel songListViewPanel;
     private JPanel containerListViewPanel;
-    private JLabel titleListViewPanel;
+    private JLabel titleSongListViewNorthPanel;
 
     // Song list components
     private JLabel songListBackgroundLabel;
@@ -82,7 +82,7 @@ public class SettingsWindow extends JFrame {
     private JLabel songListForegroundLabel;
     private JLabel songListFontSizeLabel;
     private JComboBox<Integer> songListFontSizeJComboBox;
-    private JTextPane titleSongListViewPanel;
+    private JTextPane textSongListViewPanel;
     private JLabel songListColorBackgroundLabel;
     private JLabel songListColorForegroundLabel;
     private JButton songListColorForegroundJButton;
