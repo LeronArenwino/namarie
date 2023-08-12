@@ -1,5 +1,7 @@
-package com.namarie.logic;
+package com.namarie.controller;
 
+import com.mpatric.mp3agic.ID3v2;
+import com.mpatric.mp3agic.Mp3File;
 import com.namarie.entity.Multimedia;
 import com.namarie.entity.Song;
 
@@ -22,10 +24,10 @@ import static com.namarie.logic.SettingsSingleton.*;
  *
  * @author Francisco Dueñas
  */
-public class MultimediaLogic {
+public class JukeboxController {
 
     // Create a Logger
-    private static final Logger logger = Logger.getLogger(MultimediaLogic.class.getName());
+    private static final Logger logger = Logger.getLogger(JukeboxController.class.getName());
 
     // String format
     public static final String FORMAT_MULTIMEDIA = "%s%s%s";
@@ -52,7 +54,7 @@ public class MultimediaLogic {
 
     }
 
-    private MultimediaLogic() {
+    private JukeboxController() {
         throw new IllegalStateException("Utility class");
     }
 
@@ -62,7 +64,7 @@ public class MultimediaLogic {
     }
 
     public static void setMusicList(List<Song> musicList) {
-        MultimediaLogic.musicList = musicList;
+        JukeboxController.musicList = musicList;
     }
 
     public static List<List<Song>> getMusicListByGenders() {
@@ -70,7 +72,7 @@ public class MultimediaLogic {
     }
 
     public static void setMusicListByGenders(List<List<Song>> musicListByGenders) {
-        MultimediaLogic.musicListByGenders = musicListByGenders;
+        JukeboxController.musicListByGenders = musicListByGenders;
     }
 
     public static List<String> getGendersList() {
@@ -78,7 +80,7 @@ public class MultimediaLogic {
     }
 
     public static void setGendersList(List<String> gendersList) {
-        MultimediaLogic.gendersList = gendersList;
+        JukeboxController.gendersList = gendersList;
     }
 
     public static List<Multimedia> getVideosList() {
@@ -86,7 +88,7 @@ public class MultimediaLogic {
     }
 
     public static void setVideosList(List<Multimedia> videosList) {
-        MultimediaLogic.videosList = videosList;
+        JukeboxController.videosList = videosList;
     }
 
     public static List<Multimedia> getPromotionalVideosList() {
@@ -94,7 +96,7 @@ public class MultimediaLogic {
     }
 
     public static void setPromotionalVideosList(List<Multimedia> promotionalVideosList) {
-        MultimediaLogic.promotionalVideosList = promotionalVideosList;
+        JukeboxController.promotionalVideosList = promotionalVideosList;
     }
 
 
@@ -107,7 +109,7 @@ public class MultimediaLogic {
     }
 
     // Methods
-    public static void loadData(){
+    public static void loadData() {
 
         songCounter = 0;
         videosCounter = 0;
@@ -159,7 +161,7 @@ public class MultimediaLogic {
 
             List<Song> musicListByGender = new ArrayList<>();
             for (Song song : musicList) {
-                if (gender.equals(song.getGender())) musicListByGender.add(song);
+                if (gender.equals(song.getGenre())) musicListByGender.add(song);
             }
             musicListByGenders.add(musicListByGender);
         }
@@ -192,13 +194,34 @@ public class MultimediaLogic {
 
     }
 
+    public static List<String> generateFileListFromPath(String path) {
+
+        List<String> fileList = new ArrayList<>();
+
+        try (Stream<Path> stream = Files.walk(Paths.get(path), 1)) {
+            fileList = stream.map(Path::normalize)
+                    .filter(Files::isRegularFile)
+                    .map(file -> file.getFileName().toString())
+                    .collect(Collectors.toList());
+            for (String file : fileList) {
+                System.out.println(file);
+            }
+            System.out.println(fileList.size());
+        } catch (IOException exception) {
+            logger.log(Level.WARNING, () -> "IOException error! " + exception);
+        }
+
+        return fileList;
+
+    }
+
     private static List<Song> songsList(List<String> filesList, String gender, String singer) {
 
         List<Song> songsList = new ArrayList<>();
 
-        if (!filesList.isEmpty()) for (String name : filesList) {
+        if (!filesList.isEmpty()) for (String fileName : filesList) {
 
-            songsList.add(new Song(songCounter++, name, singer, gender));
+            songsList.add(new Song(songCounter++, fileName, gender, fileName.substring(0, fileName.length() - 4), singer));
 
         }
 
@@ -248,8 +271,8 @@ public class MultimediaLogic {
 
         List<Multimedia> promotionalVideosList = new ArrayList<>();
 
-        if (!filesList.isEmpty()) for (String name : filesList) {
-            promotionalVideosList.add(new Multimedia(promotionalVideosCounter++, name));
+        if (!filesList.isEmpty()) for (String fileName : filesList) {
+            promotionalVideosList.add(new Multimedia(promotionalVideosCounter++, fileName));
         }
 
         return promotionalVideosList;
@@ -260,8 +283,8 @@ public class MultimediaLogic {
 
         List<Multimedia> videosList = new ArrayList<>();
 
-        if (!filesList.isEmpty()) for (String name : filesList) {
-            videosList.add(new Multimedia(videosCounter++, name));
+        if (!filesList.isEmpty()) for (String fileName : filesList) {
+            videosList.add(new Multimedia(videosCounter++, fileName));
         }
 
         return videosList;
@@ -281,6 +304,26 @@ public class MultimediaLogic {
         }
         Runtime.getRuntime().exec(shutdownCommand);
         System.exit(0);
+    }
+
+    public static void readMetadata(String filePath) {
+
+        try {
+            Mp3File mp3file = new Mp3File(filePath);
+            if (mp3file.hasId3v2Tag()) {
+                ID3v2 id3v2Tag = mp3file.getId3v2Tag();
+                String title = id3v2Tag.getTitle();
+                String artist = id3v2Tag.getArtist();
+                String album = id3v2Tag.getAlbum();
+
+                System.out.println("Title: " + title);
+                System.out.println("Artist: " + artist);
+                System.out.println("Album: " + album);
+            }
+        } catch (Exception ex) {
+            logger.log(Level.WARNING, () -> "Metadata Error! " + ex);
+        }
+
     }
 
 }
