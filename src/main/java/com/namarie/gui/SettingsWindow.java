@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.Properties;
 
 import static com.namarie.dao.PropertiesManager.*;
-import static com.namarie.logic.MultimediaLogic.loadData;
+import static com.namarie.controller.JukeboxController.loadData;
 import static com.namarie.logic.SettingsSingleton.*;
 
 public class SettingsWindow extends JFrame {
