@@ -2,7 +2,7 @@ package com.namarie.gui;
 
 import com.namarie.entity.Multimedia;
 import com.namarie.entity.Song;
-import com.namarie.logic.MultimediaLogic;
+import com.namarie.controller.JukeboxController;
 import org.apache.commons.lang3.StringUtils;
 import uk.co.caprica.vlcj.player.base.MediaPlayer;
 import uk.co.caprica.vlcj.player.component.AudioPlayerComponent;
@@ -28,7 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.namarie.dao.PropertiesManager.loadProperties;
-import static com.namarie.logic.MultimediaLogic.*;
+import static com.namarie.controller.JukeboxController.*;
 import static com.namarie.logic.SettingsSingleton.*;
 
 public class MainWindow extends javax.swing.JFrame implements Serializable {
@@ -92,9 +92,10 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     private List<String> genders;
     private int selectedGender;
     private int selectedSong;
-    private boolean promotionalVideoStatus;
+    private boolean isPromotionalVideoEnabled;
     private String[] tmpSongNumberToPlay;
     private int currentCredits;
+    private boolean isMetadataEnabled;
 
     private JPanel songsTitlePanel;
 
@@ -186,7 +187,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                     videoMediaPlayer.release();
                     audioMediaPlayer.release();
                     try {
-                        MultimediaLogic.shutdown();
+                        JukeboxController.shutdown();
                     } catch (IOException ex) {
                         logger.log(Level.WARNING, () -> "Runtime exec error! " + ex);
                     }
@@ -256,9 +257,9 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
             else if (e.getKeyCode() == KeyEvent.VK_ENTER && currentCredits > 0) {
                 Song selectedValue = songsListJList.getSelectedValue();
                 if (selectedValue != null) {
-                    if (promotionalVideoStatus) {
+                    if (isPromotionalVideoEnabled) {
                         videoMediaPlayer.mediaPlayer().controls().stop();
-                        promotionalVideoStatus = false;
+                        isPromotionalVideoEnabled = false;
                     }
                     if (!videoMediaPlayer.mediaPlayer().status().isPlaying() && !audioMediaPlayer.mediaPlayer().status().isPlaying()) {
                         playSong(selectedValue);
@@ -298,15 +299,15 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 }
                 if (Arrays.stream(tmpSongNumberToPlay).noneMatch("-"::equals)) {
                     selectedSong = Integer.parseInt(String.format(FORMAT_LIST, tmpSongNumberToPlay[0], tmpSongNumberToPlay[1], tmpSongNumberToPlay[2], tmpSongNumberToPlay[3], tmpSongNumberToPlay[4]));
-                    if (selectedSong <= Objects.requireNonNull(MultimediaLogic.getMusicList()).size() - 1) {
-                        Song song = Objects.requireNonNull(MultimediaLogic.getMusicList()).get(selectedSong);
-                        if (videoMediaPlayer.mediaPlayer().status().isPlaying() && !promotionalVideoStatus) {
+                    if (selectedSong <= Objects.requireNonNull(JukeboxController.getMusicList()).size() - 1) {
+                        Song song = Objects.requireNonNull(JukeboxController.getMusicList()).get(selectedSong);
+                        if (videoMediaPlayer.mediaPlayer().status().isPlaying() && !isPromotionalVideoEnabled) {
                             musicQueueToPlay.add(song);
                             setMusicQueueList(musicQueueToPlay);
                         }
                         if (musicQueueToPlay.isEmpty()) {
                             playSong(song);
-                            promotionalVideoStatus = false;
+                            isPromotionalVideoEnabled = false;
                         }
                         currentCredits -= 1;
                         creditsValidate(currentCredits > 0);
@@ -403,7 +404,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
             @Override
             public void focusGained(FocusEvent focusEvent) {
                 songsListGenderLabel.setText("All music");
-                setMusicList(MultimediaLogic.getMusicList());
+                setMusicList(JukeboxController.getMusicList());
                 timerFocusMainPanel.stop();
                 timerReturnFocus.start();
             }
@@ -661,6 +662,11 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     private void loadComponentsData() {
 
+        String mp3FilePath = "E:\\music\\META_music\\Abrázame.mp3";
+
+
+        readMetadata(mp3FilePath);
+
         selectedGender = 0;
 
         availableVideos = getVideosList();
@@ -689,9 +695,9 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
             Multimedia video = availableVideos.get(randVideo);
 
-            Optional<String> pathToVideo = video.pathToVideo(getPathToVideos());
+            String pathToVideo = video.pathToFileMultimedia(getPathToVideos());
 
-            videoMediaPlayer.mediaPlayer().media().play(String.format(pathToVideo.orElse(pathToErrorMP4)));
+            videoMediaPlayer.mediaPlayer().media().play(String.format(pathToVideo));
 
         }
 
@@ -705,9 +711,9 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
             Multimedia video = availableVideos.get(randVideo);
 
-            Optional<String> pathToVideo = video.pathToVideo(getPathToVideos());
+            String pathToVideo = video.pathToFileMultimedia(getPathToVideos());
 
-            mediaPlayer.submit(() -> mediaPlayer.media().play(pathToVideo.orElse(pathToErrorMP4)));
+            mediaPlayer.submit(() -> mediaPlayer.media().play(pathToVideo));
 
         }
 
@@ -730,17 +736,17 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                     Song song = musicQueueToPlay.get(0);
 
-                    Optional<String> pathToSong = song.pathToSong(getPathToSongs());
+                    String pathToSong = song.pathToFileSong(getPathToSongs(), isMetadataEnabled);
 
-                    if (getVideoExtensions().stream().anyMatch(song.getName()::endsWith)) {
+                    if (getVideoExtensions().stream().anyMatch(song.getPath()::endsWith)) {
 
-                        videoMediaPlayer.mediaPlayer().media().play(pathToSong.orElse(pathToErrorMP3));
+                        videoMediaPlayer.mediaPlayer().media().play(pathToSong);
 
-                    } else if (getAudioExtensions().stream().anyMatch(song.getName()::endsWith)) {
+                    } else if (getAudioExtensions().stream().anyMatch(song.getPath()::endsWith)) {
 
                         checkAvailableVideos();
 
-                        mediaPlayer.submit(() -> mediaPlayer.media().play(pathToSong.orElse(pathToErrorMP3)));
+                        mediaPlayer.submit(() -> mediaPlayer.media().play(pathToSong));
 
                     }
 
@@ -782,17 +788,17 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                     Song song = musicQueueToPlay.get(0);
 
-                    Optional<String> pathToSong = song.pathToSong(getPathToSongs());
+                    String pathToSong = song.pathToFileSong(getPathToSongs(), isMetadataEnabled);
 
-                    if (getVideoExtensions().stream().anyMatch(song.getName()::endsWith)) {
+                    if (getVideoExtensions().stream().anyMatch(song.getPath()::endsWith)) {
 
-                        mediaPlayer.submit(() -> mediaPlayer.media().play(pathToSong.orElse(pathToErrorMP3)));
+                        mediaPlayer.submit(() -> mediaPlayer.media().play(pathToSong));
 
-                    } else if (getAudioExtensions().stream().anyMatch(song.getName()::endsWith)) {
+                    } else if (getAudioExtensions().stream().anyMatch(song.getPath()::endsWith)) {
 
                         checkAvailableVideos(mediaPlayer);
 
-                        audioMediaPlayer.mediaPlayer().media().play(pathToSong.orElse(pathToErrorMP3));
+                        audioMediaPlayer.mediaPlayer().media().play(pathToSong);
 
                     }
 
@@ -837,7 +843,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         DefaultListModel<Song> model = new DefaultListModel<>();
 
-        for (Song song : MultimediaLogic.getMusicList()) {
+        for (Song song : JukeboxController.getMusicList()) {
             if (StringUtils.containsIgnoreCase(song.toString(), filter)) {
                 model.addElement(song);
             }
@@ -859,8 +865,8 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     private void playPromotionalMedia(Multimedia video) {
         if (isPromotionalVideos()) {
-            videoMediaPlayer.mediaPlayer().media().play(String.format(FORMAT_MULTIMEDIA, getPathToPromotionalVideos(), File.separator, video.getName()));
-            promotionalVideoStatus = true;
+            videoMediaPlayer.mediaPlayer().media().play(String.format(FORMAT_MULTIMEDIA, getPathToPromotionalVideos(), File.separator, video.getPath()));
+            isPromotionalVideoEnabled = true;
         }
     }
 
@@ -874,7 +880,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
             playPromotionalMedia(promotionalVideo);
 
-            promotionalVideoStatus = true;
+            isPromotionalVideoEnabled = true;
 
         }
 
@@ -882,18 +888,18 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     private void playRandomSong() {
 
-        if (promotionalVideoStatus) {
+        if (isPromotionalVideoEnabled) {
 
             videoMediaPlayer.mediaPlayer().controls().stop();
-            promotionalVideoStatus = false;
+            isPromotionalVideoEnabled = false;
 
         }
 
-        if (!videoMediaPlayer.mediaPlayer().status().isPlaying() && !audioMediaPlayer.mediaPlayer().status().isPlaying() && musicQueueToPlay.isEmpty() && !MultimediaLogic.getMusicList().isEmpty()) {
+        if (!videoMediaPlayer.mediaPlayer().status().isPlaying() && !audioMediaPlayer.mediaPlayer().status().isPlaying() && musicQueueToPlay.isEmpty() && !JukeboxController.getMusicList().isEmpty()) {
 
-            int randSong = rand.nextInt(Objects.requireNonNull(MultimediaLogic.getMusicList()).size());
+            int randSong = rand.nextInt(Objects.requireNonNull(JukeboxController.getMusicList()).size());
 
-            Song song = Objects.requireNonNull(MultimediaLogic.getMusicList()).get(randSong);
+            Song song = Objects.requireNonNull(JukeboxController.getMusicList()).get(randSong);
 
             playSong(song);
 
@@ -904,14 +910,14 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     private void playSong(Song song) {
 
         /* TODO: Check null song */
-        Optional<String> pathToSong = song.pathToSong(getPathToSongs());
+        String pathToSong = song.pathToFileSong(getPathToSongs(), isMetadataEnabled);
 
-        if (getVideoExtensions().stream().anyMatch(song.getName()::endsWith)) {
+        if (getVideoExtensions().stream().anyMatch(song.getPath()::endsWith)) {
 
-            videoMediaPlayer.mediaPlayer().media().play(pathToSong.orElse(pathToErrorMP4));
+            videoMediaPlayer.mediaPlayer().media().play(pathToSong);
             nameSongLabel.setText(song.toString());
 
-        } else if (getAudioExtensions().stream().anyMatch(song.getName()::endsWith)) {
+        } else if (getAudioExtensions().stream().anyMatch(song.getPath()::endsWith)) {
 
             if (!availableVideos.isEmpty()) {
 
@@ -919,13 +925,13 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
                 Multimedia video = availableVideos.get(randVideo);
 
-                Optional<String> pathToVideo = video.pathToVideo(getPathToVideos());
+                String pathToVideo = video.pathToFileMultimedia(getPathToVideos());
 
-                videoMediaPlayer.mediaPlayer().media().play(pathToVideo.orElse(pathToErrorMP4));
+                videoMediaPlayer.mediaPlayer().media().play(pathToVideo);
 
             }
 
-            audioMediaPlayer.mediaPlayer().media().play(pathToSong.orElse(pathToErrorMP3));
+            audioMediaPlayer.mediaPlayer().media().play(pathToSong);
             nameSongLabel.setText(song.toString());
 
         }
@@ -967,7 +973,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
             DefaultListModel<Song> model = new DefaultListModel<>();
 
             for (Song song : musicList) {
-                if (selectedGender.equals(song.getGender())) model.addElement(song);
+                if (selectedGender.equals(song.getGenre())) model.addElement(song);
             }
 
             songsListJList.setModel(model);
@@ -999,5 +1005,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
         songsListJList.ensureIndexIsVisible(selectedSong);
 
     }
+
 
 }
