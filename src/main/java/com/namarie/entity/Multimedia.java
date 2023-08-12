@@ -1,39 +1,36 @@
 package com.namarie.entity;
 
 import java.io.File;
-import java.util.Optional;
 
-import static com.namarie.logic.MultimediaLogic.FORMAT_MULTIMEDIA;
+import static com.namarie.controller.JukeboxController.FORMAT_MULTIMEDIA;
 
 public class Multimedia {
 
     private final int number;
-    private final String name;
+    private final String path;
 
-    public Multimedia(int number, String name) {
+    public Multimedia(int number, String path) {
         this.number = number;
-        this.name = name;
+        this.path = path;
+    }
+
+    public String getPath() {
+        return path;
     }
 
     public int getNumber() {
         return number;
     }
 
-    public String getName() {
-        return name;
-    }
+    public String pathToFileMultimedia(String parentDirectoryPath) {
 
-    public Optional<String> pathToVideo(String path) {
-
-        String pathToVideo = String.format(FORMAT_MULTIMEDIA, path, File.separator, getName());
-
-        return Optional.ofNullable(pathToVideo);
+        return String.format(FORMAT_MULTIMEDIA, parentDirectoryPath, File.separator, this.path);
 
     }
 
     @Override
     public String toString() {
-        return String.format(" %05d %s ", getNumber(), getName().substring(0, getName().length() - 4));
+        return String.format(" %05d %s ", this.number, this.path);
     }
 
 }
