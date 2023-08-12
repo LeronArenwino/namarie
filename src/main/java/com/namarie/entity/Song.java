@@ -1,39 +1,36 @@
 package com.namarie.entity;
 
 import java.io.File;
-import java.util.Optional;
+
+import static com.namarie.controller.JukeboxController.FORMAT_MULTIMEDIA;
 
 public class Song extends Multimedia {
 
     private static final String FORMAT_SONG_LIST = "%s%s%s%s%s%s%s";
 
+    private final String genre;
+    private final String name;
     private final String singer;
-    private final String gender;
 
-    public Song(int number, String name, String singer, String gender) {
-        super(number, name);
+    public Song(int number, String path, String genre, String name, String singer) {
+        super(number, path);
+        this.genre = genre;
+        this.name = name;
         this.singer = singer;
-        this.gender = gender;
     }
 
-    public String getSinger() {
-        return singer;
+    public String getGenre() {
+        return genre;
     }
 
-    public String getGender() {
-        return gender;
-    }
+    public String pathToFileSong(String parentDirectoryPath, boolean hasMetadata) {
 
-    public Optional<String> pathToSong(String path){
-
-        String pathToSong = String.format(FORMAT_SONG_LIST, path, File.separator, getGender(), File.separator, getSinger(), File.separator, getName());
-
-        return Optional.ofNullable(pathToSong);
+        return hasMetadata ? String.format(FORMAT_MULTIMEDIA, parentDirectoryPath, File.separator, getPath()) : String.format(FORMAT_SONG_LIST, parentDirectoryPath, File.separator, this.genre, File.separator, this.singer, File.separator, getPath());
 
     }
 
     @Override
     public String toString() {
-        return String.format(" %05d %s %s ", getNumber(), getSinger(), getName().substring(0, getName().length() - 4));
+        return String.format(" %05d %s %s ", getNumber(), this.singer, this.name);
     }
 }
