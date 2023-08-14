@@ -41,14 +41,6 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     // Random secure generator
     private final Random rand = SecureRandom.getInstanceStrong();
 
-    // Error files
-    private static final String ERROR_MP_4 = "error.mp4";
-    private static final String ERROR_MP_3 = "error.mp3";
-
-    // Path to error files
-    private final String pathToErrorMP4 = String.format(FORMAT_MULTIMEDIA, new File("").getAbsolutePath(), File.separator, ERROR_MP_4);
-    private final String pathToErrorMP3 = String.format(FORMAT_MULTIMEDIA, new File("").getAbsolutePath(), File.separator, ERROR_MP_3);
-
     // General components
     private JPanel containerPanel;
     private JPanel westPanel;
@@ -911,7 +903,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         /* TODO: Check null song */
         String pathToSong = song.pathToFileSong(getPathToSongs(), isMetadataEnabled);
-        System.out.println(pathToSong);
+
         if (getVideoExtensions().stream().anyMatch(song.getPath()::endsWith)) {
 
             videoMediaPlayer.mediaPlayer().media().play(pathToSong);
@@ -930,7 +922,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 videoMediaPlayer.mediaPlayer().media().play(pathToVideo);
 
             }
-            System.out.println(pathToSong);
+
             audioMediaPlayer.mediaPlayer().media().play(pathToSong);
             nameSongLabel.setText(song.toString());
 
