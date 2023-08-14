@@ -87,6 +87,7 @@ public class SettingsWindow extends JFrame {
     private JLabel songListColorForegroundLabel;
     private JButton songListColorForegroundJButton;
     private JButton songListColorBackgroundJButton;
+    private JCheckBox usingMetadaFilesCheckBox;
     private transient ComboBoxModel<String> songListFonts;
 
     private transient ComboBoxModel<String> modelFonts;
@@ -277,6 +278,9 @@ public class SettingsWindow extends JFrame {
 
         setSettingsFromProperties(loadProperties());
 
+        // Metadata files
+        usingMetadaFilesCheckBox.setSelected(getHasMetadata());
+
         // Paths control section
         videoTextField.setText(getPathToVideos());
         musicTextField.setText(getPathToSongs());
@@ -316,6 +320,9 @@ public class SettingsWindow extends JFrame {
     private Properties settingsToProperties() {
 
         Properties properties = new Properties();
+
+        // Metadata files
+        properties.put(KEY_IS_METADATA, String.valueOf(usingMetadaFilesCheckBox.isSelected()));
 
         // Path settings
         properties.put(KEY_PATH_TO_VIDEOS, videoTextField.getText());
