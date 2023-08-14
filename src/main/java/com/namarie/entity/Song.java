@@ -25,7 +25,7 @@ public class Song extends Multimedia {
 
     public String pathToFileSong(String parentDirectoryPath, boolean hasMetadata) {
 
-        return hasMetadata ? String.format(FORMAT_MULTIMEDIA, parentDirectoryPath, File.separator, getPath()) : String.format(FORMAT_SONG_LIST, parentDirectoryPath, File.separator, this.genre, File.separator, this.singer, File.separator, getPath());
+        return hasMetadata ? getPath() : String.format(FORMAT_SONG_LIST, parentDirectoryPath, File.separator, this.genre, File.separator, this.singer, File.separator, getPath());
 
     }
 
