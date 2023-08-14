@@ -23,6 +23,9 @@ public class SettingsSingleton {
     // Path to default settings file
     public static final String PATH_TO_SETTINGS = "settings";
 
+    // Metadata files
+    public static final String KEY_IS_METADATA = "isMetadata";
+
     // Folders TabPanel
     public static final String KEY_PATH_TO_VIDEOS = "pathToVideos";
     public static final String KEY_PATH_TO_SONGS = "pathToSongs";
@@ -50,6 +53,9 @@ public class SettingsSingleton {
     public static final String KEY_SONG_LIST_FONT = "songListFont";
     public static final String KEY_SONG_LIST_FONT_SIZE = "songListFontSize";
 
+    // Metadata files
+    public static final String DEFAULT_VALUE_IS_METADATA = "false";
+
     // Folders constants
     private static final String DEFAULT_VALUE_PATH_VIDEOS = "";
     private static final String DEFAULT_VALUE_PATH_SONGS = "";
@@ -70,6 +76,9 @@ public class SettingsSingleton {
     private static final String DEFAULT_VALUE_FOREGROUND = "#FFFFFF";
     private static final String DEFAULT_VALUE_FONT = "Arial";
     private static final String DEFAULT_VALUE_FONT_SIZE = "20";
+
+    // Metadata files
+    private static boolean hasMetadata;
 
     // Paths control variables
     private static String pathToVideos;
@@ -101,6 +110,9 @@ public class SettingsSingleton {
     public static Properties defaultSettingsProperties() {
 
         Properties properties = new Properties();
+
+        // Metadata files
+        properties.put(KEY_IS_METADATA, DEFAULT_VALUE_IS_METADATA);
 
         // Paths section
         properties.put(KEY_PATH_TO_VIDEOS, DEFAULT_VALUE_PATH_VIDEOS);
@@ -135,6 +147,9 @@ public class SettingsSingleton {
 
     public static void setSettingsFromProperties(Properties properties) {
 
+        // Set metadata files variable
+        setHasMetadata(Boolean.parseBoolean(properties.getProperty(KEY_IS_METADATA)));
+
         // Set paths control variables
         setPathToVideos(properties.getProperty(KEY_PATH_TO_VIDEOS));
         setPathToSongs(properties.getProperty(KEY_PATH_TO_SONGS));
@@ -162,6 +177,14 @@ public class SettingsSingleton {
         setSongListValueFont(properties.getProperty(KEY_SONG_LIST_FONT));
         setSongListValueFontSize(Integer.parseInt(properties.getProperty(KEY_SONG_LIST_FONT_SIZE)));
 
+    }
+
+    public static boolean getHasMetadata() {
+        return hasMetadata;
+    }
+
+    public static void setHasMetadata(boolean hasMetadata) {
+        SettingsSingleton.hasMetadata = hasMetadata;
     }
 
     public static String getPathToVideos() {
