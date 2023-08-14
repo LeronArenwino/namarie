@@ -194,27 +194,6 @@ public class JukeboxController {
 
     }
 
-    public static List<String> generateFileListFromPath(String path) {
-
-        List<String> fileList = new ArrayList<>();
-
-        try (Stream<Path> stream = Files.walk(Paths.get(path), 1)) {
-            fileList = stream.map(Path::normalize)
-                    .filter(Files::isRegularFile)
-                    .map(file -> file.getFileName().toString())
-                    .collect(Collectors.toList());
-            for (String file : fileList) {
-                System.out.println(file);
-            }
-            System.out.println(fileList.size());
-        } catch (IOException exception) {
-            logger.log(Level.WARNING, () -> "IOException error! " + exception);
-        }
-
-        return fileList;
-
-    }
-
     private static List<Song> songsList(List<String> filesList, String gender, String singer) {
 
         List<Song> songsList = new ArrayList<>();
@@ -304,26 +283,6 @@ public class JukeboxController {
         }
         Runtime.getRuntime().exec(shutdownCommand);
         System.exit(0);
-    }
-
-    public static void readMetadata(String filePath) {
-
-        try {
-            Mp3File mp3file = new Mp3File(filePath);
-            if (mp3file.hasId3v2Tag()) {
-                ID3v2 id3v2Tag = mp3file.getId3v2Tag();
-                String title = id3v2Tag.getTitle();
-                String artist = id3v2Tag.getArtist();
-                String album = id3v2Tag.getAlbum();
-
-                System.out.println("Title: " + title);
-                System.out.println("Artist: " + artist);
-                System.out.println("Album: " + album);
-            }
-        } catch (Exception ex) {
-            logger.log(Level.WARNING, () -> "Metadata Error! " + ex);
-        }
-
     }
 
 }
