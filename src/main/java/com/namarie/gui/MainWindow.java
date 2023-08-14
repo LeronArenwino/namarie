@@ -200,7 +200,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 } else {
                     selectedGender = 0;
                 }
-                loadSongsListJList();
+                loadSongsListJList(isMetadataEnabled);
             }
             // Event to down gender in gender list
             else if (e.getKeyCode() == KeyEvent.VK_SUBTRACT || e.getKeyCode() == KeyEvent.VK_RIGHT) {
@@ -209,7 +209,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 } else {
                     selectedGender = genders.size() - 1;
                 }
-                loadSongsListJList();
+                loadSongsListJList(isMetadataEnabled);
             }
             // Event to up a song in music list
             else if (e.getKeyCode() == KeyEvent.VK_UP) {
@@ -411,7 +411,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
             @Override
             public void focusLost(FocusEvent focusEvent) {
-                loadSongsListJList();
+                loadSongsListJList(isMetadataEnabled);
                 timerFocusMainPanel.start();
                 timerReturnFocus.stop();
             }
@@ -662,10 +662,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     private void loadComponentsData() {
 
-        String mp3FilePath = "E:\\music\\META_music\\Abrázame.mp3";
-
-
-        readMetadata(mp3FilePath);
+        isMetadataEnabled = getHasMetadata();
 
         selectedGender = 0;
 
@@ -677,9 +674,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         musicListByGenders = getMusicListByGenders();
 
-        if (!musicListByGenders.isEmpty()) {
-            loadSongsListJList();
-        }
+        loadSongsListJList(isMetadataEnabled);
 
         creditsValidate(currentCredits > 0);
 
@@ -853,11 +848,16 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
     }
 
-    private void loadSongsListJList() {
+    private void loadSongsListJList(boolean isMetadataEnabled) {
 
         searchSongsListTextField.setText("");
-        songsListGenderLabel.setText(genders.get(selectedGender));
-        setMusicList(musicListByGenders.get(selectedGender), genders.get(selectedGender));
+        if (isMetadataEnabled){
+            songsListGenderLabel.setText("All music");
+            setMusicList(generateSongList(getPathToSongs(), AUDIO_EXTENSIONS));
+        }else {
+            songsListGenderLabel.setText(genders.get(selectedGender));
+            setMusicList(musicListByGenders.get(selectedGender), genders.get(selectedGender));
+        }
         selectedSong = 0;
         updateSelectedSongInSongsList();
 
@@ -911,7 +911,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
 
         /* TODO: Check null song */
         String pathToSong = song.pathToFileSong(getPathToSongs(), isMetadataEnabled);
-
+        System.out.println(pathToSong);
         if (getVideoExtensions().stream().anyMatch(song.getPath()::endsWith)) {
 
             videoMediaPlayer.mediaPlayer().media().play(pathToSong);
@@ -930,7 +930,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
                 videoMediaPlayer.mediaPlayer().media().play(pathToVideo);
 
             }
-
+            System.out.println(pathToSong);
             audioMediaPlayer.mediaPlayer().media().play(pathToSong);
             nameSongLabel.setText(song.toString());
 
