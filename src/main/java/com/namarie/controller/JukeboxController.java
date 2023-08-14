@@ -1,7 +1,8 @@
 package com.namarie.controller;
 
-import com.mpatric.mp3agic.ID3v2;
+import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
+import com.mpatric.mp3agic.UnsupportedTagException;
 import com.namarie.entity.Multimedia;
 import com.namarie.entity.Song;
 
@@ -35,7 +36,7 @@ public class JukeboxController {
 
     // Regex file extensions
     private static final List<String> MULTIMEDIA_EXTENSIONS = Collections.unmodifiableList(Arrays.asList("mp3", "mp4", "wav", "wma", "mov", "wmv", "avi", "flv", "mkv", "mpg", "mpeg"));
-    private static final List<String> AUDIO_EXTENSIONS = Collections.unmodifiableList(Arrays.asList("mp3", "wav", "wma", "mpeg"));
+    public static final List<String> AUDIO_EXTENSIONS = Collections.unmodifiableList(Arrays.asList("mp3", "wav", "wma", "mpeg"));
     private static final List<String> VIDEO_EXTENSIONS = Collections.unmodifiableList(Arrays.asList("mp4", "mov", "wmv", "avi", "flv", "mkv", "mpg"));
 
     private static List<Song> musicList;
@@ -118,12 +119,12 @@ public class JukeboxController {
         setGendersList(listDirectories(getPathToSongs()));
         setMusicList(generateMusicList(getPathToSongs()));
         setMusicListByGenders(generateMusicListByGender(getMusicList(), getGendersList()));
-        setVideosList(videosList(filesListByExtensions(getPathToVideos(), VIDEO_EXTENSIONS)));
-        setPromotionalVideosList(promotionalVideosList(filesListByExtensions(getPathToPromotionalVideos(), VIDEO_EXTENSIONS)));
+        setVideosList(videosList(fileListByExtensions(getPathToVideos(), VIDEO_EXTENSIONS)));
+        setPromotionalVideosList(promotionalVideosList(fileListByExtensions(getPathToPromotionalVideos(), VIDEO_EXTENSIONS)));
 
     }
 
-    private static List<String> filesListByExtensions(String path, List<String> extensions) {
+    private static List<String> fileListByExtensions(String path, List<String> extensions) {
 
         List<String> songsList = new ArrayList<>();
 
@@ -138,6 +139,31 @@ public class JukeboxController {
         }
 
         return songsList;
+
+    }
+
+    public static List<Song> generateSongList(String parentDirectoryPath, List<String> extensions) {
+
+        List<Song> songList = new ArrayList<>();
+
+        try (Stream<Path> stream = Files.walk(Paths.get(parentDirectoryPath), 1)) {
+            songList = stream.map(Path::normalize)
+                    .filter(Files::isRegularFile)
+                    .filter(file -> extensions.stream().anyMatch(file.getFileName().toString()::endsWith))
+                    .map(path -> {
+                        try {
+                            return new Mp3File(String.format(FORMAT_MULTIMEDIA, parentDirectoryPath, File.separator, path.getFileName()));
+                        } catch (IOException | UnsupportedTagException | InvalidDataException e) {
+                            throw new RuntimeException(e);
+                        }
+                    })
+                    .map(mp3File -> new Song(songCounter++, mp3File.getFilename(), mp3File.getId3v2Tag().getGenreDescription(), mp3File.getId3v2Tag().getTitle(), mp3File.getId3v2Tag().getArtist()))
+                    .collect(Collectors.toList());
+        } catch (IOException exception) {
+            logger.log(Level.WARNING, () -> "IOException error! " + exception);
+        }
+
+        return songList;
 
     }
 
@@ -215,7 +241,7 @@ public class JukeboxController {
 
         if (!singers.isEmpty()) for (String singer : singers) {
 
-            songsFromFiles = filesListByExtensions(String.format(FORMAT_LIST, path, File.separator, gender, File.separator, singer), MULTIMEDIA_EXTENSIONS);
+            songsFromFiles = fileListByExtensions(String.format(FORMAT_LIST, path, File.separator, gender, File.separator, singer), MULTIMEDIA_EXTENSIONS);
 
             songsList = Stream.of(songsList, songsList(songsFromFiles, gender, singer))
                     .flatMap(Collection::stream)
