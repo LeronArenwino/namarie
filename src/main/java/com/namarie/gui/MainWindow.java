@@ -42,7 +42,7 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     private final Random rand = SecureRandom.getInstanceStrong();
 
     // General components
-    private JPanel containerPanel;
+    private final JPanel containerPanel;
     private JPanel westPanel;
     private JPanel northPanel;
     private JPanel eastPanel;
@@ -354,6 +354,9 @@ public class MainWindow extends javax.swing.JFrame implements Serializable {
     }
 
     public MainWindow() throws NoSuchAlgorithmException {
+
+        // Initialize containerPanel before setting it as the content pane
+        containerPanel = new JPanel(new BorderLayout());
 
         setSettingsFromProperties(loadProperties());
 
