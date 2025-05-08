@@ -1,0 +1,33 @@
+package co.com.leronarenwino.model;
+
+import lombok.Getter;
+
+import java.io.File;
+
+public class Song extends Multimedia {
+
+    private static final String FORMAT_SONG_LIST = "%s%s%s%s%s%s%s";
+
+    @Getter
+    private final String genre;
+    private final String name;
+    private final String singer;
+
+    public Song(int number, String path, String genre, String name, String singer) {
+        super(number, path);
+        this.genre = genre;
+        this.name = name;
+        this.singer = singer;
+    }
+
+    public String pathToFileSong(String parentDirectoryPath, boolean hasMetadata) {
+
+        return hasMetadata ? getPath() : String.format(FORMAT_SONG_LIST, parentDirectoryPath, File.separator, this.genre, File.separator, this.singer, File.separator, getPath());
+
+    }
+
+    @Override
+    public String toString() {
+        return String.format(" %05d %s %s ", getNumber(), this.singer, this.name);
+    }
+}

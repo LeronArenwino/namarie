@@ -1,0 +1,8 @@
+dependencies {
+    implementation project(':model')
+    implementation project(':usecase')
+    implementation 'org.springframework:spring-context'
+    implementation project(':setting')
+    // https://mvnrepository.com/artifact/com.mpatric/mp3agic
+    implementation 'com.mpatric:mp3agic:0.9.1'
+}

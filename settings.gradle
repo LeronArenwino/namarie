@@ -1,0 +1,22 @@
+pluginManagement {
+    repositories {
+        //mavenLocal()
+        //maven { url = '...' }
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'namarie'
+
+include ':app-service'
+include ':model'
+include ':usecase'
+project(':app-service').projectDir = file('./applications/app-service')
+project(':model').projectDir = file('./domain/model')
+project(':usecase').projectDir = file('./domain/usecase')
+include ':setting'
+project(':setting').projectDir = file('./infrastructure/helpers/setting')
+include ':properties-manager'
+project(':properties-manager').projectDir = file('./infrastructure/driven-adapters/properties-manager')
+include ':jukebox-controller'
+project(':jukebox-controller').projectDir = file('./infrastructure/entry-points/jukebox-controller')

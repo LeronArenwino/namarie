@@ -1,0 +1,35 @@
+apply plugin: 'org.springframework.boot'
+
+dependencies {
+	implementation project(':jukebox-controller')
+	implementation project(':properties-manager')
+	implementation project(':setting')
+    implementation project(':model')
+    implementation project(':usecase')
+    implementation 'org.springframework.boot:spring-boot-starter'
+    testImplementation 'com.tngtech.archunit:archunit:1.4.0'
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind'
+
+
+
+    // https://mvnrepository.com/artifact/uk.co.caprica/vlcj
+    implementation 'uk.co.caprica:vlcj:4.7.1'
+
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+    implementation 'org.apache.commons:commons-lang3:3.0'
+}
+
+tasks.register('explodedJar', Copy) {
+    with jar
+    into layout.buildDirectory.dir("exploded")
+}
+
+jar {
+    // To disable the *-plain.jar
+    enabled = false
+}
+
+bootJar {
+    // Sets output jar name
+    archiveFileName = "${project.getParent().getName()}.${archiveExtension.get()}"
+}

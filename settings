@@ -1,0 +1,20 @@
+#Namarie - settings
+#Thu May 08 16:48:45 COT 2025
+pathToSongs=
+foreground=\#FFFFFF
+timeToPlayRandomSongs=1
+timeToRepeatSongs=5
+saveSongs=false
+isPromotionalVideos=false
+songListBackground=\#000000
+songListForeground=\#FFFFFF
+songListFont=Arial
+lockScreen=false
+background=\#000000
+amountCredits=1
+pathToVideos=
+fontSize=20
+isMetadata=false
+pathToPromotionalVideos=
+songListFontSize=20
+font=Arial
